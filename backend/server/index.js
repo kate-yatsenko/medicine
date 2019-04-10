@@ -4,7 +4,12 @@ const cors = require('@koa/cors');
 const errorHandler = require('./middleware/error-handler');
 const rootRouter = require('./routes');
 
-const { PORT, CORS_ORIGIN, CORS_ALLOW_METHODS } = require('../config');
+const {
+  PORT,
+  CORS_ORIGIN,
+  CORS_ALLOW_METHODS,
+  CORS_MAX_AGE,
+} = require('../config');
 
 const app = new Koa();
 
@@ -17,7 +22,7 @@ app.on('error', (err, ctx) => {
 const corsOptions = {
   origin: CORS_ORIGIN,
   allowMethods: CORS_ALLOW_METHODS,
-  maxAge: 86400,
+  maxAge: CORS_MAX_AGE,
   // TODO: set proper options
   // credentials: true,
   // keepHeadersOnError: true,
