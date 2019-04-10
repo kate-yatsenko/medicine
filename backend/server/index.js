@@ -37,7 +37,7 @@ app.use(rootRouter.allowedMethods());
 
 function listen() {
   return app.listen(PORT, () => {
-    console.log(`Web API is listening on port ${PORT}`);
+    console.log(`API is listening on port ${PORT}`);
   });
 }
 
