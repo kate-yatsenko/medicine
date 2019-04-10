@@ -18,4 +18,6 @@ module.exports = {
   CORS_ALLOW_METHODS: 'GET,POST,OPTIONS',
 
   RESPONSE_JSON_ERROR_NAME: 'error',
+
+  ENDPOINT_PREFIX_V1: '/v1',
 };
