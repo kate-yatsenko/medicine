@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as patientActions from 'actions/patientActions';
 import Helmet from 'react-helmet';
 import Patient from './Patient'
+import {Menu, Dropdown, Icon, Button } from 'antd';
 
 function mapStateToProps({ patientState }) {
   return { ...patientState };
