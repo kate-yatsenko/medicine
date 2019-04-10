@@ -20,4 +20,9 @@ module.exports = {
   RESPONSE_JSON_ERROR_NAME: 'error',
 
   ENDPOINT_PREFIX_V1: '/v1',
+  ENDPOINT_ROOT_RESPONSE: {
+    name: 'Medicine API',
+    version: '1.0',
+    git: 'https://github.com/kate-yatsenko/medicine',
+  },
 };
