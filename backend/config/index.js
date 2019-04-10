@@ -15,4 +15,7 @@ module.exports = {
 
   PORT: env.API_PORT,
   CORS_ORIGIN: env.API_CORS_ORIGIN,
+  CORS_ALLOW_METHODS: 'GET,POST,OPTIONS',
+
+  RESPONSE_JSON_ERROR_NAME: 'error',
 };
