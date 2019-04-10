@@ -28,9 +28,9 @@ const corsOptions = {
   // keepHeadersOnError: true,
 };
 
-app.use(cors(corsOptions));
-
 app.use(errorHandler());
+
+app.use(cors(corsOptions));
 
 app.use(rootRouter.routes());
 app.use(rootRouter.allowedMethods());
