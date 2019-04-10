@@ -14,4 +14,5 @@ module.exports = {
   },
 
   PORT: env.API_PORT,
+  CORS_ORIGIN: env.API_CORS_ORIGIN,
 };
