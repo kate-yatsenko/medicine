@@ -1,0 +1,6 @@
+.fixedButton {
+    position: fixed;
+    z-index: 2;
+    top: 90%;
+    left: 90%;
+}
