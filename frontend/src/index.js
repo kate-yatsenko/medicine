@@ -7,6 +7,11 @@ import { Provider } from 'react-redux';
 import appState from './reducers';
 import { createStore } from 'redux';
 
+import "antd/dist/antd.css";
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import './style.scss';
+
 let store = createStore(
   appState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
