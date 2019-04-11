@@ -1,16 +1,16 @@
 CREATE TABLE "public"."role" (
 	"id" SERIAL primary key,
 	"name" VARCHAR(100) unique not null,
-	"canCreateUser" BOOLEAN not null default false,
 	"canReadAllCards" BOOLEAN not null default false,
-	"canUpdateCards" BOOLEAN not null default false
+	"canCreateEntry" BOOLEAN not null default false,
+	"canManageRole" BOOLEAN not null default false
 );
 
 COMMENT ON TABLE "public"."role" IS 'User roles';
 
 CREATE TABLE "public"."user" (
 	"id" SERIAL primary key,
-	"roleId" integer not null references "public"."role"(id),
+	"roleId" integer not null default 1 references "public"."role"(id),
 	"name" VARCHAR(250) not null,
 	"email" varchar(250) unique not null,
 	"gender" varchar(1) not null default 'M',
@@ -46,14 +46,14 @@ COMMENT ON TABLE "public"."entry" IS 'Medical entries';
 
 /* Fill the base */
 INSERT INTO "public"."role" ("name")
-VALUES ('pacient');
-INSERT INTO "public"."role" ("name","canReadAllCards","canUpdateCards")
-VALUES ('doctor',true,true);
-INSERT INTO "public"."role" ("name","canCreateUser","canReadAllCards","canUpdateCards")
-VALUES ('admin',true,false,true);
+VALUES ('Pacient');
+INSERT INTO "public"."role" ("name","canReadAllCards","canCreateEntry")
+VALUES ('Doctor',true,true);
+INSERT INTO "public"."role" ("name","canManageRole")
+VALUES ('Admin',true);
 
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
-VALUES (1,'Иванов Иван Иванович','med.admin@gmail.com','m','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
+VALUES (3,'Админко Админ Админович','medadmin@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
 
 INSERT INTO "public"."entryType" ("name","description")
 VALUES ('Анализ','(Лабораторная диаоностика) Совокупность методов, направленных на анализ исследуемого материала с помощью различного специализированного оборудования.');
