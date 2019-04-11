@@ -1,11 +1,14 @@
 import React from 'react';
-import { Layout, Typography  } from 'antd';
+import { Layout, Typography } from 'antd';
+import { toggleAuthModalVisible } from '../../actions/authActions';
+import { connect } from 'react-redux';
+import AuthModal from '../AuthModal';
 import './style.scss';
 
 const { Header } = Layout;
 const { Text } = Typography;
 
-const TopMenu = () => {
+const TopMenu = ({ dispatch }) => {
   return (
     <Header
       style={{
@@ -21,10 +24,17 @@ const TopMenu = () => {
           src="/images/menu-logo.png"
           alt="logo"
         />
-        <Text type="secondary">Логін | Реєстрація</Text>
+        <Text
+          type="secondary"
+          className="auth"
+          onClick={() => dispatch(toggleAuthModalVisible())}
+        >
+          Логін | Реєстрація
+        </Text>
       </div>
+      <AuthModal/>
     </Header>
   );
 };
 
-export default TopMenu;
+export default connect()(TopMenu);

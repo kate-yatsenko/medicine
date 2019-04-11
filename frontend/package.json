@@ -8,6 +8,7 @@
     "node-sass": "^4.11.0",
     "proptypes": "^1.1.0",
     "react": "^16.8.6",
+    "react-animated-text": "^0.1.4",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
     "react-redux": "^6.0.1",

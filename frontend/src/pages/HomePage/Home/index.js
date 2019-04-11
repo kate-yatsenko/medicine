@@ -16,10 +16,10 @@ const Home = () => {
       </div>
       <div className="d-flex flex-wrap justify-content-center page-home-features">
         <div className="page-home-features-item d-flex align-items-center">
-            <Icon
-              type="check-circle"
-              className="d-block"
-            />
+          <Icon
+            type="check-circle"
+            className="d-block"
+          />
           <span>Безперервний зв'язок з вашим лікарем</span>
         </div>
         <div className="page-home-features-item d-flex align-items-center">
