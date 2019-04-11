@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kate-yatsenko/medicine#readme",
   "dependencies": {
+    "@koa/cors": "^3.0.0",
     "dotenv": "^7.0.0",
     "knex": "^0.16.3",
     "koa": "^2.7.0",
