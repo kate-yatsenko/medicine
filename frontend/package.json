@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^1.2.0",
     "proptypes": "^1.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

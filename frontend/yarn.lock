@@ -872,6 +872,23 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@react-google-maps/api@^1.2.0":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.2.2.tgz#bc4a2846ea16013680f7b9142a92b1df5547053b"
+  integrity sha512-r0xbbAXeQVHMVWqv0VCan89wcvxhCQKUs14cqu3IW0FSh+YOVEch4KACnAgiGoQCzRb/+qvOWzhmI9dTq2Jx9g==
+  dependencies:
+    "@react-google-maps/marker-clusterer" "1.2.2"
+    "@types/googlemaps" "3.30.19"
+    "@types/invariant" "2.2.29"
+    invariant "2.2.4"
+
+"@react-google-maps/marker-clusterer@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.2.2.tgz#d2594ce264be3a9a9b26ea83e24a9d263cf947fc"
+  integrity sha512-cCb3c6Yg/8JbU9l+S73PQIn7z7QNXcoFK2j6It/IeAvwUkLNMLE3sUsWu21SCEQHyHJNJ2sF3Y56+wirkrnNag==
+  dependencies:
+    "@types/googlemaps" "3.30.19"
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.0.0.tgz#5acf239cd2747b1a36ec7e708de05d914cb9b948"
@@ -976,6 +993,16 @@
     "@svgr/plugin-jsx" "^4.1.0"
     "@svgr/plugin-svgo" "^4.0.3"
     loader-utils "^1.1.0"
+
+"@types/googlemaps@3.30.19":
+  version "3.30.19"
+  resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.30.19.tgz#359c025e244490b0775826fb216bed093fd66b16"
+  integrity sha512-9uzg5jC6FRyAsMrhOLnUbblyN1xbcOVnqecQZxrnCDxTKssn4lwk0K4EWsw/sw8cJX32MFRMivyAT8dX/JBatg==
+
+"@types/invariant@2.2.29":
+  version "2.2.29"
+  resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.29.tgz#aa845204cd0a289f65d47e0de63a6a815e30cc66"
+  integrity sha512-lRVw09gOvgviOfeUrKc/pmTiRZ7g7oDOU6OAutyuSHpm1/o2RaBQvRhgK8QEdu+FFuw/wnWb29A/iuxv9i8OpQ==
 
 "@types/node@*":
   version "11.10.5"
@@ -4822,7 +4849,7 @@ internal-ip@^3.0.1:
     default-gateway "^2.6.0"
     ipaddr.js "^1.5.2"
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
