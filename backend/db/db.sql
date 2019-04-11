@@ -1,9 +1,9 @@
 CREATE TABLE "public"."role" (
 	"id" SERIAL primary key,
-	"name" VARCHAR(100) unique,
-	"canCreateUser" BOOLEAN default false,
-	"canReadAllCards" BOOLEAN default false,
-	"canUpdateCards" BOOLEAN default false
+	"name" VARCHAR(100) unique not null,
+	"canCreateUser" BOOLEAN not null default false,
+	"canReadAllCards" BOOLEAN not null default false,
+	"canUpdateCards" BOOLEAN not null default false
 );
 
 COMMENT ON TABLE "public"."role" IS 'User roles';
@@ -45,12 +45,12 @@ COMMENT ON TABLE "public"."entry" IS 'Medical entries';
 
 
 /* Fill the base */
-INSERT INTO "public"."role" ("name","canCreateUser","canReadAllCards","canUpdateCards")
-VALUES ('admin',true,false,true);
-INSERT INTO "public"."role" ("name","canReadAllCards","canUpdateCards")
-VALUES ('doctor',true,true);
 INSERT INTO "public"."role" ("name")
 VALUES ('pacient');
+INSERT INTO "public"."role" ("name","canReadAllCards","canUpdateCards")
+VALUES ('doctor',true,true);
+INSERT INTO "public"."role" ("name","canCreateUser","canReadAllCards","canUpdateCards")
+VALUES ('admin',true,false,true);
 
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
 VALUES (1,'Иванов Иван Иванович','med.admin@gmail.com','m','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
