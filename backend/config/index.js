@@ -11,6 +11,8 @@ module.exports = {
     HOST: env.DB_HOST,
     NAME: env.DB_NAME,
     PORT: env.DB_PORT,
+    POOL_MIN: 0,
+    POOL_MAX: 2,
   },
 
   PORT: env.API_PORT,
@@ -26,4 +28,6 @@ module.exports = {
     version: '1.0',
     git: 'https://github.com/kate-yatsenko/medicine',
   },
+
+  NODE_ENV: env.NODE_ENV,
 };
