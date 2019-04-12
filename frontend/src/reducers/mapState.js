@@ -12,7 +12,7 @@ const defaultSearch = {
   adress: 'бульвар Шевченка, 185, Черкаси',
 };
 const defaultFilter = {
-  typs: ['hospital', 'doctor'],
+  types: ['hospital', 'doctor'],
   name: '',
 };
 // TODO: убрать после отладки без интернета
