@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
-// import MapControl from './MapControl';
-// import MapLayout from './MapLayout';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PlacesFilter from './PlacesFilter';
+import PlacesSearch from './PlacesSearch';
+import PlacesList from './PlacesList';
+import * as mapActions from 'actions/mapActions';
 
-export default class MapDashboard extends Component {
+const mapStateToProps = ({mapState}) => {
+  return {...mapState};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(mapActions, dispatch);
+}
+
+class MapDashboard extends Component {
   render() {
+    const {search, filter, places, gmaps} = this.props;
     return (
-      <div className="map-dashboard">
+      <div>
         MapDashboard
+        <PlacesSearch {...search} {...gmaps} />
+        <PlacesFilter {...filter} />
+        <PlacesList {...places} />
       </div>
     );
   }
 }
 
+export default connect(mapStateToProps, mapDispatchToProps)(MapDashboard);
