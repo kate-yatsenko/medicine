@@ -12,7 +12,8 @@ module.exports = {
         address,
         birth,
         roleId: 1,
-      });
+      })
+      .then(ids => ids[0]);
   },
 
   getUser(id) {
@@ -44,7 +45,8 @@ module.exports = {
         phone,
         address,
         birth,
-      });
+      })
+      .then(ids => ids[0]);
   },
 
   updateUserRole({ id, roleId }) {

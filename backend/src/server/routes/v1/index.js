@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 
-// TODO: add more endpoints
-// const someEndpoint = require('./some-endpoint');
+const userRoute = require('./user');
 
 const {
   ENDPOINT_PREFIX_V1,
@@ -16,7 +15,6 @@ router.get('/', ctx => {
   ctx.body = ENDPOINT_ROOT_RESPONSE;
 });
 
-// TODO: use endpoints here
-// router.use(someEndpoint.routes()).use(someEndpoint.allowedMethods());
+router.use(userRoute.routes()).use(userRoute.allowedMethods());
 
 module.exports = router;
