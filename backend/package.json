@@ -2,21 +2,21 @@
   "name": "medicine-api",
   "version": "0.0.1",
   "description": "Back-end for the medicine app",
-  "main": "index.js",
-  "scripts": {
-    "start": "node ./index.js",
-    "test": "jest"
-  },
+  "author": "Vitali Timolyanov",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kate-yatsenko/medicine.git"
   },
-  "author": "Vitali Timolyanov",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/kate-yatsenko/medicine/issues"
   },
   "homepage": "https://github.com/kate-yatsenko/medicine#readme",
+  "license": "ISC",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "jest"
+  },
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "dotenv": "^7.0.0",
