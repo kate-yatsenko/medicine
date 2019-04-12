@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
 import MarkersLayer from './MarkersLayer'
 
-import apiKey from '../data/apiKey'
+import apiKey from '../../data/apiKey'
 
 // class GoogleMap
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MedicMarker from './MedicMarker'
-import {searchPlaces} from '../api/google-api'
+import {searchPlaces} from '../../api/google-api'
 
 export default class MarkersLayer extends Component {
   constructor (props) {
