@@ -6,7 +6,6 @@ import HomePage from 'pages/HomePage';
 import ChatPage from 'pages/ChatPage';
 import DoctorPage from 'pages/DoctorPage';
 import PatientPage from 'pages/PatientPage';
-import { Redirect } from 'react-router';
 
 const routers = (
   <React.Fragment>
