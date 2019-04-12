@@ -1,11 +1,20 @@
 import React from 'react';
+import ListPatients from "./ListPatient";
+import SearchPatient from "./SearchPatient";
+import PaginationPatient from "./Pagination";
+import './style.css';
+
 
 const Doctor = () => {
-  return (
-    <div>
-      <h1>Doctor</h1>
-    </div>
-  );
+    return (
+        <div className="SearchAndPatient">
+            <SearchPatient />
+            <ListPatients />
+            <PaginationPatient />
+        </div>
+    );
 };
 
 export default Doctor;
+
+

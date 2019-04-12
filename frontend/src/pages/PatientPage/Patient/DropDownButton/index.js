@@ -7,10 +7,10 @@ const Index = () => {
     const menu = (
         <Menu>
             <Menu.Item key="0">
-                <a href="#">1st menu item</a>
+                <a href="#">інформація про аналізи</a>
             </Menu.Item>
             <Menu.Item key="1">
-                <a href="#">2nd menu item</a>
+                <a href="#">Історію хвороб</a>
             </Menu.Item>
         </Menu>
     );
@@ -20,7 +20,7 @@ const Index = () => {
             <Dropdown overlay={menu} trigger={['click']}>
                 <a className="ant-dropdown-link" href="#">
                     <Button>
-                        Actions <Icon type="down"/>
+                        Відкрити...  <Icon type="down"/>
                     </Button>
                 </a>
             </Dropdown>

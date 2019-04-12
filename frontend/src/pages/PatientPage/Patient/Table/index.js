@@ -4,24 +4,22 @@ import './style.css';
 
 const TablePatient = (props) => {
     const columns = [{
-        title: 'Name',
+        title: 'Ім\'я',
         dataIndex: 'name',
-        render: text => <a href="javascript:;">{text}</a>,
     }, {
-        title: 'Cash Assets',
-        className: 'column-money',
-        dataIndex: 'money',
+        title: 'Результати',
+        className: 'result',
+        dataIndex: 'result',
     }, {
-        title: 'Address',
-        dataIndex: 'address',
+        title: 'Діагноз',
+        dataIndex: 'diagnosis',
     }];
 
     const data = [{
         id: props.id,
         name: props.name,
-        money: props.money,
-        address: props.address,
-
+        result: props.result,
+        diagnosis: props.diagnosis,
     }];
     return (
         <div>
@@ -30,7 +28,8 @@ const TablePatient = (props) => {
                 dataSource={data}
                 bordered
                 className="table"
-            />,
+
+            />
         </div>
     );
 };
