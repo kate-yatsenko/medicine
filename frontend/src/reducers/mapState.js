@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {MAP_INIT_MAP_SERVICES, MAP_SEARCH_PLACES, MAP_SET_FILTER} from '../constants';
 
 import placesSearchResult from '../data/placesSearchResult'
 
@@ -20,26 +21,28 @@ const defaultPlaces = placesSearchResult;
 
 const gmaps  = (state = defaultGmaps, action) => {
   switch (action.type) {
+    case MAP_INIT_MAP_SERVICES:
+      return {...state, ...action.payload};
     default:
-      return state
+      return state;
   }
 };
 const search  = (state = defaultSearch, action) => {
   switch (action.type) {
     default:
-      return state
+      return state;
   }
 };
 const places  = (state = defaultPlaces, action) => {
   switch (action.type) {
     default:
-      return state
+      return state;
   }
 };
 const filter  = (state = defaultFilter, action) => {
   switch (action.type) {
     default:
-      return state
+      return state;
   }
 };
 
@@ -50,4 +53,4 @@ const mapState = combineReducers({
   filter,
 });
 
-export default mapState
+export default mapState;

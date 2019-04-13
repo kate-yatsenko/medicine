@@ -8,17 +8,19 @@ export default class PlacesList extends Component {
     selectedKey: null,
   }
 
-  onItemClick = (place_id) => {
+  onItemClick = (place_id, location, map) => {
+    map.panTo(location);
     this.setState({
       selectedKey: place_id,
     });
   }
-  getPlacesList = ({place_id, name, vicinity, types}) => {
+  getPlacesList = ({place_id, geometry, name, vicinity, types}) => {
     return (
       <List.Item 
         key={place_id} 
         style={{cursor:'pointer',}}
-        onClick={() => this.onItemClick(place_id)}
+        onClick={() => {
+          this.onItemClick(place_id, geometry.location, this.props.map)}}
       >
         {name}
         {place_id === this.state.selectedKey &&

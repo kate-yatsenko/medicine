@@ -21,7 +21,7 @@ class MapDashboard extends Component {
       <div>
         <PlacesSearch {...search} {...gmaps} />
         <PlacesFilter {...filter} />
-        <PlacesList places={places} />
+        <PlacesList places={places} map={gmaps.map}/>
       </div>
     );
   }

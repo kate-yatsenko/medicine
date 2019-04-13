@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import MarkersLayer from './MarkersLayer'
+import {initMapServices} from 'actions/mapActions';
 
 import apiKey from 'data/apiKey'
 
-export default class MapLayout extends Component {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initMapServices: (map, placesService) => {
+      dispatch(initMapServices(map, placesService));
+    }
+  }
+}
+
+class MapLayout extends Component {
   state = {
     googleApiLoaded: false,
   }
 
-  initPlacesService(map) {
-    // saving links for gapi objects
-    // TODO: move this to storage
-    window.map = map;
-    window.placesService = new window.google.maps.places.PlacesService(map);
+  onMapLoad = map => {
+    const placesService = new window.google.maps.places.PlacesService(map);
+    this.props.initMapServices(map, placesService);
     this.setState(() => {
-      return {googleApiLoaded: true};
+      return {mapServicesInited: true};
     });
   }
 
@@ -44,16 +53,16 @@ export default class MapLayout extends Component {
             controlSize: 24,
           }}
           onLoad={(map) => {
-            this.initPlacesService(map);
+            this.onMapLoad(map);
           }}
         >
-          {this.state.googleApiLoaded &&
+          {this.state.mapServicesInited &&
             <MarkersLayer position={position} />
           }
         </GoogleMap>
-        
-        
       </LoadScript>
     )
   }
 }
+
+export default connect(null, mapDispatchToProps)(MapLayout);
