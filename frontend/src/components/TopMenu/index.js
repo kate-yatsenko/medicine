@@ -4,6 +4,7 @@ import { toggleAuthModalVisible } from '../../actions/authActions';
 import { connect } from 'react-redux';
 import AuthModal from '../AuthModal';
 import './style.scss';
+import { Link } from 'react-router-dom';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -19,11 +20,13 @@ const TopMenu = ({ dispatch }) => {
       }}
     >
       <div className="d-flex justify-content-between">
-        <img
-          className="logo"
-          src="/images/menu-logo.png"
-          alt="logo"
-        />
+        <Link to="/">
+          <img
+            className="logo"
+            src="/images/menu-logo.png"
+            alt="logo"
+          />
+        </Link>
         <Text
           type="secondary"
           className="auth"
