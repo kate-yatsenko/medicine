@@ -1,37 +1,53 @@
 import React, { Component } from 'react';
-import { Collapse } from 'antd';
+import {Collapse, List, Alert } from 'antd';
 
 const Panel = Collapse.Panel;
 
 export default class PlacesList extends Component {
+  state = {
+    selectedKey: null,
+  }
 
-  getPanelList(places) {
-    return places.map((place) => {
-      const {place_id, name, vicinity, types} = place;
-      return (
-        <Panel 
-          key={place_id} 
-          header={name}
-          showArrow={false}
-        >
-          {vicinity} <hr />
-          {types.join(', ')}
-        </Panel>
-        );
-    })
+  onItemClick = (place_id) => {
+    this.setState({
+      selectedKey: place_id,
+    });
+  }
+  getPlacesList = ({place_id, name, vicinity, types}) => {
+    return (
+      <List.Item 
+        key={place_id} 
+        style={{cursor:'pointer',}}
+        onClick={() => this.onItemClick(place_id)}
+      >
+        {name}
+        {place_id === this.state.selectedKey &&
+          <div style={{paddingLeft: '10px', fontStyle: 'italic', width: '250px'}}>
+            {vicinity}<br />
+            {types.join(', ')}
+          </div>
+        }
+      </List.Item>
+    )
   }
 
   render() {
     // const props = this.props;
     return (
-      <div>
-        <Collapse 
-          bordered={false} 
-          accordion
-        >
-          {this.getPanelList(this.props.places)}
-        </Collapse>
-      </div>
+      <List
+          size="small"
+          footer={
+            <Alert 
+              message="Перевищено кількість об'єктів одного типу у вказаному радіусі пошуку" 
+              type="warning"
+              closable
+              size="small"
+            />
+          }
+          bordered
+          dataSource={this.props.places}
+          renderItem={this.getPlacesList}
+        />
     );
   }
 };
