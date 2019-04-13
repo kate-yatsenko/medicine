@@ -4,9 +4,9 @@ export const MAP_SET_FILTER = 'MAP_SET_FILTER';
 export const MAP_SEARCH_PLACE_TYPES = [
   'hospital',
   'doctor',
-  'pharmacy',
-  'dentist',
   'physiotherapist',
+  'dentist',
+  'pharmacy',
 ];
 export const MAP_SEARCH_PLACE_NAMES = [
   'клиника',

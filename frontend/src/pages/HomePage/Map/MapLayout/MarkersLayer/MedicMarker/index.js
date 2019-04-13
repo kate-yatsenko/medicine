@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
 
-export default class MyMarker extends Component {
+export default class MedicMarker extends Component {
   state = {
     visibleInfoWindow: true,
     mouseOver: false,
@@ -19,8 +19,9 @@ export default class MyMarker extends Component {
   }
 
   render() {
-    const {position, name, adress, types, icon} = this.props;
+    const {position, name, adress, tags, icon, type, zIndex} = this.props;
     const {visibleInfoWindow, mouseOver} = this.state;
+    // debugger;
 
     return (
       <Marker
@@ -38,7 +39,10 @@ export default class MyMarker extends Component {
         //src="/images/menu-logo.png"
         // icon="/images/medicine.png"
         icon={icon}
+        zIndex={zIndex}
+        // opacity={0.7}
       >
+      {true &&
         <InfoWindow
           // disabling infoWindow on load
           onLoad={() => {
@@ -64,11 +68,12 @@ export default class MyMarker extends Component {
             padding: 5,
             color: 'blue'
           }}>
-            types: {types.join(', ')} <br />
+            {/* tags: {tags.join(', ')} <br /> */}
             name: {name} <br />
             adress: {adress} <br />
           </div>
         </InfoWindow>
+      }
       </Marker>
     )
   }

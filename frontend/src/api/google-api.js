@@ -68,6 +68,7 @@ export function searchMedicPlaces(placesService, location, radius) {
       const places = placeResults.map(placeResult => {
         return new Place(placeResult);
       });
+      // debugger;
       return {places, exceededMaxPlacesNumber};
   });
 }

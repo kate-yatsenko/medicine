@@ -8,25 +8,27 @@ export default class PlacesList extends Component {
     selectedKey: null,
   }
 
-  onItemClick = (place_id, location, map) => {
+  onItemClick = (placeId, location, map) => {
     map.panTo(location);
     this.setState({
-      selectedKey: place_id,
+      selectedKey: placeId,
     });
   }
-  getPlacesList = ({place_id, geometry, name, vicinity, types}) => {
+  getPlacesList = ({placeId, location, name, adress, type, tags, rating}) => {
     return (
       <List.Item 
-        key={place_id} 
+        key={placeId} 
         style={{cursor:'pointer',}}
         onClick={() => {
-          this.onItemClick(place_id, geometry.location, this.props.map)}}
+          this.onItemClick(placeId, location, this.props.map)}}
       >
         {name}
-        {place_id === this.state.selectedKey &&
+        {placeId === this.state.selectedKey &&
           <div style={{paddingLeft: '10px', fontStyle: 'italic', width: '250px'}}>
-            {vicinity}<br />
-            {types.join(', ')}
+            {adress}<br />
+            {type}<br />
+            {tags.join(', ')}<br />
+            {`рейтинг: ${rating.value?rating.value:'-'}/5 (відгуків - ${rating.users?rating.users:0})`}
           </div>
         }
       </List.Item>

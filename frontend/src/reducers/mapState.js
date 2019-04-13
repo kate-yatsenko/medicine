@@ -11,13 +11,14 @@ const defaultSearch = {
   position: {lat: 49.44444, lng: 32.05972},
   radius: 500,
   adress: 'бульвар Шевченка, 185, Черкаси',
+  exceededMaxPlacesNumber: false,
 };
 const defaultFilter = {
   types: ['hospital', 'doctor'],
   name: '',
 };
 // TODO: убрать после отладки без интернета
-const defaultPlaces = placesSearchResult;
+const defaultPlaces = []; //placesSearchResult;
 
 const gmaps  = (state = defaultGmaps, action) => {
   switch (action.type) {
@@ -29,12 +30,17 @@ const gmaps  = (state = defaultGmaps, action) => {
 };
 const search  = (state = defaultSearch, action) => {
   switch (action.type) {
+    case MAP_SEARCH_PLACES:
+      const {exceededMaxPlacesNumber} = action.payload;
+      return {...state, exceededMaxPlacesNumber};
     default:
       return state;
   }
 };
 const places  = (state = defaultPlaces, action) => {
   switch (action.type) {
+    case MAP_SEARCH_PLACES:
+      return action.payload.places;
     default:
       return state;
   }
