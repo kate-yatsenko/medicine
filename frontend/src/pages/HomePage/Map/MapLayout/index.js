@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
 import MarkersLayer from './MarkersLayer'
 
-import apiKey from '../data/apiKey'
-
-// class GoogleMap
-
+import apiKey from 'data/apiKey'
 
 export default class MapLayout extends Component {
   state = {
@@ -18,7 +15,6 @@ export default class MapLayout extends Component {
     window.map = map;
     window.placesService = new window.google.maps.places.PlacesService(map);
     this.setState(() => {
-      // debugger;
       return {googleApiLoaded: true};
     });
   }
@@ -38,7 +34,7 @@ export default class MapLayout extends Component {
         <GoogleMap
           id="medic-map"
           mapContainerStyle={{
-            height: "400px",
+            height: "100vh",
             width: "70vw",
           }}
           zoom={zoom}

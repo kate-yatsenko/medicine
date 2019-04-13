@@ -1,4 +1,3 @@
-
 function _searchNearbyPlaces(placesService,  searchRequest) {
   return new Promise((resolve, reject) => {
       let places = [];
@@ -22,17 +21,19 @@ const SEARCH_PLACE_TYPES = [
   'doctor',
   'pharmacy',
   'dentist',
-];
-const CHECK_PLACE_TYPES = [
-  ...SEARCH_PLACE_TYPES,
-  'health',
+  'physiotherapist',
 ];
 const SEARCH_PLACE_NAMES = [
   'клиника',
   'больница',
   'врач',
-  'Astra',
 ];
+// for aditional check received by name places
+const CHECK_PLACE_TYPES = [
+  ...SEARCH_PLACE_TYPES,
+  'health',
+];
+
 
 export function searchPlaces(placesService, location, radius) {
   const searchRequests = [

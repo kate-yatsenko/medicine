@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import MedicMarker from './MedicMarker'
-import {searchPlaces} from '../api/google-api'
+import {searchPlaces} from 'api/google-api'
 
-export default class MarkersLayer extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      places: [],
-    }
-    // debugger;
-    this.firstPlacesSearch();
-  }
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as mapActions from 'actions/mapActions';
+
+const mapStateToProps = ({mapState}) => {
+  return {...mapState};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(mapActions, dispatch);
+}
+
+class MarkersLayer extends Component {
+  // constructor (props) {
+  //   super(props);
+  //   this.state = {
+  //     places: [],
+  //   }
+  //   // debugger;
+  //   this.firstPlacesSearch();
+  // }
 
   firstPlacesSearch = () => {
     // debugger;
@@ -36,18 +48,13 @@ export default class MarkersLayer extends Component {
     })
   }
 
-  // componentDidMount() {
-  //   if (!this.state.places.length) {
-  //     // debugger;
-  //     this.firstPlacesSearch();
-  //   }
-  // }
-
   render() {
     return (
       <div className="markers-layer">
-        {this.state.places.length && this.getMarkersList(this.state.places)}
+        {this.props.places.length && this.getMarkersList(this.props.places)}
       </div>
     )
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MarkersLayer);

@@ -1,0 +1,3 @@
+export const MAP_SEARCH_PLACES = 'MAP_SEARCH_PLACES';
+export const MAP_SET_FILTER = 'MAP_SET_FILTER';
+export const MAP_SELECT_PLACE = 'MAP_SELECT_PLACE';

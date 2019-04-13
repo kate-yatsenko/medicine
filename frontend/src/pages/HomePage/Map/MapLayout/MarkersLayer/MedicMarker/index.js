@@ -35,6 +35,8 @@ export default class MyMarker extends Component {
         //   text: '+',
         //   fontSize: '24px'
         // }}
+        //src="/images/menu-logo.png"
+        // icon="/images/medicine.png"
       >
         <InfoWindow
           // disabling infoWindow on load
