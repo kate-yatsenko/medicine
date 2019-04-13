@@ -1,4 +1,4 @@
-import { TOGGLE_AUTH_MODAL_VISIBLE } from '../constants';
+import { TOGGLE_AUTH_MODAL_VISIBLE } from '../constants/authConstants';
 
 export const toggleAuthModalVisible = () => {
   return {

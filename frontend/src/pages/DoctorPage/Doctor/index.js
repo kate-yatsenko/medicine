@@ -1,18 +1,19 @@
 import React from 'react';
-import ListPatients from "./ListPatient";
-import SearchPatient from "./SearchPatient";
-import PaginationPatient from "./Pagination";
-import './style.css';
+import SelectSearch from "components/SelectSearch";
+import TableDoctor from "./TableDoctor";
+import TableEditModal from "./TableEditModal";
+import { Layout } from 'antd';
 
+const { Content } = Layout;
 
 const Doctor = () => {
-    return (
-        <div className="SearchAndPatient">
-            <SearchPatient />
-            <ListPatients />
-            <PaginationPatient />
-        </div>
-    );
+  return (
+    <Content className="page">
+      <SelectSearch placeholder="Оберіть пацієнта"/>
+      <TableDoctor/>
+      <TableEditModal/>
+    </Content>
+  );
 };
 
 export default Doctor;

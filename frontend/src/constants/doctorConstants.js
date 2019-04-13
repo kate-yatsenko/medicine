@@ -1,0 +1,2 @@
+export const TOGGLE_EDIT_TABLE_MODAL = 'TOGGLE_EDIT_TABLE_MODAL';
+export const SET_EDIT_ROW = 'SET_EDIT_ROW';
