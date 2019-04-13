@@ -24,7 +24,7 @@ module.exports = {
 
   ENDPOINT_PREFIX_V1: '/v1',
   ENDPOINT_PREFIX_USER: '/users',
-  ENDPOINT_PREFIX_ENTRY: '/entry',
+  ENDPOINT_PREFIX_ENTRY: '/entries',
 
   ENDPOINT_ROOT_RESPONSE: {
     name: 'Medicine API',
