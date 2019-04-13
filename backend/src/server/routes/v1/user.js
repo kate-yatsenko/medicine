@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
+
 const services = require('../../../services');
+const entryRoute = require('./entry');
 
 const { ENDPOINT_PREFIX_USER } = require('../../../config');
 
@@ -56,5 +58,7 @@ async function updateUser(ctx) {
 router.get('/:id', getUser);
 router.post('/', koaBody(), createUser);
 router.post('/:id', koaBody(), updateUser);
+
+router.use('/:uid', entryRoute.routes()).use(entryRoute.allowedMethods());
 
 module.exports = router;
