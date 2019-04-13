@@ -1,3 +1,5 @@
+/* v0.2 */
+
 CREATE TABLE "public"."role" (
 	"id" SERIAL primary key,
 	"name" VARCHAR(100) unique not null,
@@ -54,10 +56,14 @@ VALUES ('Admin',true);
 
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
 VALUES (3,'Админко Админ Админович','medadmin@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
+INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
+VALUES (2,'Враченко Врач Врачевич','medvrach@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 067 777-66-55','Обл. больница №10, подсобное помещение 4');
+INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
+VALUES (1,'Пациентко Пациент Пациентович','medpatient@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 063 555-55-55','Живу у бабушки возле больницы №10');
 
 INSERT INTO "public"."entryType" ("name","description")
-VALUES ('Анализ','(Лабораторная диаоностика) Совокупность методов, направленных на анализ исследуемого материала с помощью различного специализированного оборудования.');
+VALUES ('Анализ','Лабораторная диаоностика - cовокупность методов, направленных на анализ исследуемого материала с помощью различного специализированного оборудования.');
 INSERT INTO "public"."entryType" ("name","description")
 VALUES ('Заболевание','Заболевание пациента');
 INSERT INTO "public"."entryType" ("name","description")
-VALUES ('Визит','Визит пациента к врачу');
+VALUES ('Визит','Визит пациента к врачу. Жалобы, принятые меры, рекомендации, заключение');
