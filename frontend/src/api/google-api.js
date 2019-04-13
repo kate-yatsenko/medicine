@@ -1,3 +1,5 @@
+import {MAP_SEARCH_PLACE_TYPES, MAP_SEARCH_PLACE_NAMES, MAP_CHECK_PLACE_TYPES} from '../constants'
+
 function _searchNearbyPlaces(placesService,  searchRequest) {
   return new Promise((resolve, reject) => {
       let places = [];
@@ -16,31 +18,12 @@ function _searchNearbyPlaces(placesService,  searchRequest) {
   })
 }
 
-const SEARCH_PLACE_TYPES = [
-  'hospital',
-  'doctor',
-  'pharmacy',
-  'dentist',
-  'physiotherapist',
-];
-const SEARCH_PLACE_NAMES = [
-  'клиника',
-  'больница',
-  'врач',
-];
-// for aditional check received by name places
-const CHECK_PLACE_TYPES = [
-  ...SEARCH_PLACE_TYPES,
-  'health',
-];
-
-
 export function searchPlaces(placesService, location, radius) {
   const searchRequests = [
-    ...SEARCH_PLACE_TYPES.map(type => {
+    ...MAP_SEARCH_PLACE_TYPES.map(type => {
       return _searchNearbyPlaces(placesService, {location, radius, type});
     }),
-    ...SEARCH_PLACE_NAMES.map(name => {
+    ...MAP_SEARCH_PLACE_NAMES.map(name => {
       return _searchNearbyPlaces(placesService, {location, radius, name});
     })
   ];
@@ -50,7 +33,7 @@ export function searchPlaces(placesService, location, radius) {
       let places = results.reduce((places, result) => places.concat(result));
       let unicPlaceIds = [];
       places = places.filter((place) => {
-        if (!place.types.some((type) => CHECK_PLACE_TYPES.includes(type))) {
+        if (!place.types.some((type) => MAP_CHECK_PLACE_TYPES.includes(type))) {
           return false;
         }
         if (unicPlaceIds.includes(place.place_id)) {
