@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as mapActions from 'actions/mapActions';
 
 const mapStateToProps = ({mapState}) => {
-  return {...mapState};
+  return {...mapState, };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -44,14 +44,24 @@ class MarkersLayer extends Component {
           name={name}
           adress={vicinity}
           types={types}
+          icon="\images\map-marker-health.png"
         />);
     })
   }
 
   render() {
+    const {places, search} = this.props;
+    const {position, adress} = search;
     return (
       <div className="markers-layer">
-        {this.props.places.length && this.getMarkersList(this.props.places)}
+        <MedicMarker 
+          position={position} 
+          name="центр пошуку"
+          adress={adress}
+          types={['searchPosition']}
+          icon="\images\map-marker-user.png"
+        />
+        {places.length && this.getMarkersList(places)}
       </div>
     )
   }

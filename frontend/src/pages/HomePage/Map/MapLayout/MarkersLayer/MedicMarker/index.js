@@ -19,7 +19,7 @@ export default class MyMarker extends Component {
   }
 
   render() {
-    const {position, name, adress, types} = this.props;
+    const {position, name, adress, types, icon} = this.props;
     const {visibleInfoWindow, mouseOver} = this.state;
 
     return (
@@ -37,6 +37,7 @@ export default class MyMarker extends Component {
         // }}
         //src="/images/menu-logo.png"
         // icon="/images/medicine.png"
+        icon={icon}
       >
         <InfoWindow
           // disabling infoWindow on load

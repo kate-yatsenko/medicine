@@ -43,7 +43,7 @@ export default class PlacesList extends Component {
               message="Перевищено кількість об'єктів одного типу у вказаному радіусі пошуку" 
               type="warning"
               closable
-              size="small"
+              style={{fontSize: '8pt'}}
             />
           }
           bordered
