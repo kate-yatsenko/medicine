@@ -19,10 +19,9 @@ class MapDashboard extends Component {
     const {search, filter, places, gmaps} = this.props;
     return (
       <div>
-        MapDashboard
         <PlacesSearch {...search} {...gmaps} />
         <PlacesFilter {...filter} />
-        <PlacesList {...places} />
+        <PlacesList places={places} />
       </div>
     );
   }

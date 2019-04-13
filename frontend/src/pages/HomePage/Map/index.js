@@ -7,7 +7,7 @@ export default class Map extends Component {
     return (
       <div className="map">
         <div className="map-dashboard" style={{
-          width: '200px',
+          width: '300px',
           float: 'left',
         }}>
           <MapDashboard />
@@ -22,4 +22,3 @@ export default class Map extends Component {
     );
   }
 }
-
