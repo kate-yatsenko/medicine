@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Typography } from 'antd';
-import { toggleAuthModalVisible } from '../../actions/authActions';
+import { toggleAuthModalVisible } from 'actions/authActions';
 import { connect } from 'react-redux';
 import AuthModal from '../AuthModal';
 import './style.scss';

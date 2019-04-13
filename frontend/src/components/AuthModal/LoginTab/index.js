@@ -12,7 +12,7 @@ class LoginTab extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
-  }
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
