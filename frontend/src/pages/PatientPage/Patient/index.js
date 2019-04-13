@@ -1,21 +1,18 @@
 import React from 'react';
-import Index from "./DropDownButton/index";
-import TablePatient from "./Table/index"
-import ButtonCommunication from './ButtonCommunication/index'
+import SelectSearch from "./SelectSearch";
+import TablePatient from "./TablePatient";
+import { Layout } from 'antd';
+
+const { Content } = Layout;
 
 const Patient = () => {
-    let count=1;
-    let name ="Vasya";
-    let adress = "Gagarina";
-    let money = 123+'$';
 
-    return (
-        <div>
-            <Index/>
-            <TablePatient id={count++} name={name} money={money} address={adress}/>
-            <ButtonCommunication/>
-        </div>
-    );
+  return (
+    <Content className="page">
+      <SelectSearch/>
+      <TablePatient/>
+    </Content>
+  );
 };
 
 export default Patient;
