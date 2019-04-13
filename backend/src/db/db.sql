@@ -35,7 +35,7 @@ COMMENT ON TABLE "public"."entryType" IS 'Entry types';
 CREATE TABLE "public"."entry" (
 	"id" SERIAL primary key,
 	"typeId" integer not null references "public"."entryType"(id),
-	"userId" integer not null references "public"."user"(id),
+	"ownerId" integer not null references "public"."user"(id),
 	"creatorId" integer not null references "public"."user"(id),
 	"title" VARCHAR(250) not null,
 	"description" VARCHAR(5000) not null,
@@ -67,3 +67,10 @@ INSERT INTO "public"."entryType" ("name","description")
 VALUES ('Заболевание','Заболевание пациента');
 INSERT INTO "public"."entryType" ("name","description")
 VALUES ('Визит','Визит пациента к врачу. Жалобы, принятые меры, рекомендации, заключение');
+
+INSERT INTO public.entry (id,"typeId","ownerId","creatorId",title,description,"result",created)
+VALUES (1,3,3,2,'Припёрся','Припёрся в начале обеда. Открывал рот, показывал язык.','Направлен к проктологу до окончания обеда','2019-04-14 00:18:18.000');
+INSERT INTO public.entry (id,"typeId","ownerId","creatorId",title,description,"result",created)
+VALUES (2,2,3,2,'Пофигизм','Пациент жалуется на частый безпричинный пофигизм. Проведен тест на раздражжители. Замечено повышение сердцебиения и легкое возмущение при просмотре телеканала РАДА','Установлена легкая форма пофигизма. Обнаружен обширный словарный запас в области ненормативной лексики. Рекомендовано просматривать телеканал 2 раза в день для стимулирования системы восприятия','2019-04-14 00:18:18.000');
+INSERT INTO public.entry (id,"typeId","ownerId","creatorId",title,description,"result",created)
+VALUES (3,1,3,2,'Анализ слуха','Проведен анализ слуха методом нашептывания цен на лекарственные припараты. Пациент закрывал уши и пытался спраятаться, давая понять что проблем со слухом у него нет','Отклонений от нормы не выявлено','2019-04-14 00:18:18.000');
