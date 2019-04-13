@@ -2,7 +2,7 @@ const dotenvConfig = require('dotenv').config();
 
 if (dotenvConfig.error) throw dotenvConfig.error;
 
-const { parsed: env } = dotenvConfig;
+const { env } = process;
 
 module.exports = {
   DB: {
@@ -23,7 +23,7 @@ module.exports = {
   RESPONSE_JSON_ERROR_NAME: 'error',
 
   ENDPOINT_PREFIX_V1: '/v1',
-  ENDPOINT_PREFIX_USER: '/user',
+  ENDPOINT_PREFIX_USER: '/users',
 
   ENDPOINT_ROOT_RESPONSE: {
     name: 'Medicine API',
