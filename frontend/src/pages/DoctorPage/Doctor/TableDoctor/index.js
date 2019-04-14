@@ -3,12 +3,29 @@ import { tableData } from './data.json';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Typography, Icon, Tooltip, Table } from 'antd';
-import { toggleEditTableModal, setEditRow } from 'actions/doctorActions';
+import { toggleEditTableModal, setEditRow, setMedcardData } from 'actions/doctorActions';
 import './style.scss';
+import { getDoctorMedcardData } from 'api';
+
+const mapStateToProps = ({ doctorState }) => {
+  return {
+    medcardData: doctorState.medcardData,
+    testId: doctorState.testId,
+  }
+};
 
 const { Paragraph } = Typography;
 
 class TableDoctor extends React.Component {
+
+  componentDidMount() {
+    const { testId, dispatch } = this.props;
+    getDoctorMedcardData(testId)
+      .then(medcardData => {
+        console.log(medcardData);
+        dispatch(setMedcardData(medcardData))
+      })
+  }
 
   expandedRowRender = (record) => {
     return (
@@ -66,4 +83,4 @@ class TableDoctor extends React.Component {
   }
 }
 
-export default connect()(TableDoctor);
+export default connect(mapStateToProps)(TableDoctor);
