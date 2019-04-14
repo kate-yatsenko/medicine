@@ -1,10 +1,17 @@
 import React from 'react';
+import SelectSearch from "components/SelectSearch";
+import TablePatient from "./TablePatient";
+import { Layout } from 'antd';
+
+const { Content } = Layout;
 
 const Patient = () => {
+
   return (
-    <div>
-      <h1>Patient</h1>
-    </div>
+    <Content className="page">
+      <SelectSearch placeholder="Оберіть лікаря"/>
+      <TablePatient/>
+    </Content>
   );
 };
 

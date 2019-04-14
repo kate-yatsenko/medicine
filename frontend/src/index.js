@@ -8,8 +8,9 @@ import appState from './reducers';
 import { createStore } from 'redux';
 
 import "antd/dist/antd.css";
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import './resources/AntDesign/antd.cleanui.scss';
 import './style.scss';
 
 let store = createStore(
