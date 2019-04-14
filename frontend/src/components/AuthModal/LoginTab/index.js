@@ -18,14 +18,18 @@ class LoginTab extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('userName', {
+        <Form.Item
+          label="Пошта"
+        >
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Будь ласка введіть вашу пошту!' }],
           })(
             <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>} type="email" placeholder="Пошта"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Пароль"
+        >
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш пароль!' }],
           })(

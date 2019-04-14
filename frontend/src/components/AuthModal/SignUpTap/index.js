@@ -23,14 +23,18 @@ class SignUpTab extends React.Component {
     };
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('userName', {
+        <Form.Item
+          label="Пошта"
+        >
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Будь ласка введіть вашу пошту!' }],
           })(
             <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>} type="email" placeholder="Пошта"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="ПІБ"
+        >
           {getFieldDecorator('name', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш ПІБ!' }],
           })(
@@ -38,7 +42,9 @@ class SignUpTab extends React.Component {
                    placeholder="ПІБ"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Пароль"
+        >
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш пароль!' }],
           })(
@@ -46,7 +52,9 @@ class SignUpTab extends React.Component {
                    placeholder="Пароль"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Підтвердження паролю"
+        >
           {getFieldDecorator('passwordConfirm', {
             rules: [{ required: true, message: 'Будь ласка підтвердіть ваш пароль!' }],
           })(
@@ -54,7 +62,9 @@ class SignUpTab extends React.Component {
                    placeholder="Підтвердження паролю"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Телефон"
+        >
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш телефон!' }],
           })(
@@ -62,12 +72,16 @@ class SignUpTab extends React.Component {
                    placeholder="Телефон"/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Дата народження"
+        >
           {getFieldDecorator('date-picker', config)(
             <DatePicker style={{ width: '100%' }} locale={locale}/>
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          label="Стать"
+        >
           {getFieldDecorator('gender', {
             rules: [{ required: true, message: 'Будь ласка оберіть вашу стать!' }],
           })(

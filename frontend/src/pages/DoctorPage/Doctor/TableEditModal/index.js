@@ -42,7 +42,7 @@ class TableEditModal extends React.Component {
             <Form.Item
               label="Назва"
             >
-              {getFieldDecorator('userName', {
+              {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Будь ласка введіть назву!' }],
                 initialValue: editRow.title
               })(
@@ -52,7 +52,7 @@ class TableEditModal extends React.Component {
             <Form.Item
               label="Опис"
             >
-              {getFieldDecorator('password', {
+              {getFieldDecorator('description', {
                 rules: [{ required: true, message: 'Будь ласка введіть опис!' }],
                 initialValue: editRow.description
               })(
@@ -62,7 +62,11 @@ class TableEditModal extends React.Component {
             <Form.Item
               label="Висновки"
             >
-              <TextArea type="text" placeholder="Результат" defaultValue={editRow.result} autosize={{ minRows: 2, maxRows: 10 }}/>
+              {getFieldDecorator('result', {
+                initialValue: editRow.result
+              })(
+              <TextArea type="text" placeholder="Результат" autosize={{ minRows: 2, maxRows: 10 }}/>
+              )}
             </Form.Item>
             <Form.Item className="d-flex justify-content-center">
               <Button type="primary" htmlType="submit" className="login-form-button">
