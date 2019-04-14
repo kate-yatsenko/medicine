@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Button, AutoComplete, Slider, InputNumber } from 'antd';
+import {Button, Slider, InputNumber, Input} from 'antd';
+import {StandaloneSearchBox} from '@react-google-maps/api';
 
 export default class PlacesSearch extends Component {
   state = {
@@ -42,6 +43,11 @@ export default class PlacesSearch extends Component {
   render() {
     const {state, marks, onChange, handleSearch} = this;
     const {inputValue, dataSource} = state;
+    const {map, adress} = this.props;
+    if (map) {
+      StandaloneSearchBox.contextType = React.createContext(map);
+    }
+
     return (
       <div>
         <Button 
@@ -49,13 +55,17 @@ export default class PlacesSearch extends Component {
           icon="user" 
           // TODO: onClick={} 
         />{ }
-        <AutoComplete
-          // TODO: Google Autocomplite
-          dataSource={dataSource}
-          style={{ width: 250 }}
-          onSearch={handleSearch}
-          placeholder="input here"
-        />
+        {map?
+          <StandaloneSearchBox
+            onLoad={ref => this.searchBox = ref}
+            onPlacesChanged={
+              () => console.log(this.searchBox.getPlaces())
+            }
+          >
+            <Input placeholder={adress} />
+          </StandaloneSearchBox>
+        : <Input placeholder="Goople Maps API librares not loaded" />
+        }
         <Slider 
           min={100}
           max={5000}
