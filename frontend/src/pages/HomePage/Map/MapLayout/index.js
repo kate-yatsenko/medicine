@@ -55,6 +55,8 @@ class MapLayout extends Component {
           onLoad={(map) => {
             this.onMapLoad(map);
           }}
+          language="uk"
+          region="UA"
         >
           {this.state.mapServicesInited &&
             <MarkersLayer position={position} />
