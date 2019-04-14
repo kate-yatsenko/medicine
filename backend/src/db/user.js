@@ -49,9 +49,10 @@ module.exports = {
       .then(ids => ids[0]);
   },
 
-  updateUserRole({ id, roleId }) {
+  updateUserRole({ userId, roleId }) {
     return knex('user')
-      .where({ id })
-      .update({ roleId }, ['id']);
+      .where({ id: userId })
+      .update({ roleId }, ['id'])
+      .then(ids => ids[0]);
   },
 };
