@@ -22,18 +22,40 @@ const TopMenu = ({ dispatch }) => {
       <div className="d-flex justify-content-between">
         <Link to="/">
           <img
-            className="logo"
+            className="top-menu-logo"
             src="/images/menu-logo.png"
             alt="logo"
           />
         </Link>
-        <Text
-          type="secondary"
-          className="auth"
-          onClick={() => dispatch(toggleAuthModalVisible())}
-        >
-          Логін | Реєстрація
-        </Text>
+        <div className="top-menu">
+          <Link
+            to="/doctor"
+            className="top-menu-office"
+          >
+            <Text
+              type="secondary"
+            >
+              Мій кабінет (Лікар)
+            </Text>
+          </Link>
+          <Link
+            to="/patient"
+            className="top-menu-office"
+          >
+            <Text
+              type="secondary"
+            >
+              Мій кабінет (Пацієнт)
+            </Text>
+          </Link>
+          <Text
+            type="secondary"
+            className="top-menu-auth"
+            onClick={() => dispatch(toggleAuthModalVisible())}
+          >
+            Логін | Реєстрація
+          </Text>
+        </div>
       </div>
       <AuthModal/>
     </Header>
