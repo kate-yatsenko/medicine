@@ -1,24 +1,42 @@
 import React from 'react';
 import { Table } from 'antd';
-import { tableData } from './data.json';
 import moment from 'moment';
-import { Typography } from 'antd';
+import { Typography, Tooltip } from 'antd';
+import { connect } from "react-redux";
+import { getDoctorMedcardData } from 'api';
+import { setMedcardData } from 'actions/patientActions';
 
 const { Paragraph } = Typography;
 
+const mapStateToProps = ({ patientState }) => {
+  return {
+    medcardData: patientState.medcardData,
+    testId: patientState.testId,
+  }
+};
+
 class TablePatient extends React.Component {
 
+  componentDidMount() {
+    const { testId, dispatch } = this.props;
+    getDoctorMedcardData(testId)
+      .then(medcardData => {
+        dispatch(setMedcardData(medcardData))
+      })
+  }
 
   expandedRowRender = (record) => {
     return (
-      <React.Fragment>
-          <Paragraph>Опис: {record.description}</Paragraph>
-          <Paragraph>Висновки: {record.result}</Paragraph>
-      </React.Fragment>
+      <div className="result-block">
+        <Paragraph>Опис: {record.description}</Paragraph>
+        <Paragraph>Висновки: {record.result}</Paragraph>
+      </div>
     );
   };
 
   render() {
+    const { medcardData } = this.props;
+
     const columns = [
       {
         title: 'Дата',
@@ -27,12 +45,20 @@ class TablePatient extends React.Component {
         render: (text, record) => moment(record.created).format('DD-MM-YYYY')
       }, {
         title: 'Лікар',
-        dataIndex: 'doctor',
         align: 'center',
+        render: (text, record) => record.creator.name
       }, {
         title: 'Назва',
         dataIndex: 'title',
         align: 'center',
+      }, {
+        title: 'Тип',
+        align: 'center',
+        render: (text, record) => (
+          <Tooltip placement="top" title={record.type.description}>
+            {record.type.name}
+          </Tooltip>
+        )
       }
     ];
 
@@ -40,7 +66,7 @@ class TablePatient extends React.Component {
       <div>
         <Table
           columns={columns}
-          dataSource={tableData}
+          dataSource={medcardData}
           bordered
           className="table"
           expandedRowRender={this.expandedRowRender}
@@ -51,4 +77,4 @@ class TablePatient extends React.Component {
   }
 }
 
-export default TablePatient;
+export default connect(mapStateToProps)(TablePatient);

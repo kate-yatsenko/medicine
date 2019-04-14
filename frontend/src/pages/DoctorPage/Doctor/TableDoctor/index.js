@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Typography, Icon, Tooltip, Table } from 'antd';
 import { toggleEditTableModal, setEditRow, setMedcardData } from 'actions/doctorActions';
-import './style.scss';
 import { getDoctorMedcardData } from 'api';
+
+import './style.scss';
 
 const mapStateToProps = ({ doctorState }) => {
   return {
