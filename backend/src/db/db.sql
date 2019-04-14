@@ -55,7 +55,7 @@ INSERT INTO "public"."role" ("name","canManageRole")
 VALUES ('Admin',true);
 
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
-VALUES (3,'Админко Админ Админович','medadmin@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
+VALUES (3,'Админко Админ Админович','megadmin@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
 VALUES (2,'Враченко Врач Врачевич','medvrach@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 067 777-66-55','Обл. больница №10, подсобное помещение 4');
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
