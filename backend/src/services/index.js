@@ -88,4 +88,8 @@ module.exports = {
 
     return userId ? this.getUser(userId) : userId;
   },
+
+  async getUserRole(userId) {
+    return db.userRole.getRole({ userId });
+  },
 };
