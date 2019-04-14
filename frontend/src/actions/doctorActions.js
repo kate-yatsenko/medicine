@@ -1,8 +1,15 @@
-import { TOGGLE_EDIT_TABLE_MODAL, SET_EDIT_ROW, SET_MEDCARD_DATA, TOGGLE_TABLE_LOADING } from "../constants/doctorConstants";
+import {
+  TOGGLE_TABLE_MODAL,
+  SET_EDIT_ROW,
+  SET_MEDCARD_DATA,
+  TOGGLE_TABLE_LOADING,
+  UPDATE_MEDCARD_TABLE,
+  CREATE_MEDCARD_TABLE_ITEM
+} from "../constants/doctorConstants";
 
-export const toggleEditTableModal = () => {
+export const toggleTableModal = () => {
   return {
-    type: TOGGLE_EDIT_TABLE_MODAL
+    type: TOGGLE_TABLE_MODAL
   }
 };
 
@@ -12,10 +19,11 @@ export const toggleTableLoading = () => {
   }
 };
 
-export const setEditRow = (record) => {
+export const setEditRow = (editRow, actionType) => {
   return {
     type: SET_EDIT_ROW,
-    record
+    editRow,
+    actionType
   }
 };
 
@@ -23,5 +31,19 @@ export const setMedcardData = (medcardData) => {
   return {
     type: SET_MEDCARD_DATA,
     medcardData
+  }
+};
+
+export const updateMedcardTable = (item) => {
+  return {
+    type: UPDATE_MEDCARD_TABLE,
+    item
+  }
+};
+
+export const createMedcardTableItem = (item) => {
+  return {
+    type: CREATE_MEDCARD_TABLE_ITEM,
+    item
   }
 };

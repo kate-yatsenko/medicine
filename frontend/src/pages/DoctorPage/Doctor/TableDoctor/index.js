@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Typography, Icon, Tooltip, Table } from 'antd';
-import { toggleEditTableModal, setEditRow, setMedcardData, toggleTableLoading } from 'actions/doctorActions';
+import { toggleTableModal, setEditRow, setMedcardData, toggleTableLoading } from 'actions/doctorActions';
 import { getDoctorMedcardData } from 'api';
 
 import './style.scss';
@@ -40,8 +40,8 @@ class TableDoctor extends React.Component {
 
   openEditModal = (record) => {
     const { dispatch } = this.props;
-    dispatch(setEditRow(record));
-    dispatch(toggleEditTableModal());
+    dispatch(setEditRow(record, 'edit'));
+    dispatch(toggleTableModal());
   };
 
   render() {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
-import { toggleEditTableModal } from "actions/doctorActions";
+import { toggleTableModal, updateMedcardTable, createMedcardTableItem } from "actions/doctorActions";
+import { updateMedcardItem, createMedcardItem } from "api";
 import {
   Form, Input, Button
 } from 'antd';
@@ -10,29 +11,44 @@ const { TextArea } = Input;
 
 const mapStateToProps = ({ doctorState }) => {
   return {
-    showEditModal: doctorState.showEditModal,
+    showModal: doctorState.showModal,
     editRow: doctorState.editRow,
+    testId: doctorState.testId,
+    actionType: doctorState.actionType,
   }
 };
 
-class TableEditModal extends React.Component {
+class TableModal extends React.Component {
 
   handleSubmit = (e) => {
+    const { editRow, testId, dispatch, actionType } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        if (actionType === 'edit') {
+          updateMedcardItem(testId, editRow.id, values)
+            .then(resp => {
+              dispatch(toggleTableModal());
+              dispatch(updateMedcardTable(resp));
+            });
+        } else {
+          createMedcardItem(testId, {...values, ownerId: 3, creatorId: testId, typeId: 3})
+            .then(resp => {
+              dispatch(toggleTableModal());
+              dispatch(createMedcardTableItem(resp));
+            });
+        }
       }
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { showEditModal, dispatch, editRow } = this.props;
+    const { showModal, dispatch, editRow, actionType } = this.props;
     return (
       <Modal
-        visible={showEditModal}
-        onCancel={() => dispatch(toggleEditTableModal())}
+        visible={showModal}
+        onCancel={() => dispatch(toggleTableModal())}
         footer={null}
         title="Редагування запису"
       >
@@ -44,7 +60,7 @@ class TableEditModal extends React.Component {
             >
               {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Будь ласка введіть назву!' }],
-                initialValue: editRow.title
+                initialValue: actionType === 'edit' ? editRow.title : ""
               })(
                 <Input type="text" placeholder="Назва"/>
               )}
@@ -54,7 +70,7 @@ class TableEditModal extends React.Component {
             >
               {getFieldDecorator('description', {
                 rules: [{ required: true, message: 'Будь ласка введіть опис!' }],
-                initialValue: editRow.description
+                initialValue: actionType === 'edit' ? editRow.description : ""
               })(
                 <TextArea type="text" placeholder="Опис" autosize={{ minRows: 2, maxRows: 10 }}/>
               )}
@@ -63,9 +79,9 @@ class TableEditModal extends React.Component {
               label="Висновки"
             >
               {getFieldDecorator('result', {
-                initialValue: editRow.result
+                initialValue: actionType === 'edit' ? editRow.result : ""
               })(
-              <TextArea type="text" placeholder="Результат" autosize={{ minRows: 2, maxRows: 10 }}/>
+                <TextArea type="text" placeholder="Результат" autosize={{ minRows: 2, maxRows: 10 }}/>
               )}
             </Form.Item>
             <Form.Item className="d-flex justify-content-center">
@@ -81,4 +97,4 @@ class TableEditModal extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Form.create({ name: 'edit_table' })(TableEditModal));
+export default connect(mapStateToProps)(Form.create({ name: 'edit_table' })(TableModal));
