@@ -43,9 +43,16 @@ module.exports = {
     return formEntry(entry);
   },
 
-  async getEntries({ ownerId = null, creatorId = null, typeId = null }) {
-    const entries = await db.entry.getEntries({ ownerId, creatorId, typeId });
-    return entries.map(formEntry);
+  async getEntries(
+    { ownerId = null, creatorId = null, typeId = null },
+    page = 1,
+  ) {
+    const rawResult = await db.entry.getEntries(
+      { ownerId, creatorId, typeId },
+      page,
+    );
+
+    return { ...rawResult, entries: rawResult.entries.map(formEntry) };
   },
 
   async updateEntry({ id, title, description, result }) {

@@ -21,6 +21,7 @@ module.exports = {
   CORS_MAX_AGE: 86400, // 1 day
 
   RESPONSE_JSON_ERROR_NAME: 'error',
+  RESPONSE_RESULTS_PER_PAGE: 10,
 
   ENDPOINT_PREFIX_V1: '/v1',
   ENDPOINT_PREFIX_USER: '/users',
