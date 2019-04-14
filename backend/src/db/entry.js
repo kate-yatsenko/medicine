@@ -47,9 +47,9 @@ async function getEntriesWhere(whereClause, { onlyFirst = false, page = 1 }) {
   const offset = (page - 1) * RPP;
 
   query
-    .orderBy('e.created')
     .offset(offset)
-    .limit(RPP);
+    .limit(RPP)
+    .orderBy('e.created', 'desc');
   const entries = await addSelect(query);
 
   return { page, total: count, limit: RPP, entries };
