@@ -78,7 +78,7 @@ module.exports = {
     return this.getUser(userId);
   },
 
-  async getUser(id) {
+  getUser(id) {
     return db.user.getUser(id);
   },
 
@@ -96,7 +96,11 @@ module.exports = {
     return userId ? this.getUser(userId) : userId;
   },
 
-  async getUserRole(userId) {
+  getUserRole(userId) {
     return db.userRole.getRole({ userId });
+  },
+
+  getUserList({ name, excludeId }) {
+    return db.user.getList({ name, excludeId });
   },
 };

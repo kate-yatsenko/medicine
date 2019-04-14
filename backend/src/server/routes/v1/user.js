@@ -3,6 +3,7 @@ const koaBody = require('koa-body');
 
 const services = require('../../../services');
 const entryRoute = require('./entry');
+const searchRoute = require('./search');
 
 const { ENDPOINT_PREFIX_USER } = require('../../../config');
 
@@ -62,5 +63,6 @@ router.post('/', koaBody(), createUser);
 router.post('/:id', koaBody(), updateUser);
 
 router.use('/:uid', entryRoute.routes()).use(entryRoute.allowedMethods());
+router.use('/:uid', searchRoute.routes()).use(searchRoute.allowedMethods());
 
 module.exports = router;
