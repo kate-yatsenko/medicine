@@ -16,11 +16,15 @@ function getPayload(ctx) {
 
 async function getEntries(ctx) {
   // TODO: validate id
-  // TODO: switch owner ot creator if user is a doctor
-  const { uid: ownerId } = ctx.params;
+  const { uid: userId } = ctx.params;
 
   try {
-    ctx.body = await services.getEntries({ creatorId: ownerId });
+    const role = await services.getUserRole(userId);
+
+    const creatorId = role.canReadAllCards ? userId : null;
+    const ownerId = role.canReadAllCards ? null : userId;
+
+    ctx.body = await services.getEntries({ ownerId, creatorId });
   } catch (err) {
     ctx.throw(500, 'Cannot get entries', { error: err });
   }
@@ -54,7 +58,7 @@ async function updateEntry(ctx) {
 
 // TODO: id validator middleware
 router.get('/', getEntries);
-// router.get('/id', getEntries);
+// router.get('/:id', getEntries);
 router.post('/', koaBody(), createEntry);
 router.post('/:id', koaBody(), updateEntry);
 
