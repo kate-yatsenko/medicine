@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getDoctorMedcardData = (id) =>
-  axios.get(`/users/${id}/entries`)
+export const getDoctorMedcardData = (id, params) =>
+  axios.get(`/users/${id}/entries`, { params })
     .then(response => response.data);
 
 export const updateMedcardItem = (userId, entryId, data) =>

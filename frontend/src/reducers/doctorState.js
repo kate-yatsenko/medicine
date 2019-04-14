@@ -4,7 +4,8 @@ import {
   SET_MEDCARD_DATA,
   TOGGLE_TABLE_LOADING,
   UPDATE_MEDCARD_TABLE,
-  CREATE_MEDCARD_TABLE_ITEM
+  CREATE_MEDCARD_TABLE_ITEM,
+  SET_PAGE
 } from "../constants/doctorConstants";
 
 export const initialState = {
@@ -12,6 +13,8 @@ export const initialState = {
   editRow: null,
   actionType: null,
   medcardData: [],
+  page: 1,
+  total: 0,
   testId: 2,
   loading: false,
 };
@@ -26,7 +29,7 @@ const doctorState = (state = initialState, action) => {
     case SET_EDIT_ROW:
       return { ...state, ...action };
     case SET_MEDCARD_DATA:
-      return { ...state, medcardData: action.medcardData };
+      return { ...state, ...action };
     case TOGGLE_TABLE_LOADING:
       return { ...state, loading: !state.loading };
     case UPDATE_MEDCARD_TABLE:
@@ -38,7 +41,9 @@ const doctorState = (state = initialState, action) => {
       }
       return state;
     case CREATE_MEDCARD_TABLE_ITEM:
-      return { ...state, medcardData: [action.item, ...state.medcardData] };
+      return { ...state, medcardData: [action.item, ...state.medcardData], total: state.total + 1 };
+    case SET_PAGE:
+      return { ...state, ...action };
     default:
       return state
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Typography, Icon, Tooltip, Table } from 'antd';
-import { toggleTableModal, setEditRow, setMedcardData, toggleTableLoading } from 'actions/doctorActions';
+import { toggleTableModal, setEditRow, setMedcardData, toggleTableLoading, setPage } from 'actions/doctorActions';
 import { getDoctorMedcardData } from 'api';
 
 import './style.scss';
@@ -12,6 +12,8 @@ const mapStateToProps = ({ doctorState }) => {
     medcardData: doctorState.medcardData,
     testId: doctorState.testId,
     loading: doctorState.loading,
+    total: doctorState.total,
+    page: doctorState.page,
   }
 };
 
@@ -20,12 +22,12 @@ const { Paragraph } = Typography;
 class TableDoctor extends React.Component {
 
   componentDidMount() {
-    const { testId, dispatch } = this.props;
+    const { testId, dispatch, page } = this.props;
     dispatch(toggleTableLoading());
-    getDoctorMedcardData(testId)
-      .then(medcardData => {
+    getDoctorMedcardData(testId, { p: page })
+      .then(data => {
         dispatch(toggleTableLoading());
-        dispatch(setMedcardData(medcardData));
+        dispatch(setMedcardData(data.entries, Number(data.total)));
       })
   }
 
@@ -44,8 +46,20 @@ class TableDoctor extends React.Component {
     dispatch(toggleTableModal());
   };
 
+  tableChange = (pagination) => {
+    const { testId, dispatch } = this.props;
+    const { current } = pagination;
+    dispatch(toggleTableLoading());
+    getDoctorMedcardData(testId, { p: current })
+      .then(data => {
+        dispatch(toggleTableLoading());
+        dispatch(setMedcardData(data.entries, Number(data.total)));
+        dispatch(setPage(current));
+      })
+  };
+
   render() {
-    const { medcardData, loading } = this.props;
+    const { medcardData, loading, total } = this.props;
 
     const columns = [
       {
@@ -86,6 +100,10 @@ class TableDoctor extends React.Component {
           columns={columns}
           dataSource={medcardData}
           bordered
+          onChange={this.tableChange}
+          pagination={{
+            total: total
+          }}
           className="table"
           rowKey="id"
           loading={loading}

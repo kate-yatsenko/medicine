@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Typography, Tooltip } from 'antd';
 import { connect } from "react-redux";
 import { getDoctorMedcardData } from 'api';
-import { setMedcardData } from 'actions/patientActions';
+import { setMedcardData, toggleTableLoading, setPage } from 'actions/patientActions';
 
 const { Paragraph } = Typography;
 
@@ -12,16 +12,21 @@ const mapStateToProps = ({ patientState }) => {
   return {
     medcardData: patientState.medcardData,
     testId: patientState.testId,
+    loading: patientState.loading,
+    total: patientState.total,
+    page: patientState.page,
   }
 };
 
 class TablePatient extends React.Component {
 
   componentDidMount() {
-    const { testId, dispatch } = this.props;
-    getDoctorMedcardData(testId)
-      .then(medcardData => {
-        dispatch(setMedcardData(medcardData))
+    const { testId, dispatch, page } = this.props;
+    dispatch(toggleTableLoading());
+    getDoctorMedcardData(testId, { p: page })
+      .then(data => {
+        dispatch(toggleTableLoading());
+        dispatch(setMedcardData(data.entries, Number(data.total)));
       })
   }
 
@@ -34,8 +39,20 @@ class TablePatient extends React.Component {
     );
   };
 
+  tableChange = (pagination) => {
+    const { testId, dispatch } = this.props;
+    const { current } = pagination;
+    dispatch(toggleTableLoading());
+    getDoctorMedcardData(testId, { p: current })
+      .then(data => {
+        dispatch(toggleTableLoading());
+        dispatch(setMedcardData(data.entries, Number(data.total)));
+        dispatch(setPage(current));
+      })
+  };
+
   render() {
-    const { medcardData } = this.props;
+    const { medcardData, total, loading } = this.props;
 
     const columns = [
       {
@@ -68,7 +85,13 @@ class TablePatient extends React.Component {
           columns={columns}
           dataSource={medcardData}
           bordered
+          loading={loading}
+          onChange={this.tableChange}
+          pagination={{
+            total: total
+          }}
           className="table"
+          rowKey="id"
           expandedRowRender={this.expandedRowRender}
           scroll={{ x: '1300' }}
         />

@@ -4,7 +4,8 @@ import {
   SET_MEDCARD_DATA,
   TOGGLE_TABLE_LOADING,
   UPDATE_MEDCARD_TABLE,
-  CREATE_MEDCARD_TABLE_ITEM
+  CREATE_MEDCARD_TABLE_ITEM,
+  SET_PAGE
 } from "../constants/doctorConstants";
 
 export const toggleTableModal = () => {
@@ -27,10 +28,11 @@ export const setEditRow = (editRow, actionType) => {
   }
 };
 
-export const setMedcardData = (medcardData) => {
+export const setMedcardData = (medcardData, total) => {
   return {
     type: SET_MEDCARD_DATA,
-    medcardData
+    medcardData,
+    total
   }
 };
 
@@ -45,5 +47,12 @@ export const createMedcardTableItem = (item) => {
   return {
     type: CREATE_MEDCARD_TABLE_ITEM,
     item
+  }
+};
+
+export const setPage = (page) => {
+  return {
+    type: SET_PAGE,
+    page
   }
 };
