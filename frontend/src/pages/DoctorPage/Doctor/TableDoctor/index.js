@@ -1,21 +1,36 @@
 import React from 'react';
-import { tableData } from './data.json';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Typography, Icon, Tooltip, Table } from 'antd';
-import { toggleEditTableModal, setEditRow } from 'actions/doctorActions';
+import { toggleEditTableModal, setEditRow, setMedcardData } from 'actions/doctorActions';
 import './style.scss';
+import { getDoctorMedcardData } from 'api';
+
+const mapStateToProps = ({ doctorState }) => {
+  return {
+    medcardData: doctorState.medcardData,
+    testId: doctorState.testId,
+  }
+};
 
 const { Paragraph } = Typography;
 
 class TableDoctor extends React.Component {
 
+  componentDidMount() {
+    const { testId, dispatch } = this.props;
+    getDoctorMedcardData(testId)
+      .then(medcardData => {
+        dispatch(setMedcardData(medcardData))
+      })
+  }
+
   expandedRowRender = (record) => {
     return (
-      <React.Fragment>
+      <div className="result-block">
         <Paragraph>Опис: {record.description}</Paragraph>
         <Paragraph>Висновки: {record.result}</Paragraph>
-      </React.Fragment>
+      </div>
     );
   };
 
@@ -26,6 +41,8 @@ class TableDoctor extends React.Component {
   };
 
   render() {
+    const { medcardData } = this.props;
+
     const columns = [
       {
         title: 'Дата',
@@ -34,12 +51,20 @@ class TableDoctor extends React.Component {
         render: (text, record) => moment(record.created).format('DD-MM-YYYY')
       }, {
         title: 'Пацієнт',
-        dataIndex: 'patient',
         align: 'center',
+        render: (text, record) => record.owner.name
       }, {
         title: 'Назва',
         dataIndex: 'title',
         align: 'center',
+      }, {
+        title: 'Тип',
+        align: 'center',
+        render: (text, record) => (
+          <Tooltip placement="top" title={record.type.description}>
+            {record.type.name}
+          </Tooltip>
+        )
       }, {
         title: 'Дії',
         align: 'center',
@@ -55,9 +80,10 @@ class TableDoctor extends React.Component {
       <div>
         <Table
           columns={columns}
-          dataSource={tableData}
+          dataSource={medcardData}
           bordered
           className="table"
+          rowKey="id"
           expandedRowRender={this.expandedRowRender}
           scroll={{ x: '1300' }}
         />
@@ -66,4 +92,4 @@ class TableDoctor extends React.Component {
   }
 }
 
-export default connect()(TableDoctor);
+export default connect(mapStateToProps)(TableDoctor);
