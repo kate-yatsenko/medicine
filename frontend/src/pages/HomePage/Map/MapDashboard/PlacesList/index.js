@@ -38,6 +38,7 @@ export default class PlacesList extends Component {
   render() {
     // const props = this.props;
     return (
+      <div style={{overflow: 'auto', height:'400px'}}>
       <List
           size="small"
           footer={
@@ -51,7 +52,9 @@ export default class PlacesList extends Component {
           bordered
           dataSource={this.props.places}
           renderItem={this.getPlacesList}
-        />
+          
+      />
+      </div>
     );
   }
 };
