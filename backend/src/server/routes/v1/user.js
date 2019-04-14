@@ -53,6 +53,8 @@ async function updateUser(ctx) {
     }
     ctx.throw(500, 'Cannot update user', { error: err });
   }
+
+  ctx.assert(ctx.body, 404, 'User not found');
 }
 
 router.get('/:id', getUser);
