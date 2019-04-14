@@ -1,19 +1,6 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as doctorActions from 'actions/doctorActions';
 import Helmet from 'react-helmet';
 import Doctor from './Doctor'
-
-function mapStateToProps({ doctorState }) {
-  return { ...doctorState };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    ...doctorActions,
-  }, dispatch);
-}
 
 const DoctorPage = (props) => {
   return (
@@ -24,4 +11,4 @@ const DoctorPage = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DoctorPage);
+export default DoctorPage;
