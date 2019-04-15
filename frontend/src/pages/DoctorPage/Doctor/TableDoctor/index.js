@@ -59,7 +59,7 @@ class TableDoctor extends React.Component {
   };
 
   render() {
-    const { medcardData, loading, total } = this.props;
+    const { medcardData, loading, total, page } = this.props;
 
     const columns = [
       {
@@ -102,7 +102,8 @@ class TableDoctor extends React.Component {
           bordered
           onChange={this.tableChange}
           pagination={{
-            total: total
+            total: total,
+            current: page
           }}
           className="table"
           rowKey="id"

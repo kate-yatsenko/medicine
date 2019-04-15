@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectSearch from "components/SelectSearch";
+import TableSearch from "components/TableSearch";
 import TablePatient from "./TablePatient";
 import { Layout } from 'antd';
 
@@ -9,7 +9,7 @@ const Patient = () => {
 
   return (
     <Content className="page">
-      <SelectSearch placeholder="Оберіть лікаря"/>
+      <TableSearch placeholder="Пошук лікаря" type="patient"/>
       <TablePatient/>
     </Content>
   );
