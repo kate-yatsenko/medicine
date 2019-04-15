@@ -42,9 +42,13 @@ function _searchNearbyPlaces(placesService,  searchRequest) {
             if (pagination.hasNextPage) {
               pagination.nextPage();
             } else {
+              console.log(status);
+              console.log(searchRequest);
               resolve(placeResults);
             }
           } else {
+            console.log(status);
+            console.log(searchRequest);
             reject(status);
           }
       })
@@ -78,11 +82,10 @@ export function searchMedicPlaces(placesService, location, radius) {
       const places = placeResults.map(placeResult => {
         return new Place(placeResult);
       });
-      debugger;
       return {places, exceededMaxPlacesNumber};
   })
   .catch((error) => {
-    console.log(error);
-    return  {places: [], exceededMaxPlacesNumber: false};
+    console.log('ERROR: ' + error);
+    return  {places: [], exceededMaxPlacesNumber: false, error};
   });
 }

@@ -34,7 +34,7 @@ class MarkersLayer extends Component {
   }
 
   getMarkersList(places) {
-    debugger;
+    
     return places.map((place) => {
       // const {placeId, location, name, adress, type, tags, rating} = place;
       

@@ -5,7 +5,6 @@ export const SELECT_PLACE = 'SELECT_PLACE';
 export const SEARCH_PLACE_TYPES = [
   'hospital',
   'doctor',
-  'physiotherapist',
   'dentist',
   'pharmacy',
 ];
@@ -20,7 +19,7 @@ export const DOCTOR_NAMES = [
   'лікар',
 ];
 export const SEARCH_PLACE_NAMES = [
-  ...HOSPITAL_NAMES,
+  HOSPITAL_NAMES[0],
   ...DOCTOR_NAMES,
 ];
 export const CHECK_PLACE_TYPES = [
