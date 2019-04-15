@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'antd';
+import { Modal, Select, Form, Input, Button } from 'antd';
 import { toggleTableModal, updateMedcardTable, createMedcardTableItem } from "actions/doctorActions";
-import { updateMedcardItem, createMedcardItem } from "api";
-import {
-  Form, Input, Button
-} from 'antd';
+import { updateMedcardItem, createMedcardItem, getTypes } from "api";
 
+const Option = Select.Option;
 const { TextArea } = Input;
 
 const mapStateToProps = ({ doctorState }) => {
@@ -19,6 +17,16 @@ const mapStateToProps = ({ doctorState }) => {
 };
 
 class TableModal extends React.Component {
+  state = {
+    types: []
+  };
+
+  componentDidMount() {
+    getTypes()
+      .then(types => {
+        this.setState({ types })
+      })
+  }
 
   handleSubmit = (e) => {
     const { editRow, testId, dispatch, actionType } = this.props;
@@ -32,7 +40,7 @@ class TableModal extends React.Component {
               dispatch(updateMedcardTable(resp));
             });
         } else {
-          createMedcardItem(testId, {...values, ownerId: 3, creatorId: testId, typeId: 3})
+          createMedcardItem(testId, { ...values, ownerId: 3, creatorId: testId })
             .then(resp => {
               dispatch(toggleTableModal());
               dispatch(createMedcardTableItem(resp));
@@ -45,6 +53,7 @@ class TableModal extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showModal, dispatch, editRow, actionType } = this.props;
+    const { types } = this.state;
     return (
       <Modal
         visible={showModal}
@@ -73,6 +82,22 @@ class TableModal extends React.Component {
                 initialValue: actionType === 'edit' ? editRow.description : ""
               })(
                 <TextArea type="text" placeholder="Опис" autosize={{ minRows: 2, maxRows: 10 }}/>
+              )}
+            </Form.Item>
+            <Form.Item
+              label="Тип"
+            >
+              {getFieldDecorator('typeId', {
+                rules: [{ required: true, message: 'Будь ласка оберіть тип!' }],
+                initialValue: actionType === 'edit' ? editRow.type.id : ""
+              })(
+                <Select
+                  showSearch
+                  placeholder="Тип"
+                  optionFilterProp="children"
+                >
+                  {types.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                </Select>
               )}
             </Form.Item>
             <Form.Item
