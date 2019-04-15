@@ -1,4 +1,4 @@
-import {MAP_SEARCH_PLACE_TYPES, MAP_SEARCH_PLACE_NAMES, MAP_CHECK_PLACE_TYPES} from '../constants'
+import {SEARCH_PLACE_TYPES, SEARCH_PLACE_NAMES, CHECK_PLACE_TYPES, HOSPITAL_NAMES, DOCTOR_NAMES} from '../constants/mapConstants'
 
 class Place {
   constructor(placeResult) {
@@ -15,7 +15,17 @@ class Place {
     };
   }
   getType() {
-    for (const type of MAP_CHECK_PLACE_TYPES) {
+    for (const name of HOSPITAL_NAMES) {
+      if (this.name.includes(name)) {
+        return 'hospital';
+      }
+    }
+    for (const name of DOCTOR_NAMES) {
+      if (this.name.includes(name)) {
+        return 'doctor';
+      }
+    }
+    for (const type of CHECK_PLACE_TYPES) {
       if (this.tags.includes(type)) {
         return type;
       }
@@ -43,10 +53,10 @@ function _searchNearbyPlaces(placesService,  searchRequest) {
 
 export function searchMedicPlaces(placesService, location, radius) {
   const searchRequests = [
-    ...MAP_SEARCH_PLACE_TYPES.map(type => {
+    ...SEARCH_PLACE_TYPES.map(type => {
       return _searchNearbyPlaces(placesService, {location, radius, type});
     }),
-    ...MAP_SEARCH_PLACE_NAMES.map(name => {
+    ...SEARCH_PLACE_NAMES.map(name => {
       return _searchNearbyPlaces(placesService, {location, radius, name});
     })
   ];
@@ -56,7 +66,7 @@ export function searchMedicPlaces(placesService, location, radius) {
       let placeResults = results.reduce((placeResults, result) => placeResults.concat(result));
       let unicPlaceIds = [];
       placeResults = placeResults.filter((placeResult) => {
-        if (!placeResult.types.some((type) => MAP_CHECK_PLACE_TYPES.includes(type))) {
+        if (!placeResult.types.some((type) => CHECK_PLACE_TYPES.includes(type))) {
           return false;
         }
         if (unicPlaceIds.includes(placeResult.place_id)) {
@@ -68,7 +78,11 @@ export function searchMedicPlaces(placesService, location, radius) {
       const places = placeResults.map(placeResult => {
         return new Place(placeResult);
       });
-      // debugger;
+      debugger;
       return {places, exceededMaxPlacesNumber};
+  })
+  .catch((error) => {
+    console.log(error);
+    return  {places: [], exceededMaxPlacesNumber: false};
   });
 }
