@@ -34,8 +34,8 @@ const doctorState = (state = initialState, action) => {
       return { ...state, loading: !state.loading };
     case UPDATE_MEDCARD_TABLE:
       const newMedcardData = [...state.medcardData];
-      const index = newMedcardData.findIndex(item => item.id === action.item.id);
-      if (index) {
+      const index = newMedcardData.indexOf(newMedcardData.find(item => item.id === action.item.id));
+      if (index >= 0) {
         newMedcardData[index] = action.item;
         return { ...state, medcardData: newMedcardData };
       }

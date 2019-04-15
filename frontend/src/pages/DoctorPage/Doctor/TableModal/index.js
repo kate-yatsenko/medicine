@@ -84,12 +84,12 @@ class TableModal extends React.Component {
                 <TextArea type="text" placeholder="Опис" autosize={{ minRows: 2, maxRows: 10 }}/>
               )}
             </Form.Item>
+            {actionType === 'create' &&
             <Form.Item
               label="Тип"
             >
               {getFieldDecorator('typeId', {
-                rules: [{ required: true, message: 'Будь ласка оберіть тип!' }],
-                initialValue: actionType === 'edit' ? editRow.type.id : ""
+                rules: [{ required: true, message: 'Будь ласка оберіть тип!' }]
               })(
                 <Select
                   showSearch
@@ -100,6 +100,7 @@ class TableModal extends React.Component {
                 </Select>
               )}
             </Form.Item>
+            }
             <Form.Item
               label="Висновки"
             >
