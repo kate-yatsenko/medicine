@@ -35,23 +35,37 @@ class Place {
 
 function _searchNearbyPlaces(placesService,  searchRequest) {
   return new Promise((resolve, reject) => {
-      let placeResults = [];
-      placesService.nearbySearch(searchRequest, (results, status, pagination) => {
-          if (status === 'OK' || status === 'ZERO_RESULTS') {
-            placeResults = placeResults.concat(results);
-            if (pagination.hasNextPage) {
-              pagination.nextPage();
-            } else {
-              console.log(status);
-              console.log(searchRequest);
-              resolve(placeResults);
-            }
+    let placeResults = [];
+    placesService.nearbySearch(searchRequest, (results, status, pagination) => {
+      switch (status) {
+        case 'OK':
+        case 'ZERO_RESULTS':
+        case 'NOT_FOUND':
+          placeResults = placeResults.concat(results);
+          if (pagination.hasNextPage) {
+            pagination.nextPage();
+            console.log(status);
+            console.log({searchRequest});
           } else {
             console.log(status);
             console.log(searchRequest);
-            reject(status);
+            resolve({placeResults});
           }
-      })
+          break;
+        case 'OVER_QUERY_LIMIT':
+          console.log(status);
+          console.log(searchRequest);
+          resolve({placeResults, alert: status});
+          break;
+        case 'INVALID_REQUEST':
+        case 'REQUEST_DENIED':
+        case 'UNKNOWN_ERROR':
+          reject({placeResults, error: status});
+          break;
+        default:
+          reject({placeResults, error: 'UNKNOWN_ERROR'});
+      }
+    })
   })
 }
 
@@ -65,27 +79,41 @@ export function searchMedicPlaces(placesService, location, radius) {
     })
   ];
   return Promise.all(searchRequests)
-    .then((results) => {
-      const exceededMaxPlacesNumber = results.some((result) => result.length === 60);
-      let placeResults = results.reduce((placeResults, result) => placeResults.concat(result));
+    .then((responseResults) => {
+      let results = responseResults.reduce((results, {placeResults, alert, error}, ) => {
+        // if (placeResults) {
+          results.placeResults = results.placeResults.concat(placeResults);
+        // }
+        if (
+          // placeResults && 
+          placeResults.some((result) => result.length === 60)) {
+          results.alerts.add('OVER_PLACES_LIMIT');
+        }
+        if (alert) {
+          results.alerts.add(alert);
+        }
+        if (error) {
+          results.alerts.add(error);
+        }
+        return results;
+      }, {placeResults: [], alerts: new Set(), errors: new Set()});
       let unicPlaceIds = [];
-      placeResults = placeResults.filter((placeResult) => {
+      results.places = results.placeResults.reduce((places, placeResult) => {
         if (!placeResult.types.some((type) => CHECK_PLACE_TYPES.includes(type))) {
-          return false;
+          return places;
         }
         if (unicPlaceIds.includes(placeResult.place_id)) {
-          return false;
+          return places;
         }
         unicPlaceIds.push(placeResult.place_id);
-        return true;
-      });
-      const places = placeResults.map(placeResult => {
-        return new Place(placeResult);
-      });
-      return {places, exceededMaxPlacesNumber};
+        // debugger;
+        places.push(new Place(placeResult));
+        return places;
+      }, []);
+      delete results.placeResults;
+      // results.placeResults = results.placeResults.map(placeResult => {
+      //   return new Place(placeResult);
+      // });
+      return results;
   })
-  .catch((error) => {
-    console.log('ERROR: ' + error);
-    return  {places: [], exceededMaxPlacesNumber: false, error};
-  });
 }
