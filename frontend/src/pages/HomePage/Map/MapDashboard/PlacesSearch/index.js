@@ -4,19 +4,9 @@ import {StandaloneSearchBox} from '@react-google-maps/api';
 
 export default class PlacesSearch extends Component {
   state = {
-    dataSource: [],
     inputValue: 500,
   }
 
-  handleSearch = (value) => {
-    this.setState({
-      dataSource: !value ? [] : [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
   marks = {
     100: '100 m',
     // 200: '200 m',
@@ -41,8 +31,8 @@ export default class PlacesSearch extends Component {
   }
 
   render() {
-    const {state, marks, onChange, handleSearch} = this;
-    const {inputValue, dataSource} = state;
+    const {state, marks, onChange} = this;
+    const {inputValue} = state;
     const {map, adress} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);

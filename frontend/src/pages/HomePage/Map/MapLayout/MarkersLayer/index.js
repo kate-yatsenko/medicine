@@ -34,19 +34,20 @@ class MarkersLayer extends Component {
   }
 
   getMarkersList(places) {
-    // debugger;
+    debugger;
     return places.map((place) => {
-      const {placeId, location, name, adress, type, tags, rating} = place;
+      // const {placeId, location, name, adress, type, tags, rating} = place;
       
       return (
         <MedicMarker 
-          key={placeId} 
-          position={location} 
-          name={name}
-          adress={adress}
-          type={type}
-          tagss={tags}
-          rating={rating}
+          key={place.placeId} 
+          place={place}
+          // position={location} 
+          // name={name}
+          // adress={adress}
+          // type={type}
+          // tags={tags}
+          // rating={rating}
           // TODO: custom icons by type
           icon="\images\map-marker-health.png"
           zIndex={1}
@@ -60,16 +61,23 @@ class MarkersLayer extends Component {
 
   render() {
     const {places, search} = this.props;
-    const {position, adress} = search;
+    const {position: location, adress} = search;
     // debugger;
     return (
       <div className="markers-layer">
         {places.length && this.getMarkersList(places)}
         <MedicMarker 
-          position={position} 
-          name="центр пошуку"
-          adress={adress}
-          types={['searchPosition']}
+          place={{
+            location, 
+            name: "центр пошуку",
+            adress,
+            type: 'searchPosition',
+            tags: [],
+          }}
+          // position={position} 
+          // name="центр пошуку"
+          // adress={adress}
+          // types={['searchPosition']}
           icon="\images\map-marker-user.png"
           zIndex={2}
         />

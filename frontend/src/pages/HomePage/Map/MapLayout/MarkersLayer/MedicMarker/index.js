@@ -19,28 +19,20 @@ export default class MedicMarker extends Component {
   }
 
   render() {
-    const {position, name, adress, tags, icon, type, zIndex} = this.props;
+    const {icon, place, zIndex} = this.props;
+    const {location, name, adress, tags, type} = place;
     const {visibleInfoWindow, mouseOver} = this.state;
-    // debugger;
+    //  debugger;
 
     return (
       <Marker
         onClick={this.toggleInfoWindow}
         onMouseOver={this.toggleMousOver}
         onMouseOut={this.toggleMousOver}
-        position={position}
+        position={location}
         // TODO: costom icons for different place types
-        // label={{
-        //   color: 'white',
-        //   fontWeight: 'bold',
-        //   text: '+',
-        //   fontSize: '24px'
-        // }}
-        //src="/images/menu-logo.png"
-        // icon="/images/medicine.png"
         icon={icon}
         zIndex={zIndex}
-        // opacity={0.7}
       >
       {true &&
         <InfoWindow
@@ -53,8 +45,7 @@ export default class MedicMarker extends Component {
             const closeButton = document.querySelector('.gm-style-iw>button');
             closeButton.parentNode.removeChild(closeButton);
           }}
-
-          position={mouseOver || visibleInfoWindow ? position : null}
+          position={mouseOver || visibleInfoWindow ? location : null}
           options={{
             pixelOffset: {height: -43},
             disableAutoPan: true,
@@ -68,7 +59,8 @@ export default class MedicMarker extends Component {
             padding: 5,
             color: 'blue'
           }}>
-            {/* tags: {tags.join(', ')} <br /> */}
+            tags: {tags.join(', ')} <br />
+            type: {type} <br />
             name: {name} <br />
             adress: {adress} <br />
           </div>

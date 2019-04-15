@@ -25,10 +25,11 @@ import {createActions} from 'redux-actions';
 
 const mapActions = createActions(
   {
-    INIT_MAP_SERVICES: (map, placesService) => ({map, placesService}),
+    [INIT_MAP_SERVICES]: (map, placesService) => ({map, placesService}),
   },
   SEARCH_PLACES,
-  SET_PLACES_FILTER
+  SET_PLACES_FILTER,
+  SELECT_PLACE
 );
 
 export default mapActions;

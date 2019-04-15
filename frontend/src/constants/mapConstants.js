@@ -1,6 +1,7 @@
 export const INIT_MAP_SERVICES = 'INIT_MAP_SERVICES';
 export const SEARCH_PLACES = 'SEARCH_PLACES';
 export const SET_PLACES_FILTER = 'SET_PLACES_FILTER';
+export const SELECT_PLACE = 'SELECT_PLACE';
 export const SEARCH_PLACE_TYPES = [
   'hospital',
   'doctor',

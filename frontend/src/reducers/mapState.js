@@ -1,8 +1,6 @@
 import {combineReducers} from 'redux';
 import {INIT_MAP_SERVICES, SEARCH_PLACES, SET_PLACES_FILTER} from '../constants/mapConstants';
 
-import placesSearchResult from '../data/placesSearchResult'
-
 const defaultGmaps = {
   map: null,
   placesService: null,
@@ -17,8 +15,6 @@ const defaultFilter = {
   types: ['hospital', 'doctor'],
   name: '',
 };
-// TODO: убрать после отладки без интернета
-const defaultPlaces = []; //placesSearchResult;
 
 const gmaps  = (state = defaultGmaps, action) => {
   switch (action.type) {
@@ -37,7 +33,7 @@ const search  = (state = defaultSearch, action) => {
       return state;
   }
 };
-const places  = (state = defaultPlaces, action) => {
+const places  = (state = [], action) => {
   switch (action.type) {
     case SEARCH_PLACES:
       return action.payload.places;
@@ -47,6 +43,8 @@ const places  = (state = defaultPlaces, action) => {
 };
 const filter  = (state = defaultFilter, action) => {
   switch (action.type) {
+    case SET_PLACES_FILTER:
+      return state;
     default:
       return state;
   }
