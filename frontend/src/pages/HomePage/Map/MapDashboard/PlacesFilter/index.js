@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Checkbox, Input} from 'antd';
 
-import {MAP_CHECK_PLACE_TYPES} from 'constants/map';
+import {CHECK_PLACE_TYPES} from 'constants/mapConstants';
 
 const CheckboxGroup = Checkbox.Group;
 const Search = Input.Search;
@@ -20,7 +20,7 @@ export default class PlacesFilter extends Component {
       <div>
         <hr />
         <CheckboxGroup 
-          options={MAP_CHECK_PLACE_TYPES} 
+          options={CHECK_PLACE_TYPES} 
           value={this.state.checkedList} 
           onChange={this.onChange} 
         />

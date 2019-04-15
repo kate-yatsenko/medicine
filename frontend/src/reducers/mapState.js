@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {MAP_INIT_MAP_SERVICES, MAP_SEARCH_PLACES, MAP_SET_FILTER} from '../constants';
+import {INIT_MAP_SERVICES, SEARCH_PLACES, SET_PLACES_FILTER} from '../constants/mapConstants';
 
 import placesSearchResult from '../data/placesSearchResult'
 
@@ -22,7 +22,7 @@ const defaultPlaces = []; //placesSearchResult;
 
 const gmaps  = (state = defaultGmaps, action) => {
   switch (action.type) {
-    case MAP_INIT_MAP_SERVICES:
+    case INIT_MAP_SERVICES:
       return {...state, ...action.payload};
     default:
       return state;
@@ -30,7 +30,7 @@ const gmaps  = (state = defaultGmaps, action) => {
 };
 const search  = (state = defaultSearch, action) => {
   switch (action.type) {
-    case MAP_SEARCH_PLACES:
+    case SEARCH_PLACES:
       const {exceededMaxPlacesNumber} = action.payload;
       return {...state, exceededMaxPlacesNumber};
     default:
@@ -39,7 +39,7 @@ const search  = (state = defaultSearch, action) => {
 };
 const places  = (state = defaultPlaces, action) => {
   switch (action.type) {
-    case MAP_SEARCH_PLACES:
+    case SEARCH_PLACES:
       return action.payload.places;
     default:
       return state;

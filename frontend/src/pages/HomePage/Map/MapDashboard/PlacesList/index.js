@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {Collapse, List, Alert } from 'antd';
-
-const Panel = Collapse.Panel;
+import {List, Alert } from 'antd';
 
 export default class PlacesList extends Component {
   state = {

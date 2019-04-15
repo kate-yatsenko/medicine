@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MarkersLayer from './MarkersLayer'
-import {initMapServices} from 'actions/mapActions';
+import mapActions from 'actions/mapActions';
 
 import apiKey from 'data/apiKey'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     initMapServices: (map, placesService) => {
-      dispatch(initMapServices(map, placesService));
+      dispatch(mapActions.initMapServices(map, placesService));
     }
   }
 }
@@ -22,6 +21,7 @@ class MapLayout extends Component {
 
   onMapLoad = map => {
     const placesService = new window.google.maps.places.PlacesService(map);
+ 
     this.props.initMapServices(map, placesService);
     this.setState(() => {
       return {mapServicesInited: true};

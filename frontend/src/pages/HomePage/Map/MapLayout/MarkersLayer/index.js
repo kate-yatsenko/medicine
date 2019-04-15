@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import MedicMarker from './MedicMarker'
 import {searchMedicPlaces} from 'api/google-api'
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as mapActions from 'actions/mapActions';
+import mapActions from 'actions/mapActions';
 
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
