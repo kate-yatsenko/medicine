@@ -13,6 +13,9 @@ module.exports = {
     PORT: env.DB_PORT,
     POOL_MIN: 0,
     POOL_MAX: 2,
+
+    SERIAL_MIN: 1,
+    SERIAL_MAX: 2147483647,
   },
 
   PORT: env.API_PORT,
