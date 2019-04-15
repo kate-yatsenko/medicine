@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MapLayout extends Component {
+  static libraries = ['places'];
   state = {
     googleApiLoaded: false,
   }
@@ -38,7 +39,7 @@ class MapLayout extends Component {
         id='script-loader'
         googleMapsApiKey={apiKey}
         version='weekly'
-        libraries={['places']}
+        libraries={MapLayout.libraries}
       >
         <GoogleMap
           id="medic-map"
