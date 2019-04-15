@@ -43,9 +43,16 @@ module.exports = {
     return formEntry(entry);
   },
 
-  async getEntries({ ownerId = null, creatorId = null, typeId = null }) {
-    const entries = await db.entry.getEntries({ ownerId, creatorId, typeId });
-    return entries.map(formEntry);
+  async getEntries(
+    { ownerId = null, creatorId = null, typeId = null },
+    page = 1,
+  ) {
+    const rawResult = await db.entry.getEntries(
+      { ownerId, creatorId, typeId },
+      page,
+    );
+
+    return { ...rawResult, entries: rawResult.entries.map(formEntry) };
   },
 
   async updateEntry({ id, title, description, result }) {
@@ -71,7 +78,7 @@ module.exports = {
     return this.getUser(userId);
   },
 
-  async getUser(id) {
+  getUser(id) {
     return db.user.getUser(id);
   },
 
@@ -89,7 +96,11 @@ module.exports = {
     return userId ? this.getUser(userId) : userId;
   },
 
-  async getUserRole(userId) {
+  getUserRole(userId) {
     return db.userRole.getRole({ userId });
+  },
+
+  getUserList({ name, excludeId }) {
+    return db.user.getList({ name, excludeId });
   },
 };

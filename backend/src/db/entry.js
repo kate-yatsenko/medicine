@@ -1,20 +1,13 @@
 const knex = require('./knex');
 
-function getEntriesWhere(whereClause, onlyFirst = false) {
-  const clause = whereClause;
+const { RESPONSE_RESULTS_PER_PAGE: RPP } = require('../config');
 
-  if (clause.id != null) {
-    clause['e.id'] = clause.id;
-    delete clause.id;
-  }
+async function getEntriesWhere(whereClause, { onlyFirst = false, page = 1 }) {
+  // eslint-disable-next-line no-param-reassign
+  if (page < 1) page = 1;
 
-  const query = knex({ e: 'entry' })
-    .where(clause)
-    .join('user as o', { 'e.ownerId': 'o.id' })
-    .join('user as c', { 'e.creatorId': 'c.id' })
-    .join('entryType as et', { 'e.typeId': 'et.id' })
-    .orderBy('e.created')
-    .select(
+  function addSelect(query) {
+    return query.select(
       'e.id',
       { ownerId: 'o.id' },
       { ownerName: 'o.name' },
@@ -28,10 +21,39 @@ function getEntriesWhere(whereClause, onlyFirst = false) {
       'e.result',
       'e.created',
     );
+  }
 
-  if (onlyFirst) query.first();
+  const clause = whereClause;
 
-  return query;
+  if (clause.id != null) {
+    clause['e.id'] = clause.id;
+    delete clause.id;
+  }
+
+  const query = knex({ e: 'entry' })
+    .where(clause)
+    .join('user as o', { 'e.ownerId': 'o.id' })
+    .join('user as c', { 'e.creatorId': 'c.id' })
+    .join('entryType as et', { 'e.typeId': 'et.id' });
+
+  if (onlyFirst) {
+    addSelect(query);
+    return query.first();
+  }
+
+  const { count } = await query
+    .clone()
+    .count()
+    .first();
+
+  const offset = (page - 1) * RPP;
+  query
+    .offset(offset)
+    .limit(RPP)
+    .orderBy('e.created', 'desc');
+
+  const entries = await addSelect(query);
+  return { page, total: count, limit: RPP, entries };
 }
 
 module.exports = {
@@ -50,10 +72,10 @@ module.exports = {
   },
 
   getEntry(id) {
-    return getEntriesWhere({ id }, true);
+    return getEntriesWhere({ id }, { onlyFirst: true });
   },
 
-  getEntries({ ownerId = null, creatorId = null, typeId = null }) {
+  getEntries({ ownerId = null, creatorId = null, typeId = null }, page) {
     let where = { ownerId, creatorId, typeId };
 
     where = Object.entries(where).reduce((acc, pair) => {
@@ -64,7 +86,7 @@ module.exports = {
       return acc;
     }, {});
 
-    return getEntriesWhere(where);
+    return getEntriesWhere(where, { page });
   },
 
   updateEntry({ id, title, description, result }) {

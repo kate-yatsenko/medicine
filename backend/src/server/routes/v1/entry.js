@@ -17,6 +17,7 @@ function getPayload(ctx) {
 async function getEntries(ctx) {
   // TODO: validate id
   const { uid: userId } = ctx.params;
+  const { p: page } = ctx.query;
 
   try {
     const role = await services.getUserRole(userId);
@@ -24,7 +25,7 @@ async function getEntries(ctx) {
     const creatorId = role.canReadAllCards ? userId : null;
     const ownerId = role.canReadAllCards ? null : userId;
 
-    ctx.body = await services.getEntries({ ownerId, creatorId });
+    ctx.body = await services.getEntries({ ownerId, creatorId }, page);
   } catch (err) {
     ctx.throw(500, 'Cannot get entries', { error: err });
   }
