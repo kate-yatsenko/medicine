@@ -103,4 +103,18 @@ module.exports = {
   getUserList({ name, excludeId }) {
     return db.user.getList({ name, excludeId });
   },
+
+  getEntryTypes(id = null) {
+    return db.entryType.get(id);
+  },
+
+  async createEntryType({ name, description = null }) {
+    const id = await db.entryType.create({ name, description });
+    return this.getEntryTypes(id);
+  },
+
+  async updateEntryType({ id, name, description = null }) {
+    const typeId = await db.entryType.update({ id, name, description });
+    return typeId ? this.getEntryTypes(typeId) : typeId;
+  },
 };

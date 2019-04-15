@@ -29,6 +29,7 @@ module.exports = {
   ENDPOINT_PREFIX_V1: '/v1',
   ENDPOINT_PREFIX_USER: '/users',
   ENDPOINT_PREFIX_ENTRY: '/entries',
+  ENDPOINT_PREFIX_ENTRY_TYPE: '/etypes',
   ENDPOINT_PREFIX_SEARCH: '/search',
 
   ENDPOINT_ROOT_RESPONSE: {

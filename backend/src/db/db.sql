@@ -48,7 +48,7 @@ COMMENT ON TABLE "public"."entry" IS 'Medical entries';
 
 /* Fill the base */
 INSERT INTO "public"."role" ("name")
-VALUES ('Pacient');
+VALUES ('Patient');
 INSERT INTO "public"."role" ("name","canReadAllCards","canCreateEntry")
 VALUES ('Doctor',true,true);
 INSERT INTO "public"."role" ("name","canManageRole")
