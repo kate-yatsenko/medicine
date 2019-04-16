@@ -28,7 +28,6 @@ async function validateSearch(ctx, next) {
 }
 
 async function getList(ctx) {
-  // TODO: validate id
   const { uid: excludeId } = ctx.params;
   const { name } = ctx.query;
 
