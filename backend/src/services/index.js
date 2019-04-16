@@ -46,10 +46,12 @@ module.exports = {
   async getEntries(
     { ownerId = null, creatorId = null, typeId = null },
     page = 1,
+    filter,
   ) {
     const rawResult = await db.entry.getEntries(
       { ownerId, creatorId, typeId },
       page,
+      filter,
     );
 
     return { ...rawResult, entries: rawResult.entries.map(formEntry) };
