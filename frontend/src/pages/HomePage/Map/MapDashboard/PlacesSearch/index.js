@@ -4,7 +4,7 @@ import {StandaloneSearchBox} from '@react-google-maps/api';
 
 export default class PlacesSearch extends Component {
   state = {
-    inputValue: 500,
+    radius: this.props.radius,
   }
 
   marks = {
@@ -26,14 +26,22 @@ export default class PlacesSearch extends Component {
   onChange = (value) => {
     // if Number.isNaN
     this.setState({
-      inputValue: value,
+      radius: value,
+      // loading: false,
     });
+  };
+
+  componentDidUpdate() {
+    const input = document.getElementById('address-search');
+    if (input) {
+      input.value=null;
+    }
   }
 
   render() {
     const {state, marks, onChange} = this;
-    const {inputValue} = state;
-    const {map, adress} = this.props;
+    const {radius} = state;
+    const {map, adress, endSearchPosition, placesService, position, searchPlaces, loadingMessage} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);
     }
@@ -47,12 +55,16 @@ export default class PlacesSearch extends Component {
         />{ }
         {map?
           <StandaloneSearchBox
-            onLoad={ref => this.searchBox = ref}
-            onPlacesChanged={
-              () => console.log(this.searchBox.getPlaces())
-            }
+            onLoad={ref => {this.searchBox = ref;}}
+            onPlacesChanged={() => {
+              const [{formatted_address: adress, geometry: {location: position}}] = this.searchBox.getPlaces();
+              endSearchPosition({position, adress, alerts: null, errors: null});
+            }}
           >
-            <Input placeholder={adress} />
+            <Input 
+              id="address-search"
+              placeholder={adress} 
+            />
           </StandaloneSearchBox>
         : <Input placeholder="Goople Maps API librares not loaded" />
         }
@@ -60,14 +72,14 @@ export default class PlacesSearch extends Component {
           min={100}
           max={5000}
           marks={marks} 
-          value={inputValue} 
+          value={radius} 
           style={{ width: 280 }}
           step={100} 
           onChange={onChange}
           // TODO: onAfterChange={}
         />
         <InputNumber
-          value={inputValue}
+          value={radius}
           min={100}
           max={5000}
           step={100}
@@ -78,7 +90,10 @@ export default class PlacesSearch extends Component {
         <Button 
           shape="circle" 
           icon="search" 
-          // TODO: onClick={} 
+          loading={!!loadingMessage} 
+          onClick={() => {
+            searchPlaces({placesService, position, radius})
+          }} 
         />{ }
       </div>
     );

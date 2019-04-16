@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import MedicMarker from './MedicMarker'
-import {searchMedicPlaces} from 'api/google-api'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import mapActions from 'actions/mapActions';
+import {Alert} from 'antd';
+import * as mapActions from 'actions/mapActions';
 
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
@@ -19,68 +19,68 @@ class MarkersLayer extends Component {
     this.state = {
       places: [],
     }
-    // debugger;
-    this.firstPlacesSearch();
   }
-
-  firstPlacesSearch = () => {
-    // debugger;
-    const {gmaps, search, searchPlaces} = this.props;
-    const {position, radius} = search;
-    searchMedicPlaces(gmaps.placesService, position, radius)
-      .then((result) => {
-        searchPlaces(result);
-      });
-  }
+  static counter = 0;
 
   getMarkersList(places) {
-    
     return places.map((place) => {
-      // const {placeId, location, name, adress, type, tags, rating} = place;
-      
       return (
         <MedicMarker 
           key={place.placeId} 
           place={place}
-          // position={location} 
-          // name={name}
-          // adress={adress}
-          // type={type}
-          // tags={tags}
-          // rating={rating}
-          // TODO: custom icons by type
           icon="\images\map-marker-health.png"
           zIndex={1}
         />);
     })
   }
+  getAlertsList(messages, type) {
+    return messages.map((message) => (
+      <Alert key={MarkersLayer.counter++} message={message} type={type} showIcon closable 
+        style={{
+          backgroundColor: 'hsla(33, 50%, 75%, 0.8)',
+          margin: '5px',
+          position: 'relative',
+          top: '30px',
+          width: '50%',
+        }}
+      />
+    ))
+  }
 
-  componentDidMount() {
-    this.props.gmaps.map.panTo(this.props.search.position);
+  componentDidUpdate() {
+    const position = (this.props.filter.selectedPlace && this.props.filter.selectedPlace.position) 
+      || this.props.search.position;
+    if (this.props.gmaps.map && position) {
+      this.props.gmaps.map.panTo(position);
+    }
   }
 
   render() {
+        // TODO: render MarkersLayer if exists mapState.search.position/mapState.places
     const {places, search} = this.props;
-    const {position: location, adress} = search;
-    // debugger;
+    const {position: location, adress, alerts, errors} = search;
     return (
       <div className="markers-layer">
         {places.length && this.getMarkersList(places)}
-        <MedicMarker 
-          place={{
-            location, 
-            name: "центр пошуку",
-            adress,
-            type: 'searchPosition',
-            tags: [],
-          }}
-          // position={position} 
-          // name="центр пошуку"
-          // adress={adress}
-          // types={['searchPosition']}
-          icon="\images\map-marker-user.png"
-          zIndex={2}
-        />
+        { location &&
+          <MedicMarker 
+            place={{
+              location, 
+              name: "центр пошуку",
+              adress,
+              type: 'searchPosition',
+              tags: [],
+            }}
+            // position={position} 
+            // name="центр пошуку"
+            // adress={adress}
+            // types={['searchPosition']}
+            icon="\images\map-marker-user.png"
+            zIndex={2}
+          />
+        }
+        {alerts.length && this.getAlertsList(alerts, 'warning')}
+        {errors.length && this.getAlertsList(errors, 'error')}
       </div>
     )
   }

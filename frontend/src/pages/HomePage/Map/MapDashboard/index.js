@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PlacesFilter from './PlacesFilter';
 import PlacesSearch from './PlacesSearch';
 import PlacesList from './PlacesList';
-import mapActions from 'actions/mapActions';
+import * as mapActions from 'actions/mapActions';
 
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
@@ -16,10 +16,10 @@ const mapDispatchToProps = (dispatch) => {
 
 class MapDashboard extends Component {
   render() {
-    const {search, filter, places, gmaps} = this.props;
+    const {search, filter, places, gmaps, endSearchPosition, searchPlaces} = this.props;
     return (
       <div>
-        <PlacesSearch {...search} {...gmaps} />
+        <PlacesSearch {...search} {...gmaps} endSearchPosition={endSearchPosition} searchPlaces={searchPlaces} />
         <PlacesFilter {...filter} />
         <PlacesList places={places} map={gmaps.map}/>
       </div>

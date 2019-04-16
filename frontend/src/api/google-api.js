@@ -33,7 +33,7 @@ class Place {
   }
 }
 
-function _searchNearbyPlaces(placesService,  searchRequest) {
+const _searchNearbyPlaces = (placesService,  searchRequest) => {
   return new Promise((resolve, reject) => {
     let placeResults = [];
     placesService.nearbySearch(searchRequest, (results, status, pagination) => {
@@ -49,6 +49,7 @@ function _searchNearbyPlaces(placesService,  searchRequest) {
           } else {
             console.log(status);
             console.log(searchRequest);
+            console.log(placeResults);
             resolve({placeResults});
           }
           break;
@@ -60,10 +61,10 @@ function _searchNearbyPlaces(placesService,  searchRequest) {
         case 'INVALID_REQUEST':
         case 'REQUEST_DENIED':
         case 'UNKNOWN_ERROR':
-          reject({placeResults, error: status});
+          resolve({placeResults, error: status});
           break;
         default:
-          reject({placeResults, error: 'UNKNOWN_ERROR'});
+          resolve({placeResults, error: 'UNKNOWN_ERROR'});
       }
     })
   })
@@ -80,13 +81,10 @@ export function searchMedicPlaces(placesService, location, radius) {
   ];
   return Promise.all(searchRequests)
     .then((responseResults) => {
+      let unicPlaceIds = [];
       let results = responseResults.reduce((results, {placeResults, alert, error}, ) => {
-        // if (placeResults) {
-          results.placeResults = results.placeResults.concat(placeResults);
-        // }
-        if (
-          // placeResults && 
-          placeResults.some((result) => result.length === 60)) {
+        results.placeResults = results.placeResults.concat(placeResults);
+        if (placeResults.some((result) => result.length === 60)) {
           results.alerts.add('OVER_PLACES_LIMIT');
         }
         if (alert) {
@@ -97,8 +95,7 @@ export function searchMedicPlaces(placesService, location, radius) {
         }
         return results;
       }, {placeResults: [], alerts: new Set(), errors: new Set()});
-      let unicPlaceIds = [];
-      results.places = results.placeResults.reduce((places, placeResult) => {
+      const places = results.placeResults.reduce((places, placeResult) => {
         if (!placeResult.types.some((type) => CHECK_PLACE_TYPES.includes(type))) {
           return places;
         }
@@ -106,14 +103,23 @@ export function searchMedicPlaces(placesService, location, radius) {
           return places;
         }
         unicPlaceIds.push(placeResult.place_id);
-        // debugger;
         places.push(new Place(placeResult));
         return places;
       }, []);
-      delete results.placeResults;
-      // results.placeResults = results.placeResults.map(placeResult => {
-      //   return new Place(placeResult);
-      // });
-      return results;
+      const alerts = [...results.alerts];
+      const errors = [...results.errors];
+      return {places, alerts, errors};
   })
+}
+
+export function getAdressFromPosition(geocoderService, position) {
+  return new Promise((resolve, reject) => {
+    geocoderService.geocode({location: position}, (result, status)=> {
+      if (status === 'OK') {
+        const adress = result[0].formatted_address;
+        resolve(adress);
+      }
+      reject(status);
+    });
+  });
 }

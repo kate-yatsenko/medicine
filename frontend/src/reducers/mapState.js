@@ -1,54 +1,74 @@
+import {
+  INIT_MAP_SERVICES, 
+  START_SEARCH_POSITION, 
+  START_SEARCH_PLACES, 
+  END_SEARCH_POSITION, 
+  END_SEARCH_PLACES, 
+  SET_PLACES_FILTER, 
+  SELECT_PLACE,
+} from '../constants/mapConstants';
 import {combineReducers} from 'redux';
-import {INIT_MAP_SERVICES, SEARCH_PLACES, SET_PLACES_FILTER} from '../constants/mapConstants';
+import {handleAction, handleActions, combineActions} from 'redux-actions';
 
-const defaultGmaps = {
-  map: null,
-  placesService: null,
-};
-const defaultSearch = {
-  position: {lat: 49.44444, lng: 32.05972},
-  radius: 500,
-  adress: 'бульвар Шевченка, 185, Черкаси',
-  exceededMaxPlacesNumber: false,
-};
-const defaultFilter = {
-  types: ['hospital', 'doctor'],
-  name: '',
-};
+const gmaps = handleActions(
+  {
+    [INIT_MAP_SERVICES]: (state, action) => ({...state, ...action.payload}),
+    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
+      ...state, 
+      loadingMessage: action.payload,
+    }),
+    [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES)]: (state, action) => ({
+      ...state, 
+      loadingMessage: null,
+    }),
+  },
+  {
+    map: null,
+    placesService: null,
+    geocoderService: null,
+    loadingMessage: null,
+  }
+);
 
-const gmaps  = (state = defaultGmaps, action) => {
-  switch (action.type) {
-    case INIT_MAP_SERVICES:
-      return {...state, ...action.payload};
-    default:
-      return state;
+const search = handleActions(
+  {
+    END_SEARCH_POSITION: (state, action) => {
+      return {...state, ...action.payload}
+    },
+    END_SEARCH_PLACES: (state, action) => {
+      const {alerts, errors} = action.payload;
+      return {
+        ...state, alerts, errors
+        // alerts: [...state.alerts, ...alerts], 
+        // errors: [...state.errors, ...errors],
+      }
+    },
+  },
+  {
+    position: null,
+    // position: {lat: 49.44444, lng: 32.05972},
+    radius: 500,
+    adress: null,
+    // adress: 'бульвар Шевченка, 185, Черкаси',
+    alerts: [],
+    errors: [],
   }
-};
-const search  = (state = defaultSearch, action) => {
-  switch (action.type) {
-    case SEARCH_PLACES:
-      const {exceededMaxPlacesNumber} = action.payload;
-      return {...state, exceededMaxPlacesNumber};
-    default:
-      return state;
+);
+
+// TODO: ? add filtered & active pleces instead of filter reducer
+const places = handleAction(
+  END_SEARCH_PLACES, (state, action) => (action.payload.places),
+  []
+);
+
+// TODO: ? remove filter to component state
+const filter = handleAction(
+  SET_PLACES_FILTER, (state, action) => ({...state, ...action.payload}),
+  {
+    types: ['hospital', 'doctor'],
+    name: '',
   }
-};
-const places  = (state = [], action) => {
-  switch (action.type) {
-    case SEARCH_PLACES:
-      return action.payload.places;
-    default:
-      return state;
-  }
-};
-const filter  = (state = defaultFilter, action) => {
-  switch (action.type) {
-    case SET_PLACES_FILTER:
-      return state;
-    default:
-      return state;
-  }
-};
+);
 
 const mapState = combineReducers({
   gmaps,

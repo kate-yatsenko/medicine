@@ -2,31 +2,38 @@ import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
 import { connect } from 'react-redux';
 import MarkersLayer from './MarkersLayer'
-import mapActions from 'actions/mapActions';
-
+// import {initMapServices, getLocation, searchPlaces} from 'actions/mapActions';
+import * as mapActions from 'actions/mapActions';
+import { bindActionCreators } from 'redux';
 import apiKey from 'data/apiKey'
 
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     initMapServices: (map, placesService) => {
+//       dispatch(initMapServices(map, placesService));
+//     },
+//     getLocation: (geocoderService, placesService) => {
+//       dispatch(getLocation(geocoderService, placesService));
+//     },
+//     searchPlaces: (geocoderService, placesService) => {
+//       dispatch(searchPlaces(geocoderService, placesService));
+//     },
+//   }
+// }
+
 const mapDispatchToProps = (dispatch) => {
-  return {
-    initMapServices: (map, placesService) => {
-      dispatch(mapActions.initMapServices(map, placesService));
-    }
-  }
+  return bindActionCreators(mapActions, dispatch);
 }
 
 class MapLayout extends Component {
   static libraries = ['places'];
-  state = {
-    googleApiLoaded: false,
-  }
 
   onMapLoad = map => {
+    const {initMapServices, getLocation, searchPlaces} = this.props;
     const placesService = new window.google.maps.places.PlacesService(map);
- 
-    this.props.initMapServices(map, placesService);
-    this.setState(() => {
-      return {mapServicesInited: true};
-    });
+    const geocoderService = new window.google.maps.Geocoder();
+    initMapServices({map, geocoderService, placesService});
+    getLocation(geocoderService, placesService);
   }
 
   render() {
@@ -59,9 +66,7 @@ class MapLayout extends Component {
           language="uk"
           region="UA"
         >
-          {this.state.mapServicesInited &&
-            <MarkersLayer position={position} />
-          }
+          <MarkersLayer position={position} />
         </GoogleMap>
       </LoadScript>
     )
