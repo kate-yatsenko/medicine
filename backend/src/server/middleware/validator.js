@@ -31,4 +31,20 @@ module.exports = {
       await next();
     };
   },
+
+  idQuery({ names = [], type = this.TYPE.ID, required = true }) {
+    return async (ctx, next) => {
+      names.forEach(name => {
+        if (!required && ctx.query[name] == null) return;
+
+        try {
+          type(ctx.query[name]);
+        } catch (err) {
+          ctx.throw(400, err.message, { error: err });
+        }
+      });
+
+      await next();
+    };
+  },
 };
