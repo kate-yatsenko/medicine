@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectSearch from "components/SelectSearch";
+import TableSearch from "components/TableSearch";
 import TableDoctor from "./TableDoctor";
 import TableModal from "./TableModal";
 import AddButton from "./AddButton";
@@ -11,7 +11,7 @@ const Doctor = () => {
   return (
     <Content className="page">
       <div className="d-flex justify-content-between">
-        <SelectSearch placeholder="Оберіть пацієнта"/>
+        <TableSearch placeholder="Пошук пацієнта" type="doctor"/>
         <AddButton/>
       </div>
       <TableDoctor/>

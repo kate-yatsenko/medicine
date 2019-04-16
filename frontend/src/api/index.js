@@ -12,5 +12,8 @@ export const createMedcardItem = (userId, data) =>
   axios.post(`/users/${userId}/entries`, { ...data })
     .then(response => response.data);
 
+export const getTypes = () =>
+  axios.get(`/etypes/`)
+    .then(response => response.data);
 
 

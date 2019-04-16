@@ -52,7 +52,7 @@ class TablePatient extends React.Component {
   };
 
   render() {
-    const { medcardData, total, loading } = this.props;
+    const { medcardData, total, loading, page } = this.props;
 
     const columns = [
       {
@@ -88,7 +88,8 @@ class TablePatient extends React.Component {
           loading={loading}
           onChange={this.tableChange}
           pagination={{
-            total: total
+            total: total,
+            current: page
           }}
           className="table"
           rowKey="id"
