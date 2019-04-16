@@ -18,15 +18,19 @@ function getPayload(ctx) {
 async function getEntries(ctx) {
   // TODO: validate page
   const { uid: userId } = ctx.params;
-  const { p: page } = ctx.query;
+  const { p: page, owner, creator, type, filter } = ctx.query;
 
   try {
     const role = await services.getUserRole(userId);
 
-    const creatorId = role.canReadAllCards ? userId : null;
-    const ownerId = role.canReadAllCards ? null : userId;
+    const creatorId = role.canReadAllCards ? userId : creator;
+    const ownerId = role.canReadAllCards ? owner : userId;
 
-    ctx.body = await services.getEntries({ ownerId, creatorId }, page);
+    ctx.body = await services.getEntries(
+      { ownerId, creatorId, typeId: type },
+      page,
+      filter,
+    );
   } catch (err) {
     ctx.throw(500, 'Cannot get entries', { error: err });
   }
@@ -58,7 +62,12 @@ async function updateEntry(ctx) {
   ctx.assert(ctx.body, 404, 'Entry not found');
 }
 
-router.get('/', getEntries);
+const validateQueryIds = validator.idQuery({
+  names: ['owner', 'creator', 'type'],
+  required: false,
+});
+
+router.get('/', validateQueryIds, getEntries);
 router.post('/', koaBody(), createEntry);
 router.post('/:id', validator.idParam({ name: 'id' }), koaBody(), updateEntry);
 
