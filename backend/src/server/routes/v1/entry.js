@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
 const { ENDPOINT_PREFIX_ENTRY } = require('../../../config');
@@ -15,7 +16,7 @@ function getPayload(ctx) {
 }
 
 async function getEntries(ctx) {
-  // TODO: validate id
+  // TODO: validate page
   const { uid: userId } = ctx.params;
   const { p: page } = ctx.query;
 
@@ -57,10 +58,8 @@ async function updateEntry(ctx) {
   ctx.assert(ctx.body, 404, 'Entry not found');
 }
 
-// TODO: id validator middleware
 router.get('/', getEntries);
-// router.get('/:id', getEntries);
 router.post('/', koaBody(), createEntry);
-router.post('/:id', koaBody(), updateEntry);
+router.post('/:id', validator.idParam({ name: 'id' }), koaBody(), updateEntry);
 
 module.exports = router;
