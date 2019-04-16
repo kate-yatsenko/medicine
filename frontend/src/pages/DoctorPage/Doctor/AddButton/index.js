@@ -3,8 +3,6 @@ import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { toggleTableModal, setEditRow } from "actions/doctorActions";
 
-import './style.scss';
-
 class AddButton extends React.Component {
 
   openCreateModal = () => {

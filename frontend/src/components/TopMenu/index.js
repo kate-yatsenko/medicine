@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Typography } from 'antd';
+import { Layout, Typography, Icon } from 'antd';
 import { toggleAuthModalVisible } from 'actions/authActions';
 import { connect } from 'react-redux';
 import AuthModal from '../AuthModal';
@@ -30,7 +30,7 @@ const TopMenu = ({ dispatch }) => {
         <div className="top-menu">
           <Link
             to="/doctor"
-            className="top-menu-office"
+            className="top-menu-office d-none d-md-inline-block"
           >
             <Text
               type="secondary"
@@ -39,8 +39,14 @@ const TopMenu = ({ dispatch }) => {
             </Text>
           </Link>
           <Link
+            to="/doctor"
+            className="top-menu-office d-md-none"
+          >
+            <Icon type="user" />
+          </Link>
+          <Link
             to="/patient"
-            className="top-menu-office"
+            className="top-menu-office d-none d-md-inline-block"
           >
             <Text
               type="secondary"
@@ -48,13 +54,24 @@ const TopMenu = ({ dispatch }) => {
               Мій кабінет (Пацієнт)
             </Text>
           </Link>
+          <Link
+            to="/patient"
+            className="top-menu-office d-md-none"
+          >
+            <Icon type="user" />
+          </Link>
           <Text
             type="secondary"
-            className="top-menu-auth"
+            className="top-menu-auth d-none d-md-inline-block"
             onClick={() => dispatch(toggleAuthModalVisible())}
           >
             Логін | Реєстрація
           </Text>
+          <Icon
+            type="unlock"
+            className="top-menu-auth d-md-none"
+            onClick={() => dispatch(toggleAuthModalVisible())}
+          />
         </div>
       </div>
       <AuthModal/>
