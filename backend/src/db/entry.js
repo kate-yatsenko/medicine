@@ -2,7 +2,10 @@ const knex = require('./knex');
 
 const { RESPONSE_RESULTS_PER_PAGE: RPP } = require('../config');
 
-async function getEntriesWhere(whereClause, { onlyFirst = false, page = 1 }) {
+async function getEntriesWhere(
+  whereClause,
+  { onlyFirst = false, page = 1, filter = null },
+) {
   // eslint-disable-next-line no-param-reassign
   if (page < 1) page = 1;
 
@@ -24,7 +27,6 @@ async function getEntriesWhere(whereClause, { onlyFirst = false, page = 1 }) {
   }
 
   const clause = whereClause;
-
   if (clause.id != null) {
     clause['e.id'] = clause.id;
     delete clause.id;
@@ -35,6 +37,14 @@ async function getEntriesWhere(whereClause, { onlyFirst = false, page = 1 }) {
     .join('user as o', { 'e.ownerId': 'o.id' })
     .join('user as c', { 'e.creatorId': 'c.id' })
     .join('entryType as et', { 'e.typeId': 'et.id' });
+
+  if (filter) {
+    if (clause.ownerId == null) {
+      query.andWhere('o.name', 'ilike', `%${filter}%`);
+    } else if (clause.creatorId == null) {
+      query.andWhere('c.name', 'ilike', `%${filter}%`);
+    }
+  }
 
   if (onlyFirst) {
     addSelect(query);
@@ -75,7 +85,11 @@ module.exports = {
     return getEntriesWhere({ id }, { onlyFirst: true });
   },
 
-  getEntries({ ownerId = null, creatorId = null, typeId = null }, page) {
+  getEntries(
+    { ownerId = null, creatorId = null, typeId = null },
+    page,
+    filter,
+  ) {
     let where = { ownerId, creatorId, typeId };
 
     where = Object.entries(where).reduce((acc, pair) => {
@@ -86,7 +100,7 @@ module.exports = {
       return acc;
     }, {});
 
-    return getEntriesWhere(where, { page });
+    return getEntriesWhere(where, { page, filter });
   },
 
   updateEntry({ id, title, description, result }) {
