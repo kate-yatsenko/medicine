@@ -1,7 +1,8 @@
 import React from 'react';
-import SelectSearch from "components/SelectSearch";
+import TableSearch from "components/TableSearch";
 import TableDoctor from "./TableDoctor";
-import TableEditModal from "./TableEditModal";
+import TableModal from "./TableModal";
+import AddButton from "./AddButton";
 import { Layout } from 'antd';
 
 const { Content } = Layout;
@@ -9,9 +10,12 @@ const { Content } = Layout;
 const Doctor = () => {
   return (
     <Content className="page">
-      <SelectSearch placeholder="Оберіть пацієнта"/>
+      <div className="d-flex justify-content-between">
+        <TableSearch placeholder="Пошук пацієнта" type="doctor"/>
+        <AddButton/>
+      </div>
       <TableDoctor/>
-      <TableEditModal/>
+      <TableModal/>
     </Content>
   );
 };

@@ -43,9 +43,18 @@ module.exports = {
     return formEntry(entry);
   },
 
-  async getEntries({ ownerId = null, creatorId = null, typeId = null }) {
-    const entries = await db.entry.getEntries({ ownerId, creatorId, typeId });
-    return entries.map(formEntry);
+  async getEntries(
+    { ownerId = null, creatorId = null, typeId = null },
+    page = 1,
+    filter,
+  ) {
+    const rawResult = await db.entry.getEntries(
+      { ownerId, creatorId, typeId },
+      page,
+      filter,
+    );
+
+    return { ...rawResult, entries: rawResult.entries.map(formEntry) };
   },
 
   async updateEntry({ id, title, description, result }) {
@@ -71,7 +80,7 @@ module.exports = {
     return this.getUser(userId);
   },
 
-  async getUser(id) {
+  getUser(id) {
     return db.user.getUser(id);
   },
 
@@ -89,7 +98,25 @@ module.exports = {
     return userId ? this.getUser(userId) : userId;
   },
 
-  async getUserRole(userId) {
+  getUserRole(userId) {
     return db.userRole.getRole({ userId });
+  },
+
+  getUserList({ name, excludeId }) {
+    return db.user.getList({ name, excludeId });
+  },
+
+  getEntryTypes(id = null) {
+    return db.entryType.get(id);
+  },
+
+  async createEntryType({ name, description = null }) {
+    const id = await db.entryType.create({ name, description });
+    return this.getEntryTypes(id);
+  },
+
+  async updateEntryType({ id, name, description = null }) {
+    const typeId = await db.entryType.update({ id, name, description });
+    return typeId ? this.getEntryTypes(typeId) : typeId;
   },
 };
