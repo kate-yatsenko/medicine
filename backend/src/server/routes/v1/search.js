@@ -12,6 +12,10 @@ const router = new Router({
 });
 
 async function validateSearch(ctx, next) {
+  if (MIN_LENGTH <= 0) {
+    await next();
+    return;
+  }
   const { name: rawName } = ctx.query;
 
   ctx.assert(rawName && rawName.length, 400, 'Invalid search query!');
@@ -24,7 +28,6 @@ async function validateSearch(ctx, next) {
 }
 
 async function getList(ctx) {
-  // TODO: validate id
   const { uid: excludeId } = ctx.params;
   const { name } = ctx.query;
 

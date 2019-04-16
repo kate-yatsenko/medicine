@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const validator = require('../../middleware/validator');
 const services = require('../../../services');
 const entryRoute = require('./entry');
 const searchRoute = require('./search');
@@ -58,11 +59,15 @@ async function updateUser(ctx) {
   ctx.assert(ctx.body, 404, 'User not found');
 }
 
-router.get('/:id', getUser);
+router.get('/:id', validator.idParam({ name: 'id' }), getUser);
 router.post('/', koaBody(), createUser);
-router.post('/:id', koaBody(), updateUser);
+router.post('/:id', validator.idParam({ name: 'id' }), koaBody(), updateUser);
 
-router.use('/:uid', entryRoute.routes()).use(entryRoute.allowedMethods());
-router.use('/:uid', searchRoute.routes()).use(searchRoute.allowedMethods());
+router
+  .use('/:uid', validator.idParam({ name: 'uid' }), entryRoute.routes())
+  .use(entryRoute.allowedMethods());
+router
+  .use('/:uid', validator.idParam({ name: 'uid' }), searchRoute.routes())
+  .use(searchRoute.allowedMethods());
 
 module.exports = router;
