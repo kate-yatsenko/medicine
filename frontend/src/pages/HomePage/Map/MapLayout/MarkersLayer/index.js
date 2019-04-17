@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import {Alert} from 'antd';
 import * as mapActions from 'actions/mapActions';
 
+import './style.css';
+
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
 }
@@ -35,14 +37,14 @@ class MarkersLayer extends Component {
   }
   getAlertsList(messages, type) {
     return messages.map((message) => (
-      <Alert key={MarkersLayer.counter++} message={message} type={type} showIcon closable 
-        style={{
-          backgroundColor: 'hsla(33, 50%, 75%, 0.8)',
-          margin: '5px',
-          position: 'relative',
-          top: '30px',
-          width: '50%',
-        }}
+      <Alert className="map-alert" key={MarkersLayer.counter++} message={message} type={type} showIcon closable 
+        // style={{
+        //   backgroundColor: 'hsla(33, 50%, 75%, 0.8)',
+        //   margin: '5px',
+        //   position: 'relative',
+        //   top: '30px',
+        //   width: '50%',
+        // }}
       />
     ))
   }
@@ -57,7 +59,7 @@ class MarkersLayer extends Component {
 
   render() {
         // TODO: render MarkersLayer if exists mapState.search.position/mapState.places
-    const {places, search} = this.props;
+    const {places, search, gmaps} = this.props;
     const {position: location, adress, alerts, errors} = search;
     return (
       <div className="markers-layer">
@@ -79,6 +81,7 @@ class MarkersLayer extends Component {
             zIndex={2}
           />
         }
+        {gmaps.loadingMessage.length && this.getAlertsList(gmaps.loadingMessage, 'info')}
         {alerts.length && this.getAlertsList(alerts, 'warning')}
         {errors.length && this.getAlertsList(errors, 'error')}
       </div>

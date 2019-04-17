@@ -19,19 +19,22 @@ const gmaps = handleActions(
     }),
     [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES)]: (state, action) => ({
       ...state, 
-      loadingMessage: null,
+      loadingMessage: [],
     }),
   },
   {
     map: null,
     placesService: null,
     geocoderService: null,
-    loadingMessage: null,
+    loadingMessage: [],
   }
 );
 
 const search = handleActions(
   {
+    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
+      ...state, alerts: [], errors: []
+    }),
     END_SEARCH_POSITION: (state, action) => {
       return {...state, ...action.payload}
     },
@@ -39,8 +42,6 @@ const search = handleActions(
       const {alerts, errors} = action.payload;
       return {
         ...state, alerts, errors
-        // alerts: [...state.alerts, ...alerts], 
-        // errors: [...state.errors, ...errors],
       }
     },
   },

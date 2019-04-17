@@ -16,19 +16,21 @@ export default class MedicMarker extends Component {
     this.setState((state) => {
       return {mouseOver: !state.mouseOver};
     });
-  }
+  };
 
   render() {
-    const {icon, place, zIndex} = this.props;
+    const {props, state, toggleInfoWindow, toggleMousOver} = this;
+    const {icon, place, zIndex} = props;
+    const {visibleInfoWindow, mouseOver} = state;
     const {location, name, adress, tags, type} = place;
-    const {visibleInfoWindow, mouseOver} = this.state;
+    
     //  debugger;
 
     return (
       <Marker
-        onClick={this.toggleInfoWindow}
-        onMouseOver={this.toggleMousOver}
-        onMouseOut={this.toggleMousOver}
+        onClick={toggleInfoWindow}
+        onMouseOver={toggleMousOver}
+        onMouseOut={toggleMousOver}
         position={location}
         // TODO: costom icons for different place types
         icon={icon}

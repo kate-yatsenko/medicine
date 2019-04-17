@@ -1,34 +1,28 @@
 import React, { Component } from 'react';
-import {Button, Slider, InputNumber, Input} from 'antd';
+import {Button, Slider, InputNumber, Input, Radio} from 'antd';
 import {StandaloneSearchBox} from '@react-google-maps/api';
 
 export default class PlacesSearch extends Component {
   state = {
     radius: this.props.radius,
+    searchType: 'MAIN',
   }
 
   marks = {
-    100: '100 m',
-    // 200: '200 m',
+    100: '',
     500: '500 m',
-    1000: '1 km',
     2000: '2 km',
     5000: '5 km',
-    //10000: '10 km',
-    // 1000: {
-    //   style: {
-    //     color: '#f50',
-    //   },
-    //   label: <strong>100°C</strong>,
-    // },
-
   };
-  onChange = (value) => {
+  onChangeRadius = (value) => {
     // if Number.isNaN
     this.setState({
       radius: value,
       // loading: false,
     });
+  };
+  onChangeSearchType = (e) => {
+    this.setState({searchType: e.target.value});
   };
 
   componentDidUpdate() {
@@ -39,9 +33,9 @@ export default class PlacesSearch extends Component {
   }
 
   render() {
-    const {state, marks, onChange} = this;
-    const {radius} = state;
-    const {map, adress, endSearchPosition, placesService, position, searchPlaces, loadingMessage} = this.props;
+    const {state, marks, onChangeRadius, onChangeSearchType} = this;
+    const {radius, searchType} = state;
+    const {map, adress, endSearchPosition, getLocation, placesService, geocoderService, position, searchPlaces, loadingMessage} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);
     }
@@ -51,14 +45,14 @@ export default class PlacesSearch extends Component {
         <Button 
           shape="circle" 
           icon="user" 
-          // TODO: onClick={} 
+          onClick={() => getLocation(geocoderService, placesService)}
         />{ }
         {map?
           <StandaloneSearchBox
             onLoad={ref => {this.searchBox = ref;}}
             onPlacesChanged={() => {
               const [{formatted_address: adress, geometry: {location: position}}] = this.searchBox.getPlaces();
-              endSearchPosition({position, adress, alerts: null, errors: null});
+              endSearchPosition({position, adress, alerts: [], errors: []});
             }}
           >
             <Input 
@@ -68,6 +62,15 @@ export default class PlacesSearch extends Component {
           </StandaloneSearchBox>
         : <Input placeholder="Goople Maps API librares not loaded" />
         }
+        <Radio.Group 
+          defaultValue={searchType} 
+          buttonStyle="solid"
+          onChange={onChangeSearchType}
+        >
+          <Radio.Button value="MAIN">MAIN</Radio.Button>
+          <Radio.Button value="DENTIST">DENTIST</Radio.Button>
+          <Radio.Button value="PHARMACY">PHARMACY</Radio.Button>
+        </Radio.Group>
         <Slider 
           min={100}
           max={5000}
@@ -75,7 +78,7 @@ export default class PlacesSearch extends Component {
           value={radius} 
           style={{ width: 280 }}
           step={100} 
-          onChange={onChange}
+          onChange={onChangeRadius}
           // TODO: onAfterChange={}
         />
         <InputNumber
@@ -85,14 +88,14 @@ export default class PlacesSearch extends Component {
           step={100}
           //formatter={value => value < 1000 ? `${value} m` : `${value} km`}
           // parser={value => value.replace('%', '')}
-          onChange={onChange}
+          onChange={onChangeRadius}
         />
         <Button 
           shape="circle" 
           icon="search" 
-          loading={!!loadingMessage} 
+          loading={!!loadingMessage.length} 
           onClick={() => {
-            searchPlaces({placesService, position, radius})
+            searchPlaces({placesService, position, radius, searchType})
           }} 
         />{ }
       </div>

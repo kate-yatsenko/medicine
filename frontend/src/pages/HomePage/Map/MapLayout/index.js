@@ -29,7 +29,7 @@ class MapLayout extends Component {
   static libraries = ['places'];
 
   onMapLoad = map => {
-    const {initMapServices, getLocation, searchPlaces} = this.props;
+    const {initMapServices, getLocation} = this.props;
     const placesService = new window.google.maps.places.PlacesService(map);
     const geocoderService = new window.google.maps.Geocoder();
     initMapServices({map, geocoderService, placesService});
@@ -38,7 +38,7 @@ class MapLayout extends Component {
 
   render() {
     // TODO: get position from navigator
-    const zoom = 15;
+    const zoom = 13;
     const position = {lat: 49.430, lng: 32.075};
 
     return (

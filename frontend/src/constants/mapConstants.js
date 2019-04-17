@@ -12,20 +12,63 @@ export const SEARCH_PLACE_TYPES = [
   'pharmacy',
 ];
 export const HOSPITAL_NAMES= [
-  'больница',
   'лікарня',
+  'стоматологія',
+  'стоматологія',
+  'аптека',
 ]
 export const DOCTOR_NAMES = [
-  'клиника',
   'клініка',
-  'врач',
+  'поліклініка',
   'лікар',
 ];
 export const SEARCH_PLACE_NAMES = [
-  HOSPITAL_NAMES[0],
+  ...HOSPITAL_NAMES,
   ...DOCTOR_NAMES,
 ];
 export const CHECK_PLACE_TYPES = [
-  ...SEARCH_PLACE_TYPES,
+  // ...SEARCH_PLACE_TYPES,
+  'hospital',
+  'doctor',
+  'dentist',
+  'pharmacy',
+
   'health',
 ];
+
+export const SEARCH_CONDITIONS = {
+  MAIN: {
+    NAMES: [
+      'лікарня',
+      'клініка',
+    ],
+    TYPES: [
+      'hospital',
+      'doctor',
+    ],
+    CHECK_TYPES: [
+      'hospital',
+      'doctor',
+      'health',
+    ],
+    EXCLUDE_TYPES: [
+      'dentist',
+    ]
+  },
+  DENTIST: {
+    NAMES: ['стоматологія'],
+    TYPES: ['dentist'],
+    CHECK_TYPES: [
+      'dentist',
+      'health',
+    ],
+  },
+  PHARMACY: {
+    NAMES: ['аптека'],
+    TYPES: ['pharmacy'],
+    CHECK_TYPES: [
+      'pharmacy',
+      'health',
+    ],
+  },
+}
