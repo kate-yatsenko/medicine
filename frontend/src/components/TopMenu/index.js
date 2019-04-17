@@ -1,10 +1,10 @@
 import React from 'react';
 import { Layout, Typography, Icon } from 'antd';
 import { toggleAuthModalVisible } from 'actions/authActions';
-import { connect } from 'react-redux';
 import AuthModal from '../AuthModal';
 import './style.scss';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -14,7 +14,7 @@ const TopMenu = ({ dispatch }) => {
     <Header
       style={{
         position: 'fixed',
-        zIndex: 1,
+        zIndex: 1000,
         width: '100%',
         backgroundColor: '#f0f2f5'
       }}
@@ -42,7 +42,7 @@ const TopMenu = ({ dispatch }) => {
             to="/doctor"
             className="top-menu-office d-md-none"
           >
-            <Icon type="user" />
+            <Icon type="user"/>
           </Link>
           <Link
             to="/patient"
@@ -58,7 +58,7 @@ const TopMenu = ({ dispatch }) => {
             to="/patient"
             className="top-menu-office d-md-none"
           >
-            <Icon type="user" />
+            <Icon type="user"/>
           </Link>
           <Text
             type="secondary"
