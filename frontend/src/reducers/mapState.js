@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {MAP_INIT_MAP_SERVICES, MAP_SEARCH_PLACES, MAP_SET_FILTER} from '../constants';
+import {MAP_INIT_MAP_SERVICES, MAP_SEARCH_PLACES, MAP_SET_FILTER, CHANGE_FILTER_BY_NAME, CHANGE_FILTER_BY_CATEGORY} from '../constants';
 
 import placesSearchResult from '../data/placesSearchResult'
 
@@ -13,10 +13,8 @@ const defaultSearch = {
   adress: 'бульвар Шевченка, 185, Черкаси',
   exceededMaxPlacesNumber: false,
 };
-const defaultFilter = {
-  types: ['hospital', 'doctor'],
-  name: '',
-};
+const defaultFilterTypes = ['hospital', 'doctor'];
+
 // TODO: убрать после отладки без интернета
 const defaultPlaces = []; //placesSearchResult;
 
@@ -45,18 +43,35 @@ const places  = (state = defaultPlaces, action) => {
       return state;
   }
 };
-const filter  = (state = defaultFilter, action) => {
-  switch (action.type) {
+
+function filterByName(state = '', { type, payload }) {
+  switch (type) {
+    case CHANGE_FILTER_BY_NAME:
+      return payload;
+
     default:
       return state;
   }
 };
 
+const filterByCategory  = (state = defaultFilterTypes, action) => {
+  switch (action.type) {
+    case MAP_SET_FILTER:
+      return state;
+    case CHANGE_FILTER_BY_CATEGORY:
+    return state.indexOf(action.payload) !== 1 ? [...state, action.payload]: state.filter(item => item !== action.payload);
+
+    default:
+    return state;
+      
+  }
+};
 const mapState = combineReducers({
   gmaps,
   search,
   places,
-  filter,
+  filterByName,
+  filterByCategory
 });
 
 export default mapState;

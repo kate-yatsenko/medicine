@@ -1,86 +1,71 @@
 import React, { Component } from 'react';
-import {Button, AutoComplete, Slider, InputNumber } from 'antd';
+import { Button, Input, Slider } from 'antd';
 
+
+const marks = {
+  500: '500 м',
+  1000: '1 км',
+  2000: '2 км',
+  5000: '5 км',
+};
 export default class PlacesSearch extends Component {
   state = {
-    dataSource: [],
-    inputValue: 500,
+    loading: false,
+    iconLoading: false,
   }
 
-  handleSearch = (value) => {
-    this.setState({
-      dataSource: !value ? [] : [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
-  marks = {
-    100: '100 m',
-    // 200: '200 m',
-    500: '500 m',
-    1000: '1 km',
-    2000: '2 km',
-    5000: '5 km',
-    //10000: '10 km',
-    // 1000: {
-    //   style: {
-    //     color: '#f50',
-    //   },
-    //   label: <strong>100°C</strong>,
-    // },
+  enterLoading = () => {
+    this.setState({ loading: true });
+  }
 
-  };
-  onChange = (value) => {
-    // if Number.isNaN
-    this.setState({
-      inputValue: value,
-    });
+  enterIconLoading = () => {
+    this.setState({ iconLoading: true });
+  }
+
+   onSliderChange(value) {
+    console.log(value);
+  }
+  
+   onAfterChange(value) {
+    console.log('onAfterChange: ', value);
   }
 
   render() {
-    const {state, marks, onChange, handleSearch} = this;
-    const {inputValue, dataSource} = state;
+    // const props = this.props;
+    console.log(this.props);
+    const Search = Input.Search;
+    const { getGeoLocation } = this.props;
     return (
-      <div>
-        <Button 
-          shape="circle" 
-          icon="user" 
-          // TODO: onClick={} 
-        />{ }
-        <AutoComplete
-          // TODO: Google Autocomplite
-          dataSource={dataSource}
-          style={{ width: 250 }}
-          onSearch={handleSearch}
-          placeholder="input here"
-        />
-        <Slider 
+      <div style={{marginBottom: "20px"}}>
+         <div style={{marginBottom: "10px"}}>
+           <Button type="primary" loading={this.state.loading} onClick={getGeoLocation} {... this.props}>
+             Моє місцезнаходження
+           </Button>
+         </div>
+        
+        <div style={{marginBottom: "10px"}}>
+        <h5> Пошук за адресою:</h5>
+        <Search
+      placeholder="введіть адресу..."
+      onSearch={value => console.log(value)}
+      enterButton
+    />
+    </div>
+    <div style={{marginBottom: "10px"}}>
+      <h5> Пошук в радіусі:</h5>
+      <Slider 
           min={100}
           max={5000}
           marks={marks} 
-          value={inputValue} 
-          style={{ width: 280 }}
+          style={{ width: "340px" }}
           step={100} 
-          onChange={onChange}
+          onChange={e => console.log(e.target.value)}
           // TODO: onAfterChange={}
         />
-        <InputNumber
-          value={inputValue}
-          min={100}
-          max={5000}
-          step={100}
-          //formatter={value => value < 1000 ? `${value} m` : `${value} km`}
-          // parser={value => value.replace('%', '')}
-          onChange={onChange}
-        />
-        <Button 
-          shape="circle" 
-          icon="search" 
-          // TODO: onClick={} 
-        />{ }
+    </div>
       </div>
     );
   }
 };
+
+ 
