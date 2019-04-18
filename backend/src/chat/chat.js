@@ -19,7 +19,6 @@ function getCustomIdGenerator(io) {
 
 function validateIds(socket, next) {
   // TODO: authorization
-  // TODO: add to logger
   if (!socket.request.headers.cookie) {
     return next(new Error('Authentication error'));
   }
@@ -29,10 +28,10 @@ function validateIds(socket, next) {
     validator.checkId(headers['x-to-id']);
     validator.checkId(headers['x-id']);
   } catch (err) {
+    // TODO: add to logger
     console.error(`Chat: ${err.message}`);
     return next(err);
   }
-  console.log(`${headers['x-id']} >> ${headers['x-to-id']}`);
   return next();
 }
 
@@ -47,6 +46,7 @@ function onMessage(io, socket) {
     try {
       meta = await services.createMessage({ sender, receiver, message });
     } catch (err) {
+      // TODO: add to logger
       console.error(err);
       io.to(sender).emit('error', 'Cannot create message :(');
     }
