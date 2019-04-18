@@ -24,7 +24,8 @@
     "koa": "^2.7.0",
     "koa-body": "^4.1.0",
     "koa-router": "^7.4.0",
-    "pg": "^7.9.0"
+    "pg": "^7.9.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
