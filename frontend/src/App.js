@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 // import routes from './routes';
-import Map from './components/Map';
-
+import Map from './pages/HomePage/Map';
 
 class App extends React.Component {
   render() {

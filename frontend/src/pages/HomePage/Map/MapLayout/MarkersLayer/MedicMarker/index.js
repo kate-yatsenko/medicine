@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
 
-export default class MyMarker extends Component {
+export default class MedicMarker extends Component {
   state = {
     visibleInfoWindow: true,
     mouseOver: false,
@@ -16,26 +16,27 @@ export default class MyMarker extends Component {
     this.setState((state) => {
       return {mouseOver: !state.mouseOver};
     });
-  }
+  };
 
   render() {
-    const {position, name, adress, types} = this.props;
-    const {visibleInfoWindow, mouseOver} = this.state;
+    const {props, state, toggleInfoWindow, toggleMousOver} = this;
+    const {icon, place, zIndex} = props;
+    const {visibleInfoWindow, mouseOver} = state;
+    const {location, name, adress, tags, type} = place;
+    
+    //  debugger;
 
     return (
       <Marker
-        onClick={this.toggleInfoWindow}
-        onMouseOver={this.toggleMousOver}
-        onMouseOut={this.toggleMousOver}
-        position={position}
+        onClick={toggleInfoWindow}
+        onMouseOver={toggleMousOver}
+        onMouseOut={toggleMousOver}
+        position={location}
         // TODO: costom icons for different place types
-        // label={{
-        //   color: 'white',
-        //   fontWeight: 'bold',
-        //   text: '+',
-        //   fontSize: '24px'
-        // }}
+        icon={icon}
+        zIndex={zIndex}
       >
+      {true &&
         <InfoWindow
           // disabling infoWindow on load
           onLoad={() => {
@@ -46,8 +47,7 @@ export default class MyMarker extends Component {
             const closeButton = document.querySelector('.gm-style-iw>button');
             closeButton.parentNode.removeChild(closeButton);
           }}
-
-          position={mouseOver || visibleInfoWindow ? position : null}
+          position={mouseOver || visibleInfoWindow ? location : null}
           options={{
             pixelOffset: {height: -43},
             disableAutoPan: true,
@@ -61,11 +61,13 @@ export default class MyMarker extends Component {
             padding: 5,
             color: 'blue'
           }}>
-            types: {types.join(', ')} <br />
+            tags: {tags.join(', ')} <br />
+            type: {type} <br />
             name: {name} <br />
             adress: {adress} <br />
           </div>
         </InfoWindow>
+      }
       </Marker>
     )
   }
