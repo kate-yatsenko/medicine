@@ -1,4 +1,5 @@
 const db = require('../db');
+const validator = require('./validator');
 
 function formEntry(entry) {
   const e = entry;
@@ -19,6 +20,8 @@ function formEntry(entry) {
 }
 
 module.exports = {
+  validator,
+
   async createEntry({
     ownerId,
     creatorId,
@@ -118,5 +121,21 @@ module.exports = {
   async updateEntryType({ id, name, description = null }) {
     const typeId = await db.entryType.update({ id, name, description });
     return typeId ? this.getEntryTypes(typeId) : typeId;
+  },
+
+  getMessages({ sender, receiver }) {
+    return db.chat.get({ sender, receiver });
+  },
+
+  markMessagesAsRead(ids) {
+    return db.chat.markAsRead(ids);
+  },
+
+  getNewMessagesCount({ receiver }) {
+    return db.chat.getNewMessagesCount({ receiver });
+  },
+
+  createMessage({ sender, receiver, message }) {
+    return db.chat.create({ sender, receiver, message });
   },
 };
