@@ -56,7 +56,7 @@ const search = handleActions(
 // TODO: ? add filtered & active pleces instead of filter reducer
 const places = handleActions(
   {
-    [END_SEARCH_PLACES]: (state, action) => ({...state, placesArray: action.payload.places}),
+    [END_SEARCH_PLACES]: (state, action) => ({...state, placesArray: action.payload.places, activePlaceId: null}),
     [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload}),
   },
   {
