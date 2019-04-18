@@ -45,6 +45,16 @@ CREATE TABLE "public"."entry" (
 
 COMMENT ON TABLE "public"."entry" IS 'Medical entries';
 
+CREATE TABLE "public"."message" (
+	"id" bigserial primary key,
+	"sender" integer not null references "public"."user"(id),
+	"receiver" integer not null references "public"."user"(id),
+	"message" VARCHAR(1000) not null,
+	"isRead" boolean not null default false,
+	"created" timestamp not null default now()
+);
+
+COMMENT ON TABLE "public"."message" IS 'Chat messages';
 
 /* Fill the base */
 INSERT INTO "public"."role" ("name")
@@ -76,3 +86,28 @@ INSERT INTO public.entry ("typeId","ownerId","creatorId",title,description,"resu
 VALUES (2,3,2,'Пофигизм','Пациент жалуется на частый безпричинный пофигизм. Проведен тест на раздражжители. Замечено повышение сердцебиения и легкое возмущение при просмотре телеканала РАДА','Установлена легкая форма пофигизма. Обнаружен обширный словарный запас в области ненормативной лексики. Рекомендовано просматривать телеканал 2 раза в день для стимулирования системы восприятия','2019-04-14 00:18:10.000');
 INSERT INTO public.entry ("typeId","ownerId","creatorId",title,description,"result",created)
 VALUES (1,4,2,'Анализ слуха','Проведен анализ слуха методом нашептывания цен на лекарственные припараты. Пациент закрывал уши и пытался спраятаться, давая понять что проблем со слухом у него нет','Отклонений от нормы не выявлено','2019-04-14 00:18:05.000');
+
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (3,2,'Ку-ку','2019-04-17 10:10:10.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (3,2,'Есть кто?','2019-04-17 10:10:15.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (3,2,'Ауу','2019-04-17 10:10:25.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (2,3,'Да-да, я тут','2019-04-17 10:10:35.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (2,3,'Был занят, ставил уколы','2019-04-17 10:10:45.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (2,3,'Вам поставить?','2019-04-17 10:10:55.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (3,2,'Ой нет, вы знаете, я уколы не люблю.','2019-04-17 10:11:15.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (2,3,'А зря. Один укольчик и нет проблем','2019-04-17 10:11:25.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (3,2,'Ну ладно, только чтобы не больно.','2019-04-17 10:11:30.000', true);
+INSERT INTO public.message ("sender","receiver","message","created", "isRead")
+VALUES (2,3,'Без проблем. Чтобы не больно - 100500 гривет','2019-04-17 10:11:35.000', true);
+INSERT INTO public.message ("sender","receiver","message","created")
+VALUES (2,3,'Вы ещё тут?','2019-04-17 10:11:55.000');
+INSERT INTO public.message ("sender","receiver","message","created")
+VALUES (2,3,'Аууу','2019-04-17 10:13:15.000');
