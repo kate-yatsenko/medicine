@@ -77,8 +77,10 @@ function onConnection(io) {
     socket.on('message', onMessage(io, socket));
 
     socket.on('disconnect', () => {
-      io.to(socket.handshake.headers['x-to-id']).emit('offline', socket.id);
+      io.broadcast.emit('offline', socket.id);
     });
+
+    socket.broadcast.emit('online', socket.id);
   };
 }
 
