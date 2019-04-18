@@ -5,5 +5,11 @@ body {
 .page {
   margin-top: 84px;
   margin-bottom: 20px;
-  padding: 0 50px;
+  padding: 0 20px;
+
+  @media only screen and (min-width: 610px) {
+    & {
+      padding: 0 50px;
+    }
+  }
 }
