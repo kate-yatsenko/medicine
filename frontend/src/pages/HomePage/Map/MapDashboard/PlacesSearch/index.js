@@ -93,7 +93,7 @@ export default class PlacesSearch extends Component {
         <Button 
           shape="circle" 
           icon="search" 
-          loading={!!loadingMessage.length} 
+          loading={!!loadingMessage} 
           onClick={() => {
             searchPlaces({placesService, position, radius, searchType})
           }} 

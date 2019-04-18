@@ -14,25 +14,25 @@ const gmaps = handleActions(
     [INIT_MAP_SERVICES]: (state, action) => ({...state, ...action.payload}),
     [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
       ...state, 
-      loadingMessage: action.payload,
+      loadingMessage: action.payload.loadingMessage,
     }),
     [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES)]: (state, action) => ({
       ...state, 
-      loadingMessage: [],
+      loadingMessage: null,
     }),
   },
   {
     map: null,
     placesService: null,
     geocoderService: null,
-    loadingMessage: [],
+    loadingMessage: null,
   }
 );
 
 const search = handleActions(
   {
     [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
-      ...state, alerts: [], errors: []
+      ...state, alerts: [], errors: [], radius: action.payload.radius, searchType: action.payload.searchType
     }),
     END_SEARCH_POSITION: (state, action) => {
       return {...state, ...action.payload}
@@ -46,8 +46,9 @@ const search = handleActions(
   },
   {
     position: null,
-    radius: 500,
     adress: null,
+    radius: 500,
+    searchType: 'MAIN',
     alerts: [],
     errors: [],
   }

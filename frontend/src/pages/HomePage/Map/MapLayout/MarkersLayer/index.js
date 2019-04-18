@@ -69,8 +69,16 @@ class MarkersLayer extends Component {
       centerLocation = this.props.search.position;
     }
     if (centerLocation) {
-      this.props.gmaps.map.panTo(centerLocation);
+      map.panTo(centerLocation);
     }
+
+    const radius = this.props.search.radius;
+    let zoom = 16;
+    zoom = radius > 200 ? 15 : zoom;
+    zoom = radius > 400 ? 14 : zoom;
+    zoom = radius > 1200 ? 13 : zoom;
+    zoom = radius > 3500 ? 12 : zoom;
+    map.setZoom(zoom);
   }
 
   render() {
@@ -93,7 +101,7 @@ class MarkersLayer extends Component {
             zIndex={2}
           />
         }
-        {gmaps.loadingMessage.length && this.getAlertsList(gmaps.loadingMessage, 'info')}
+        {gmaps.loadingMessage && this.getAlertsList([gmaps.loadingMessage], 'info')}
         {alerts.length && this.getAlertsList(alerts, 'warning')}
         {errors.length && this.getAlertsList(errors, 'error')}
       </div>

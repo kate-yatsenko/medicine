@@ -10,8 +10,14 @@ import {createAction} from 'redux-actions';
 import {getAdressFromPosition, searchMedicPlaces} from '../api/google-api';
 
 export const initMapServices = createAction(INIT_MAP_SERVICES);
-export const startSearchPosition = createAction(START_SEARCH_POSITION, () => ['Встановлення місцезнаходження']);
-export const startSearchPlaces = createAction(START_SEARCH_PLACES, () => ['Пошук медичних закладів']);
+export const startSearchPosition = createAction(START_SEARCH_POSITION, (payload) => ({
+  ...payload,
+  loadingMessage: 'Встановлення місцезнаходження'
+}));
+export const startSearchPlaces = createAction(START_SEARCH_PLACES, (payload) => ({
+  ...payload,
+  loadingMessage: 'Пошук медичних закладів'
+}));
 export const endSearchPosition = createAction(END_SEARCH_POSITION);
 export const endSearchPlaces = createAction(END_SEARCH_PLACES);
 export const selectPlace = createAction(SELECT_PLACE);
@@ -67,7 +73,7 @@ export const getLocation = (geocoderService, placesService) => {
 
 export const searchPlaces = ({placesService, position, radius, positionAlerts=[], positionErrors=[], searchType='MAIN'}) => {
   return (dispatch) => {
-    dispatch(startSearchPlaces());
+    dispatch(startSearchPlaces({radius, searchType}));
     if (!position) {
       position = {lat: 49.44444, lng: 32.05972};
       dispatch(endSearchPosition({position}));
