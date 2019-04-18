@@ -4,7 +4,6 @@ import {
   START_SEARCH_PLACES, 
   END_SEARCH_POSITION, 
   END_SEARCH_PLACES, 
-  SET_PLACES_FILTER, 
   SELECT_PLACE
 } from '../constants/mapConstants';
 import {createAction} from 'redux-actions';
@@ -15,7 +14,6 @@ export const startSearchPosition = createAction(START_SEARCH_POSITION, () => ['�
 export const startSearchPlaces = createAction(START_SEARCH_PLACES, () => ['Пошук медичних закладів']);
 export const endSearchPosition = createAction(END_SEARCH_POSITION);
 export const endSearchPlaces = createAction(END_SEARCH_PLACES);
-export const setPlacesFilter = createAction(SET_PLACES_FILTER);
 export const selectPlace = createAction(SELECT_PLACE);
 
 export const getLocation = (geocoderService, placesService) => {
@@ -51,7 +49,7 @@ export const getLocation = (geocoderService, placesService) => {
             dispatch(endSearchPosition({position}));
           })
           .finally(() => {
-            if (!getState().mapState.places.length) {
+            if (!getState().mapState.places.placesArray.length) {
               dispatch(searchPlaces({placesService, position, radius, alerts, errors}));
             }
           });
@@ -60,7 +58,7 @@ export const getLocation = (geocoderService, placesService) => {
         const position = {lat: 49.44444, lng: 32.05972};
         errors.push(`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`);
         dispatch(endSearchPosition({position}));
-        if (!getState().mapState.places.length) {
+        if (!getState().mapState.places.placesArray.length) {
           dispatch(searchPlaces({placesService, position, radius, alerts, errors}));
         }
       })

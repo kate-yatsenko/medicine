@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import {List, Alert } from 'antd';
+import { selectPlace } from '../../../../../actions/mapActions';
 
 export default class PlacesList extends Component {
-  state = {
-    selectedKey: null,
-  }
 
-  onItemClick = (placeId, location, map) => {
-    map.panTo(location);
-    this.setState({
-      selectedKey: placeId,
-    });
+  onItemClick = (placeId) => {
+    this.props.selectPlace(placeId);
   }
   getPlacesList = ({placeId, location, name, adress, type, tags, rating}) => {
     return (
@@ -21,7 +16,7 @@ export default class PlacesList extends Component {
           this.onItemClick(placeId, location, this.props.map)}}
       >
         {name}
-        {placeId === this.state.selectedKey &&
+        {placeId === this.props.places.activePlaceId &&
           <div style={{paddingLeft: '10px', fontStyle: 'italic', width: '250px'}}>
             {adress}<br />
             {type}<br />
@@ -34,23 +29,14 @@ export default class PlacesList extends Component {
   }
 
   render() {
-    // const props = this.props;
+    const {placesArray, activePlaceId} = this.props.places;
     return (
       <div style={{overflow: 'auto', height:'400px'}}>
       <List
           size="small"
-          footer={
-            <Alert 
-              message="Перевищено кількість об'єктів одного типу у вказаному радіусі пошуку" 
-              type="warning"
-              closable
-              style={{fontSize: '8pt'}}
-            />
-          }
           bordered
-          dataSource={this.props.places}
+          dataSource={placesArray}
           renderItem={this.getPlacesList}
-          
       />
       </div>
     );

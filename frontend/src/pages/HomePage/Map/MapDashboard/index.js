@@ -16,12 +16,12 @@ const mapDispatchToProps = (dispatch) => {
 
 class MapDashboard extends Component {
   render() {
-    const {search, filter, places, gmaps, endSearchPosition, searchPlaces, getLocation} = this.props;
+    const {search, filter, places, gmaps, endSearchPosition, searchPlaces, getLocation, selectPlace} = this.props;
     return (
       <div>
         <PlacesSearch {...search} {...gmaps} getLocation={getLocation} endSearchPosition={endSearchPosition} searchPlaces={searchPlaces} />
         <PlacesFilter {...filter} />
-        <PlacesList places={places} map={gmaps.map}/>
+        <PlacesList places={places} selectPlace={selectPlace}/>
       </div>
     );
   }
