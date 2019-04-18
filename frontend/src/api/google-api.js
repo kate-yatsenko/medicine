@@ -1,8 +1,4 @@
-import {
-  HOSPITAL_NAMES, 
-  DOCTOR_NAMES, 
-  SEARCH_CONDITIONS,
-} from '../constants/mapConstants'
+import {SEARCH_CONDITIONS} from '../constants/mapConstants'
 
 class Place {
   constructor(placeResult, searchType) {
@@ -18,23 +14,6 @@ class Place {
       users: user_ratings_total,
     };
   }
-  // getType() {
-  //   for (const name of HOSPITAL_NAMES) {
-  //     if (this.name.includes(name)) {
-  //       return 'hospital';
-  //     }
-  //   }
-  //   for (const name of DOCTOR_NAMES) {
-  //     if (this.name.includes(name)) {
-  //       return 'doctor';
-  //     }
-  //   }
-  //   for (const type of SEARCH_CONDITIONS[searchType].CHECK_TYPES) {
-  //     if (this.tags.includes(type)) {
-  //       return type;
-  //     }
-  //   }
-  // }
 }
 
 const _searchNearbyPlaces = (placesService,  searchRequest) => {
@@ -48,18 +27,11 @@ const _searchNearbyPlaces = (placesService,  searchRequest) => {
           placeResults = placeResults.concat(results);
           if (pagination.hasNextPage) {
             pagination.nextPage();
-            console.log(status);
-            console.log({searchRequest});
           } else {
-            console.log(status);
-            console.log(searchRequest);
-            console.log(placeResults);
             resolve({placeResults});
           }
           break;
         case 'OVER_QUERY_LIMIT':
-          console.log(status);
-          console.log(searchRequest);
           resolve({placeResults, alert: status});
           break;
         case 'INVALID_REQUEST':
@@ -127,7 +99,6 @@ export function searchMedicPlaces(placesService, location, radius, searchType) {
   let sentSearchRequests = searchRequests.map((searchRequest, index) => {
     const timeout = 1500 * Math.trunc(index / 3);
     return _timeout(timeout).then(() => {
-      console.log(timeout);
       return _searchNearbyPlaces(placesService, searchRequest);
     });
   });

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {List, Alert } from 'antd';
-import { selectPlace } from '../../../../../actions/mapActions';
+import {List} from 'antd';
 
 export default class PlacesList extends Component {
 

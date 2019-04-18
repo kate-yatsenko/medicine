@@ -7,7 +7,7 @@ import {
   SELECT_PLACE,
 } from '../constants/mapConstants';
 import {combineReducers} from 'redux';
-import {handleAction, handleActions, combineActions} from 'redux-actions';
+import {handleActions, combineActions} from 'redux-actions';
 
 const gmaps = handleActions(
   {
