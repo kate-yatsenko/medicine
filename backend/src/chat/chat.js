@@ -77,7 +77,8 @@ function onConnection(io) {
     socket.on('message', onMessage(io, socket));
 
     socket.on('disconnect', () => {
-      io.broadcast.emit('offline', socket.id);
+      const { id } = socket;
+      io.broadcast.emit('offline', id);
     });
 
     socket.broadcast.emit('online', socket.id);
@@ -85,7 +86,20 @@ function onConnection(io) {
 }
 
 function attach(server) {
-  const io = socketIo(server);
+  const io = socketIo(server, {
+    // CORS fun
+    handlePreflightRequest: (req, res) => {
+      res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+      res.setHeader('Access-Control-Request-Method', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+      res.setHeader('Access-Control-Allow-Headers', 'x-id');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      if (req.method === 'OPTIONS' || req.method === 'GET') {
+        res.writeHead(200);
+        res.end();
+      }
+    },
+  });
 
   io.engine.generateId = getCustomIdGenerator(io);
   io.use(validateIds);
