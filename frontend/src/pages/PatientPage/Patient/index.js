@@ -9,7 +9,9 @@ const Patient = () => {
 
   return (
     <Content className="page">
-      <TableSearch placeholder="Пошук лікаря" type="patient"/>
+      <div className="action-field action-patient">
+        <TableSearch placeholder="Пошук лікаря" type="patient"/>
+      </div>
       <TablePatient/>
     </Content>
   );

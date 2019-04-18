@@ -1,0 +1,11 @@
+.action-field {
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  justify-content: center;
+
+  @media only screen and (min-width: 610px) {
+    & {
+      justify-content: space-between;
+    }
+  }
+}

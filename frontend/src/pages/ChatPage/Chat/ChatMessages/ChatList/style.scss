@@ -1,0 +1,13 @@
+.chat {
+  &-list {
+    height: 500px;
+    overflow-y: auto;
+
+    &-item {
+      border: 1px solid #d7d2d2d9;
+      padding: 15px;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+  }
+}

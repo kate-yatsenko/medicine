@@ -5,12 +5,14 @@ import TableModal from "./TableModal";
 import AddButton from "./AddButton";
 import { Layout } from 'antd';
 
+import './style.scss';
+
 const { Content } = Layout;
 
 const Doctor = () => {
   return (
     <Content className="page">
-      <div className="d-flex justify-content-between">
+      <div className="d-flex action-field">
         <TableSearch placeholder="Пошук пацієнта" type="doctor"/>
         <AddButton/>
       </div>

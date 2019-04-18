@@ -1,19 +1,7 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as chatActions from 'actions/chatActions';
 import Helmet from 'react-helmet';
 import Chat from './Chat'
 
-function mapStateToProps({ chatState }) {
-  return { ...chatState };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    ...chatActions,
-  }, dispatch);
-}
 
 const ChatPage = (props) => {
   return (
@@ -24,4 +12,4 @@ const ChatPage = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);
+export default ChatPage;
