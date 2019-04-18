@@ -51,8 +51,11 @@ export default class PlacesSearch extends Component {
           <StandaloneSearchBox
             onLoad={ref => {this.searchBox = ref;}}
             onPlacesChanged={() => {
-              const [{formatted_address: adress, geometry: {location: position}}] = this.searchBox.getPlaces();
-              endSearchPosition({position, adress, alerts: [], errors: []});
+              const places = this.searchBox.getPlaces();
+              if (places.length) {
+                const [{formatted_address: adress, geometry: {location: position}}] = places;
+                endSearchPosition({position, adress, alerts: [], errors: []});
+              }
             }}
           >
             <Input 
