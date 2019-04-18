@@ -24,11 +24,14 @@ class MarkersLayer extends Component {
   }
   static counter = 0;
 
-  getMarkersList(places) {
-    return places.map((place) => {
+  getMarkersList({placesArray, activePlaceId}) {
+    return placesArray.map((place) => {
+      const placeId = place.placeId;
+      const active = (placeId === activePlaceId);
       return (
         <MedicMarker 
-          key={place.placeId} 
+          className={active ? "map-marker-active" : ""}
+          key={placeId} 
           place={place}
           icon="\images\map-marker-health.png"
           zIndex={1}
@@ -37,23 +40,36 @@ class MarkersLayer extends Component {
   }
   getAlertsList(messages, type) {
     return messages.map((message) => (
-      <Alert className="map-alert" key={MarkersLayer.counter++} message={message} type={type} showIcon closable 
-        // style={{
-        //   backgroundColor: 'hsla(33, 50%, 75%, 0.8)',
-        //   margin: '5px',
-        //   position: 'relative',
-        //   top: '30px',
-        //   width: '50%',
-        // }}
+      <Alert 
+        className="map-alert" 
+        key={MarkersLayer.counter++} 
+        message={message} 
+        type={type} 
+        showIcon 
+        closable 
       />
     ))
   }
 
   componentDidUpdate() {
-    const position = (this.props.filter.selectedPlace && this.props.filter.selectedPlace.position) 
-      || this.props.search.position;
-    if (this.props.gmaps.map && position) {
-      this.props.gmaps.map.panTo(position);
+    const map = this.props.gmaps.map
+    if (!map) {
+      return;
+    }
+    const {placesArray, activePlaceId} = this.props.places;
+    let centerLocation;
+    if (activePlaceId) {
+      centerLocation = placesArray.find((place) => {
+        if (place.placeId === activePlaceId) {
+          return true;
+        }
+        return false;
+      }).location;
+    } else {
+      centerLocation = this.props.search.position;
+    }
+    if (centerLocation) {
+      this.props.gmaps.map.panTo(centerLocation);
     }
   }
 
@@ -63,7 +79,7 @@ class MarkersLayer extends Component {
     const {position: location, adress, alerts, errors} = search;
     return (
       <div className="markers-layer">
-        {places.length && this.getMarkersList(places)}
+        {places.placesArray.length && this.getMarkersList(places)}
         { location &&
           <MedicMarker 
             place={{
@@ -73,10 +89,6 @@ class MarkersLayer extends Component {
               type: 'searchPosition',
               tags: [],
             }}
-            // position={position} 
-            // name="центр пошуку"
-            // adress={adress}
-            // types={['searchPosition']}
             icon="\images\map-marker-user.png"
             zIndex={2}
           />

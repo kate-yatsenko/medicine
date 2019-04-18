@@ -4,7 +4,6 @@ import {
   START_SEARCH_PLACES, 
   END_SEARCH_POSITION, 
   END_SEARCH_PLACES, 
-  SET_PLACES_FILTER, 
   SELECT_PLACE,
 } from '../constants/mapConstants';
 import {combineReducers} from 'redux';
@@ -47,27 +46,22 @@ const search = handleActions(
   },
   {
     position: null,
-    // position: {lat: 49.44444, lng: 32.05972},
     radius: 500,
     adress: null,
-    // adress: 'бульвар Шевченка, 185, Черкаси',
     alerts: [],
     errors: [],
   }
 );
 
 // TODO: ? add filtered & active pleces instead of filter reducer
-const places = handleAction(
-  END_SEARCH_PLACES, (state, action) => (action.payload.places),
-  []
-);
-
-// TODO: ? remove filter to component state
-const filter = handleAction(
-  SET_PLACES_FILTER, (state, action) => ({...state, ...action.payload}),
+const places = handleActions(
   {
-    types: ['hospital', 'doctor'],
-    name: '',
+    [END_SEARCH_PLACES]: (state, action) => ({...state, placesArray: action.payload.places}),
+    [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload}),
+  },
+  {
+    placesArray: [],
+    activePlaceId: null,
   }
 );
 
@@ -75,7 +69,6 @@ const mapState = combineReducers({
   gmaps,
   search,
   places,
-  filter,
 });
 
 export default mapState;
