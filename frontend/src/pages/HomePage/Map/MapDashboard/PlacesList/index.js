@@ -4,16 +4,13 @@ import { selectPlace } from '../../../../../actions/mapActions';
 
 export default class PlacesList extends Component {
 
-  onItemClick = (placeId) => {
-    this.props.selectPlace(placeId);
-  }
-  getPlacesList = ({placeId, location, name, adress, type, tags, rating}) => {
+  getPlacesList = ({placeId, name, adress, type, tags, rating}) => {
     return (
       <List.Item 
         key={placeId} 
         style={{cursor:'pointer',}}
         onClick={() => {
-          this.onItemClick(placeId, location, this.props.map)}}
+          this.props.selectPlace({activePlaceId: placeId, zoom: this.props.map.getZoom})}}
       >
         {name}
         {placeId === this.props.places.activePlaceId &&
@@ -29,13 +26,12 @@ export default class PlacesList extends Component {
   }
 
   render() {
-    const {placesArray, activePlaceId} = this.props.places;
     return (
       <div style={{overflow: 'auto', height:'400px'}}>
       <List
           size="small"
           bordered
-          dataSource={placesArray}
+          dataSource={this.props.places.placesArray}
           renderItem={this.getPlacesList}
       />
       </div>

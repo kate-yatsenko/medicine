@@ -52,7 +52,7 @@ class MarkersLayer extends Component {
   }
 
   componentDidUpdate() {
-    const map = this.props.gmaps.map
+    const {map, zoom} = this.props.gmaps;
     if (!map) {
       return;
     }
@@ -71,13 +71,6 @@ class MarkersLayer extends Component {
     if (centerLocation) {
       map.panTo(centerLocation);
     }
-
-    const radius = this.props.search.radius;
-    let zoom = 16;
-    zoom = radius > 200 ? 15 : zoom;
-    zoom = radius > 400 ? 14 : zoom;
-    zoom = radius > 1200 ? 13 : zoom;
-    zoom = radius > 3500 ? 12 : zoom;
     map.setZoom(zoom);
   }
 

@@ -9,10 +9,8 @@ export default class PlacesSearch extends Component {
   }
 
   marks = {
-    100: '',
-    500: '500 m',
-    2000: '2 km',
-    5000: '5 km',
+    100: '100m',
+    5000: '5km',
   };
   onChangeRadius = (value) => {
     // if Number.isNaN

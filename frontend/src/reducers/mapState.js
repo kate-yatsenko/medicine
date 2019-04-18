@@ -16,9 +16,10 @@ const gmaps = handleActions(
       ...state, 
       loadingMessage: action.payload.loadingMessage,
     }),
-    [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES)]: (state, action) => ({
+    [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES, SELECT_PLACE)]: (state, action) => ({
       ...state, 
       loadingMessage: null,
+      zoom: action.payload.zoom,
     }),
   },
   {
@@ -26,6 +27,7 @@ const gmaps = handleActions(
     placesService: null,
     geocoderService: null,
     loadingMessage: null,
+    zoom: 15,
   }
 );
 
@@ -58,7 +60,7 @@ const search = handleActions(
 const places = handleActions(
   {
     [END_SEARCH_PLACES]: (state, action) => ({...state, placesArray: action.payload.places, activePlaceId: null}),
-    [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload}),
+    [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload.activePlaceId}),
   },
   {
     placesArray: [],

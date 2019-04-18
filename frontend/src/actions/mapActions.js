@@ -98,7 +98,12 @@ export const searchPlaces = ({placesService, position, radius, positionAlerts=[]
         });
         alerts = alerts.concat(positionAlerts);
         errors = errors.concat(positionErrors);
-        dispatch(endSearchPlaces({places, alerts, errors}));
+        let zoom = 16;
+        zoom = radius > 200 ? 15 : zoom;
+        zoom = radius > 400 ? 14 : zoom;
+        zoom = radius > 1200 ? 13 : zoom;
+        zoom = radius > 3500 ? 12 : zoom;
+        dispatch(endSearchPlaces({places, alerts, errors, zoom}));
       })
   }
 }
