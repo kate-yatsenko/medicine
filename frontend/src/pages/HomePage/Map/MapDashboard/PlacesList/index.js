@@ -3,7 +3,7 @@ import {List} from 'antd';
 
 export default class PlacesList extends Component {
 
-  getPlacesList = ({placeId, name, adress, type, tags, rating}) => {
+  getPlacesList = ({placeId, name, adress, type, tags, rating, ratingUsers}) => {
     return (
       <List.Item 
         key={placeId} 
@@ -19,7 +19,7 @@ export default class PlacesList extends Component {
             {adress}<br />
             {type}<br />
             {tags.join(', ')}<br />
-            {`рейтинг: ${rating.value?rating.value:'-'}/5 (відгуків - ${rating.users?rating.users:0})`}
+            {`рейтинг: ${rating?rating:'-'}/5 (відгуків - ${ratingUsers?ratingUsers:0})`}
           </div>
         }
       </List.Item>
