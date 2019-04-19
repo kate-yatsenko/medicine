@@ -25,7 +25,10 @@ export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts,
   places: {placesArray: places, activePlaceId: null},
   gmaps: {messages: {alerts, errors, loading: null}, zoom},
 }));
-export const selectPlace = createAction(SELECT_PLACE);
+export const selectPlace = createAction(SELECT_PLACE, ({activePlaceId, zoom}) => ({
+  places: {activePlaceId},
+  gmaps: {zoom},
+}));
 
 export const getLocation = (geocoderService, placesService) => {
   return (dispatch, getState) => {

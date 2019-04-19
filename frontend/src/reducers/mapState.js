@@ -12,16 +12,16 @@ import {handleActions, combineActions} from 'redux-actions';
 const gmaps = handleActions(
   {
     [INIT_MAP_SERVICES]: (state, action) => ({...state, ...action.payload}),
-    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES, END_SEARCH_POSITION, END_SEARCH_PLACES)]: (state, action) => ({
+    [combineActions(
+      START_SEARCH_POSITION,
+      START_SEARCH_PLACES,
+      END_SEARCH_POSITION,
+      END_SEARCH_PLACES,
+      SELECT_PLACE
+    )]: (state, action) => ({
       ...state, 
       ...action.payload.gmaps,
     }),
-    // TODO: 
-    // [SELECT_PLACE]: (state, action) => ({
-    //   ...state, 
-    //   messages: {...state.messageges, loadind: action.payload.messages.loading},
-    //   zoom: action.payload.zoom,
-    // }),
   },
   {
     map: null,
@@ -35,14 +35,16 @@ const gmaps = handleActions(
     }
   }
 );
-
 const search = handleActions(
   {
-    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES, END_SEARCH_POSITION)]: (state, action) => {
-      return ({
+    [combineActions(
+      START_SEARCH_POSITION,
+      START_SEARCH_PLACES,
+      END_SEARCH_POSITION
+    )]: (state, action) => ({
       ...state, 
       ...action.payload.search,
-    })},
+    }),
   },
   {
     position: {lat: 49.44444, lng: 32.05972},
@@ -51,14 +53,15 @@ const search = handleActions(
     type: 'MAIN',
   }
 );
-
-// TODO: ? add filtered & active pleces instead of filter reducer
 const places = handleActions(
-  {
-    [END_SEARCH_PLACES]: (state, action) => {
-      debugger;
-      return ({...state, ...action.payload.places});},
-    [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload.activePlaceId}),
+  { 
+    [combineActions(
+      END_SEARCH_PLACES,
+      SELECT_PLACE
+    )]: (state, action) => ({
+      ...state, 
+      ...action.payload.places,
+    }),
   },
   {
     placesArray: [],
