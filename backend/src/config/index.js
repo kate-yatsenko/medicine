@@ -5,46 +5,51 @@ if (dotenvConfig.error) throw dotenvConfig.error;
 const { env } = process;
 
 module.exports = {
-  DB: {
-    USER: env.DB_USER,
-    PASSWORD: env.DB_PASSWORD,
-    HOST: env.DB_HOST,
-    NAME: env.DB_NAME,
-    PORT: env.DB_PORT,
-    POOL_MIN: 0,
-    POOL_MAX: 2,
+  db: {
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    host: env.DB_HOST,
+    name: env.DB_NAME,
+    port: env.DB_PORT,
+    poolMin: 0,
+    poolMax: 2,
 
-    SERIAL_MIN: 1,
-    SERIAL_MAX: 2147483647,
+    serialMin: 1,
+    serialMax: 2147483647,
   },
 
-  CHAT_PORT: env.CHAT_PORT,
+  chatPort: env.CHAT_PORT,
 
-  GOOGLE_CLIENT_ID: env.GOOGLE_CLIENT_ID,
+  googleClientId: env.GOOGLE_CLIENT_ID,
 
-  PORT: env.API_PORT,
-  CORS_ORIGIN: env.API_CORS_ORIGIN,
-  CORS_ALLOW_METHODS: 'GET,POST,OPTIONS',
-  CORS_MAX_AGE: 86400, // 1 day
+  port: env.API_PORT,
+  cors: {
+    jrigin: env.API_CORS_ORIGIN,
+    allowMethod: 'GET,POST,OPTIONS',
+    maxAge: 86400, // 1 day
+  },
 
-  RESPONSE_JSON_ERROR_NAME: 'error',
-  RESPONSE_RESULTS_PER_PAGE: 10,
-
-  SEARCH_STRING_MIN_LENGTH: 0,
-  SEARCH_RESULTS_LIMIT: 100,
-
-  ENDPOINT_PREFIX_V1: '/v1',
-  ENDPOINT_PREFIX_AUTH: '/auth',
-  ENDPOINT_PREFIX_USER: '/users',
-  ENDPOINT_PREFIX_ENTRY: '/entries',
-  ENDPOINT_PREFIX_ENTRY_TYPE: '/etypes',
-  ENDPOINT_PREFIX_SEARCH: '/search',
-
-  ENDPOINT_ROOT_RESPONSE: {
+  responseJsonErrorName: 'error',
+  responseResultsPerPage: 10,
+  responseRoot: {
     name: 'Medicine API',
-    version: '1.0',
+    version: process.env.npm_package_version || 'Use npm to get version number',
     git: 'https://github.com/kate-yatsenko/medicine',
   },
 
-  NODE_ENV: env.NODE_ENV,
+  searchStringMinLength: 0,
+  searchStringMaxLength: 100,
+
+  endpoint: {
+    prefix: {
+      v1: '/v1',
+      auth: '/auth',
+      user: '/users',
+      entry: '/entries',
+      entryType: '/etypes',
+      search: '/search',
+    },
+  },
+
+  nodeEnv: env.NODE_ENV,
 };

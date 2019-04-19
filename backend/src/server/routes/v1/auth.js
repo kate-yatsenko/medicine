@@ -4,18 +4,23 @@ const { OAuth2Client } = require('google-auth-library');
 
 const services = require('../../../services');
 
-const { ENDPOINT_PREFIX_AUTH, GOOGLE_CLIENT_ID } = require('../../../config');
+const {
+  googleClientId,
+  endpoint: {
+    prefix: { auth },
+  },
+} = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_AUTH,
+  prefix: auth,
 });
 
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(googleClientId);
 
 async function verify(idToken) {
   const ticket = await client.verifyIdToken({
     idToken,
-    audience: GOOGLE_CLIENT_ID,
+    audience: googleClientId,
   });
 
   return ticket.getPayload();

@@ -1,6 +1,6 @@
 const knex = require('./knex');
 
-const { SEARCH_RESULTS_LIMIT } = require('../config');
+const { searchStringMaxLength: searchLimit } = require('../config');
 
 module.exports = {
   createUser({ name, email, gender, phone, address, birth }) {
@@ -62,7 +62,7 @@ module.exports = {
     return knex({ u: 'user' })
       .where('u.name', 'ilike', `%${name}%`)
       .andWhereNot({ 'u.id': excludeId })
-      .limit(SEARCH_RESULTS_LIMIT)
+      .limit(searchLimit)
       .orderBy('u.name')
       .select('u.id', 'u.name', 'u.email', 'u.birth');
   },

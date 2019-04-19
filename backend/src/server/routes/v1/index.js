@@ -5,16 +5,18 @@ const entryTypes = require('./entry-type');
 const auth = require('./auth');
 
 const {
-  ENDPOINT_PREFIX_V1,
-  ENDPOINT_ROOT_RESPONSE,
+  endpoint: {
+    prefix: { v1 },
+  },
+  responseRoot,
 } = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_V1,
+  prefix: v1,
 });
 
 router.get('/', ctx => {
-  ctx.body = ENDPOINT_ROOT_RESPONSE;
+  ctx.body = responseRoot;
 });
 
 router.use(auth.routes()).use(auth.allowedMethods());

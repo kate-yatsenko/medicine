@@ -6,10 +6,14 @@ const services = require('../../../services');
 const entryRoute = require('./entry');
 const searchRoute = require('./search');
 
-const { ENDPOINT_PREFIX_USER } = require('../../../config');
+const {
+  endpoint: {
+    prefix: { user },
+  },
+} = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_USER,
+  prefix: user,
 });
 
 function getUserProfile(ctx) {

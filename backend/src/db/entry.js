@@ -1,6 +1,6 @@
 const knex = require('./knex');
 
-const { RESPONSE_RESULTS_PER_PAGE: RPP } = require('../config');
+const { responseResultsPerPage: limit } = require('../config');
 
 async function getEntriesWhere(
   whereClause,
@@ -56,14 +56,14 @@ async function getEntriesWhere(
     .count()
     .first();
 
-  const offset = (page - 1) * RPP;
+  const offset = (page - 1) * limit;
   query
     .offset(offset)
-    .limit(RPP)
+    .limit(limit)
     .orderBy('e.created', 'desc');
 
   const entries = await addSelect(query);
-  return { page, total: count, limit: RPP, entries };
+  return { page, total: count, limit, entries };
 }
 
 module.exports = {
