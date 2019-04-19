@@ -3,16 +3,18 @@ const Router = require('koa-router');
 const services = require('../../../services');
 
 const {
-  ENDPOINT_PREFIX_SEARCH,
-  SEARCH_STRING_MIN_LENGTH: MIN_LENGTH,
+  endpoint: {
+    prefix: { search },
+  },
+  searchStringMinLength: minLength,
 } = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_SEARCH,
+  prefix: search,
 });
 
 async function validateSearch(ctx, next) {
-  if (MIN_LENGTH <= 0) {
+  if (minLength <= 0) {
     await next();
     return;
   }
@@ -21,7 +23,7 @@ async function validateSearch(ctx, next) {
   ctx.assert(rawName && rawName.length, 400, 'Invalid search query!');
 
   const name = rawName.trim();
-  ctx.assert(name.length >= MIN_LENGTH, 400, 'Search name is too short!');
+  ctx.assert(name.length >= minLength, 400, 'Search name is too short!');
 
   ctx.query.name = name;
   await next();

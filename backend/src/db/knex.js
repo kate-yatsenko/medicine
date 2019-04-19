@@ -1,19 +1,19 @@
 const createKnex = require('knex');
 
-const { DB, NODE_ENV } = require('../config');
+const { db, nodeEnv } = require('../config');
 
-const isProd = NODE_ENV === 'production';
+const isProd = nodeEnv === 'production';
 
 const knex = createKnex({
   client: 'pg',
   connection: {
-    user: DB.USER,
-    host: DB.HOST,
-    database: DB.NAME,
-    password: DB.PASSWORD,
-    port: DB.PORT,
+    user: db.user,
+    host: db.host,
+    database: db.name,
+    password: db.password,
+    port: db.port,
   },
-  pool: { min: DB.POOL_MIN, max: DB.POOL_MAX },
+  pool: { min: db.poolMin, max: db.poolMax },
 
   debug: !isProd,
   asyncStackTraces: !isProd,

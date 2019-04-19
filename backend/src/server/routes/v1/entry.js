@@ -4,10 +4,14 @@ const koaBody = require('koa-body');
 const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
-const { ENDPOINT_PREFIX_ENTRY } = require('../../../config');
+const {
+  endpoint: {
+    prefix: { entry },
+  },
+} = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_ENTRY,
+  prefix: entry,
 });
 
 function getPayload(ctx) {

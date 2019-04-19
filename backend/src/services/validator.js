@@ -1,7 +1,7 @@
 const utils = require('../utils');
 
 const {
-  DB: { SERIAL_MIN, SERIAL_MAX },
+  db: { serialMin, serialMax },
 } = require('../config');
 
 module.exports = {
@@ -10,8 +10,8 @@ module.exports = {
 
     if (Number.isNaN(id)) throw new Error('ID must be a number!');
 
-    if (!utils.inRange(id, SERIAL_MIN, SERIAL_MAX)) {
-      throw new Error(`ID must be in range ${SERIAL_MIN} to ${SERIAL_MAX}`);
+    if (!utils.inRange(id, serialMin, serialMax)) {
+      throw new Error(`ID must be in range ${serialMin} to ${serialMax}`);
     }
 
     return id;
