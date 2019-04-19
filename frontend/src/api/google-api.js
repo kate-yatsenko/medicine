@@ -8,10 +8,8 @@ class Place {
     this.name = name;
     this.adress = vicinity;
     this.tags = types;
-    this.rating = {
-      value: rating,
-      users: user_ratings_total,
-    };
+    this.rating = rating;
+    this.ratingUsers = user_ratings_total;
   }
 }
 

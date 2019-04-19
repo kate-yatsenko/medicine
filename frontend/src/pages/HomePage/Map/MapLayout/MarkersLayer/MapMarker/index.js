@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
-import {Button, Slider, InputNumber, Input, Radio} from 'antd';
+import {Card, Tag} from 'antd';
 
 import './style.css';
 
@@ -20,14 +20,22 @@ export default class MapMarker extends Component {
       return {mouseOver: !state.mouseOver};
     });
   };
+  getTagsList(tags) {
+    return tags.map((tag) => {
+      if (!(tag === 'point_of_interest' || tag === 'establishment')){
+        return <span key={tag} className="map-tag" >{tag}</span>;
+      }
+      return;
+    });
+  }
 
   render() {
-    const {state: {visibleInfoWindow, mouseOver}, toggleInfoWindow, toggleMousOver} = this;
+    const {state: {visibleInfoWindow, mouseOver}, toggleInfoWindow, toggleMousOver, getTagsList} = this;
     const {active, type, place} = this.props;
-    const {position, name, adress, tags} = place;
+    const {position, name, adress, tags, rating, ratingUsers} = place;
     const icon = `\\images\\map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
-    const zIndex = active ? 3 : type=='USER' ? 2 : 1;
-debugger;
+    const zIndex = active ? 3 : type === 'USER' ? 2 : 1;
+
     return (
       <Marker
         onClick={toggleInfoWindow}
@@ -53,15 +61,21 @@ debugger;
         >
           {/* TODO: component InfoWindowContent. Add photo? */}
           {/* <InfoWindowContent types={types} name={name} adress={adress}/> */}
-          <div style={{
-            background: `white`,
-            border: `1 solid #ccc`,
-            padding: 5,
-            color: 'blue'
-          }}>
-            tags: {tags.join(', ')} <br />
-            name: {name} <br />
-            adress: {adress} <br />
+          {/* <Card
+            size="small"
+            title={name}
+            // extra={rating && <Rate disabled defaultValue={rating} character="+" />}
+            style={{ width: 300 }}
+          >
+            <p>adress: {adress}</p>
+            <p>tags: {tags.join(', ')}</p>
+          </Card> */}
+
+          <div className="map-info-window" >
+             <h1>{name}</h1>
+             <p><b>Адреса: </b>{adress}</p>
+             {!(rating===false) && <p><b>Рейтинг: </b>{rating?rating:'?'}/5 (відгуків - {ratingUsers?ratingUsers:0})</p>}
+             {tags && <p>{getTagsList(tags)}</p>}
           </div>
         </InfoWindow>
       </Marker>

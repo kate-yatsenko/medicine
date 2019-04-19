@@ -68,7 +68,7 @@ class MarkersLayer extends Component {
               position,
               adress,
               name: "Цент пошуку",
-              tags: [],
+              rating: false,
             }}
             type="USER"
           />
