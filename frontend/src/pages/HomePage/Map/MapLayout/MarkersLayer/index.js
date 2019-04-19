@@ -68,10 +68,10 @@ class MarkersLayer extends Component {
     } else {
       centerLocation = this.props.search.position;
     }
+    map.setZoom(zoom);
     if (centerLocation) {
       map.panTo(centerLocation);
     }
-    map.setZoom(zoom);
   }
 
   render() {
