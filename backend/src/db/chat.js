@@ -26,11 +26,15 @@ module.exports = {
     return knex({ m: 'message' })
       .where({ sender, receiver })
       .orWhere({ sender: receiver, receiver: sender })
+      .join('user as s', { 's.id': 'm.sender' })
+      .join('user as r', { 'r.id': 'm.receiver' })
       .orderBy('m.created', 'asc')
       .select(
         'm.id',
         'm.message',
         'm.sender',
+        { senderName: 's.name' },
+        { receiverName: 'r.name' },
         'm.receiver',
         'm.created',
         'm.isRead',
