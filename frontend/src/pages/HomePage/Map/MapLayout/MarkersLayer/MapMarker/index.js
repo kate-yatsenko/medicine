@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
-import {Card, Tag} from 'antd';
 
 import './style.css';
 
@@ -25,7 +24,7 @@ export default class MapMarker extends Component {
       if (!(tag === 'point_of_interest' || tag === 'establishment')){
         return <span key={tag} className="map-tag" >{tag}</span>;
       }
-      return;
+      return '';
     });
   }
 
@@ -59,18 +58,6 @@ export default class MapMarker extends Component {
             disableAutoPan: true,
           }}
         >
-          {/* TODO: component InfoWindowContent. Add photo? */}
-          {/* <InfoWindowContent types={types} name={name} adress={adress}/> */}
-          {/* <Card
-            size="small"
-            title={name}
-            // extra={rating && <Rate disabled defaultValue={rating} character="+" />}
-            style={{ width: 300 }}
-          >
-            <p>adress: {adress}</p>
-            <p>tags: {tags.join(', ')}</p>
-          </Card> */}
-
           <div className="map-info-window" >
              <h1>{name}</h1>
              <p><b>Адреса: </b>{adress}</p>
