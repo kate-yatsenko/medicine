@@ -38,9 +38,8 @@ const gmaps = handleActions(
 const search = handleActions(
   {
     [combineActions(
-      START_SEARCH_POSITION,
-      START_SEARCH_PLACES,
-      END_SEARCH_POSITION
+      END_SEARCH_POSITION,
+      END_SEARCH_PLACES
     )]: (state, action) => ({
       ...state, 
       ...action.payload.search,
@@ -50,7 +49,7 @@ const search = handleActions(
     position: {lat: 49.44444, lng: 32.05972},
     adress: 'Черкаси',
     radius: 500,
-    type: 'MAIN',
+    type: 'MEDIC',
   }
 );
 const places = handleActions(

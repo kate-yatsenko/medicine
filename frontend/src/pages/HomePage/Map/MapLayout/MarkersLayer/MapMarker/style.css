@@ -1,0 +1,17 @@
+.map-info-window h1 {
+  font: bold 14px sans-serif;
+  border-bottom: solid 1px gray;
+  padding-bottom: 5px;
+}
+
+.map-info-window p {
+  margin-bottom: 5px;
+}
+
+.map-tag {
+  border-radius: 5px;
+  background-color: hsl(0, 0%, 85%);
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-right: 2px;
+}
