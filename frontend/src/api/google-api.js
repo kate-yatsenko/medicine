@@ -8,7 +8,6 @@ class Place {
     this.name = name;
     this.adress = vicinity;
     this.tags = types;
-    this.type = searchType;
     this.rating = {
       value: rating,
       users: user_ratings_total,
@@ -114,54 +113,6 @@ export function searchMedicPlaces(placesService, location, radius, searchType) {
       return {places, alerts, errors};
   })
 }
-
-
-
-
-// export function searchMedicPlaces(placesService, location, radius) {
-//   const searchRequests = [
-//     ...SEARCH_PLACE_TYPES.map(type => {
-//       return _searchNearbyPlaces(placesService, {location, radius, type});
-//     }),
-//     ...SEARCH_PLACE_NAMES.map(name => {
-//       return _searchNearbyPlaces(placesService, {location, radius, name});
-//     })
-//   ];
-//   return Promise.all(searchRequests)
-//     .then((responseResults) => {
-//       let unicPlaceIds = [];
-//       let results = responseResults.reduce((results, {placeResults, alert, error}, ) => {
-//         results.placeResults = results.placeResults.concat(placeResults);
-//         if (placeResults.length === 60) {
-//           results.alerts.add('OVER_PLACES_LIMIT');
-//         }
-//         if (alert) {
-//           results.alerts.add(alert);
-//         }
-//         if (error) {
-//           results.alerts.add(error);
-//         }
-//         return results;
-//       }, {placeResults: [], alerts: new Set(), errors: new Set()});
-//       const places = results.placeResults.reduce((places, placeResult) => {
-//         if (!placeResult.types.some((type) => CHECK_PLACE_TYPES.includes(type))) {
-//           return places;
-//         }
-//         if (unicPlaceIds.includes(placeResult.place_id)) {
-//           return places;
-//         }
-//         unicPlaceIds.push(placeResult.place_id);
-//         places.push(new Place(placeResult));
-//         return places;
-//       }, []);
-//       const alerts = [...results.alerts];
-//       const errors = [...results.errors];
-//       if (!places.length) {
-//         alerts.push('ZERO_RESULTS');
-//       }
-//       return {places, alerts, errors};
-//   })
-// }
 
 export function getAdressFromPosition(geocoderService, position) {
   return new Promise((resolve, reject) => {

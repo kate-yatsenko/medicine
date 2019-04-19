@@ -15,16 +15,16 @@ const mapDispatchToProps = (dispatch) => {
 
 class MarkersLayer extends Component {
   getMarkersList({placesArray, activePlaceId}) {
+    const type = this.props.search.type;
     return placesArray.map((place) => {
       const placeId = place.placeId;
       const active = (placeId === activePlaceId);
       return (
         <MapMarker 
-          className={active ? "map-marker-active" : ""}
           key={placeId} 
           place={place}
-          icon="\images\map-marker-health.png"
-          zIndex={1}
+          type={type}
+          active={active}
         />);
     })
   }
@@ -63,9 +63,9 @@ class MarkersLayer extends Component {
               location, 
               name: "Цент пошуку",
               adress,
-              type: 'USER',
               tags: [],
             }}
+            type="USER"
             icon="\images\map-marker-user.png"
             zIndex={2}
           />

@@ -20,9 +20,11 @@ export default class MapMarker extends Component {
 
   render() {
     const {props, state, toggleInfoWindow, toggleMousOver} = this;
-    const {icon, place, zIndex} = props;
+    const {active, type, place} = props;
     const {visibleInfoWindow, mouseOver} = state;
-    const {location, name, adress, tags, type} = place;
+    const {location, name, adress, tags} = place;
+    const icon = `\\images\\map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
+    const zIndex = active ? 3 : type=='USER' ? 2 : 1;
 
     return (
       <Marker
@@ -30,16 +32,13 @@ export default class MapMarker extends Component {
         onMouseOver={toggleMousOver}
         onMouseOut={toggleMousOver}
         position={location}
-        // TODO: costom icons for different place types
         icon={icon}
         zIndex={zIndex}
       >
       {true &&
         <InfoWindow
           // disabling infoWindow on load
-          onLoad={() => {
-            this.toggleInfoWindow();
-          }}
+          onLoad={() => {this.toggleInfoWindow()}}
           // removing close button
           onDomReady={ () => {
             const closeButton = document.querySelector('.gm-style-iw>button');
@@ -60,7 +59,6 @@ export default class MapMarker extends Component {
             color: 'blue'
           }}>
             tags: {tags.join(', ')} <br />
-            type: {type} <br />
             name: {name} <br />
             adress: {adress} <br />
           </div>

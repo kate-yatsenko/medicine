@@ -10,7 +10,6 @@ export default class PlacesList extends Component {
         style={{cursor:'pointer',}}
         onClick={() => {
           const zoom = this.props.map.getZoom();
-          debugger;
           this.props.selectPlace({activePlaceId: placeId, zoom});
         }}
       >
