@@ -63,14 +63,15 @@ export default class PlacesSearch extends Component {
           </StandaloneSearchBox>
         : <Input placeholder="Goople Maps API librares not loaded" />
         }
+        Тип пошуку
         <Radio.Group 
           defaultValue={type} 
           buttonStyle="solid"
           onChange={onChangeSearchType}
         >
-          <Radio.Button value="MAIN">MAIN</Radio.Button>
-          <Radio.Button value="DENTIST">DENTIST</Radio.Button>
-          <Radio.Button value="PHARMACY">PHARMACY</Radio.Button>
+          <Radio.Button value="MEDIC">Загальний</Radio.Button>
+          <Radio.Button value="DENTIST">Стоматології</Radio.Button>
+          <Radio.Button value="PHARMACY">Аптеки</Radio.Button>
         </Radio.Group>
         <Slider 
           min={100}
@@ -98,7 +99,7 @@ export default class PlacesSearch extends Component {
           onClick={() => {
             searchPlaces({placesService, position, radius, type})
           }} 
-        />{ }
+        />
       </div>
     );
   }

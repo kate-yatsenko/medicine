@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MapMarker from './MapMarker'
-import * as mapActions from 'actions/mapActions';
 
 import './style.css';
 
-const mapStateToProps = ({mapState}) => {
-  return {...mapState};
-}
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(mapActions, dispatch);
+const mapStateToProps = ({mapState:
+  {
+    gmaps: {map, zoom},
+    places: {placesArray, activePlaceId},
+    search: {type, position, adress}
+  }
+}) => {
+  return ({
+      map,
+      zoom,
+      placesArray,
+      activePlaceId,
+      type,
+      position,
+      adress,
+  });
 }
 
 class MarkersLayer extends Component {
-  getMarkersList({placesArray, activePlaceId}) {
-    const type = this.props.search.type;
+  getMarkersList() {
+    const {placesArray, activePlaceId, type} = this.props;
     return placesArray.map((place) => {
       const placeId = place.placeId;
       const active = (placeId === activePlaceId);
@@ -29,11 +38,10 @@ class MarkersLayer extends Component {
     })
   }
   componentDidUpdate() {
-    const {map, zoom} = this.props.gmaps;
+    const {map, zoom, position, placesArray, activePlaceId} = this.props;
     if (!map) {
       return;
     }
-    const {placesArray, activePlaceId} = this.props.places;
     let centerLocation;
     if (activePlaceId) {
       centerLocation = placesArray.find((place) => {
@@ -43,7 +51,7 @@ class MarkersLayer extends Component {
         return false;
       }).location;
     } else {
-      centerLocation = this.props.search.position;
+      centerLocation = position;
     }
     map.setZoom(zoom);
     if (centerLocation) {
@@ -52,22 +60,19 @@ class MarkersLayer extends Component {
   }
 
   render() {
-    const {places, search} = this.props;
-    const {position: location, adress} = search;
+    const {position, adress, placesArray} = this.props;
     return (
       <div className="markers-layer">
-        {places.placesArray.length && this.getMarkersList(places)}
-        {location &&
+        {placesArray.length && this.getMarkersList()}
+        {position &&
           <MapMarker 
             place={{
-              location, 
-              name: "Цент пошуку",
+              position,
               adress,
+              name: "Цент пошуку",
               tags: [],
             }}
             type="USER"
-            icon="\images\map-marker-user.png"
-            zIndex={2}
           />
         }
       </div>
@@ -75,4 +80,4 @@ class MarkersLayer extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarkersLayer);
+export default connect(mapStateToProps)(MarkersLayer);

@@ -22,7 +22,7 @@ export default class MapMarker extends Component {
     const {props, state, toggleInfoWindow, toggleMousOver} = this;
     const {active, type, place} = props;
     const {visibleInfoWindow, mouseOver} = state;
-    const {location, name, adress, tags} = place;
+    const {position, name, adress, tags} = place;
     const icon = `\\images\\map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
     const zIndex = active ? 3 : type=='USER' ? 2 : 1;
 
@@ -31,7 +31,7 @@ export default class MapMarker extends Component {
         onClick={toggleInfoWindow}
         onMouseOver={toggleMousOver}
         onMouseOut={toggleMousOver}
-        position={location}
+        position={position}
         icon={icon}
         zIndex={zIndex}
       >
@@ -44,7 +44,7 @@ export default class MapMarker extends Component {
             const closeButton = document.querySelector('.gm-style-iw>button');
             closeButton.parentNode.removeChild(closeButton);
           }}
-          position={mouseOver || visibleInfoWindow ? location : null}
+          position={mouseOver || visibleInfoWindow ? position : null}
           options={{
             pixelOffset: {height: -43},
             disableAutoPan: true,

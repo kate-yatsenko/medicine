@@ -9,12 +9,6 @@ const mapStateToProps = ({mapState}) => {
 }
 
 class AlertsLayer extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      places: [],
-    }
-  }
   static counter = 0;
   getAlertsList(messages, type) {
     return messages.map((message) => (

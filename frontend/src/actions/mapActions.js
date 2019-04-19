@@ -13,17 +13,17 @@ export const initMapServices = createAction(INIT_MAP_SERVICES);
 export const startSearchPosition = createAction(START_SEARCH_POSITION, () => ({
   gmaps: {messages: {loading: 'Встановлення місцезнаходження', alerts: [], errors: []}},
 }));
-export const startSearchPlaces = createAction(START_SEARCH_PLACES, ({radius, type, zoom}) => ({
-  search: {radius, type},
-  gmaps: {messages: {loading: 'Пошук медичних закладів', alerts: [], errors: []}, zoom},
+export const startSearchPlaces = createAction(START_SEARCH_PLACES, () => ({
+  gmaps: {messages: {loading: 'Пошук медичних закладів', alerts: [], errors: []}},
 }));
 export const endSearchPosition = createAction(END_SEARCH_POSITION, ({position, adress, alerts=[], errors=[]}) => ({
   search: {position, adress},
   gmaps: {messages: {loading: null}, alerts, errors},
 }));
-export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts, errors}) => ({
+export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts, errors, zoom, radius, type}) => ({
+  search: {radius, type},
   places: {placesArray: places, activePlaceId: null},
-  gmaps: {messages: {alerts, errors, loading: null}},
+  gmaps: {messages: {alerts, errors, loading: null}, zoom},
 }));
 export const selectPlace = createAction(SELECT_PLACE, ({activePlaceId, zoom}) => ({
   places: {activePlaceId},
@@ -91,7 +91,7 @@ export const searchPlaces = ({placesService, position, radius, alerts=[], errors
     zoom = radius > 400 ? 14 : zoom;
     zoom = radius > 1200 ? 13 : zoom;
     zoom = radius > 3500 ? 12 : zoom;
-    dispatch(startSearchPlaces({radius, type, zoom}));
+    dispatch(startSearchPlaces());
     searchMedicPlaces(placesService, position, radius, type)
       .then(({places, alerts: searchAlerts, errors: searchErrors}) => {
         searchAlerts = searchAlerts.map((alert) => {
@@ -111,7 +111,7 @@ export const searchPlaces = ({placesService, position, radius, alerts=[], errors
         });
         alerts = alerts.concat(searchAlerts);
         errors = errors.concat(searchErrors);
-        dispatch(endSearchPlaces({places, alerts, errors}));
+        dispatch(endSearchPlaces({places, alerts, errors, zoom, radius, type}));
       })
   }
 }
