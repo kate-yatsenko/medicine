@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MapMarker from './MapMarker'
 
-import './style.css';
-
 const mapStateToProps = ({mapState:
   {
     gmaps: {map, zoom},

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
+import {Button, Slider, InputNumber, Input, Radio} from 'antd';
+
+import './style.css';
 
 export default class MapMarker extends Component {
   state = {
@@ -19,13 +22,12 @@ export default class MapMarker extends Component {
   };
 
   render() {
-    const {props, state, toggleInfoWindow, toggleMousOver} = this;
-    const {active, type, place} = props;
-    const {visibleInfoWindow, mouseOver} = state;
+    const {state: {visibleInfoWindow, mouseOver}, toggleInfoWindow, toggleMousOver} = this;
+    const {active, type, place} = this.props;
     const {position, name, adress, tags} = place;
     const icon = `\\images\\map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
     const zIndex = active ? 3 : type=='USER' ? 2 : 1;
-
+debugger;
     return (
       <Marker
         onClick={toggleInfoWindow}
@@ -35,7 +37,6 @@ export default class MapMarker extends Component {
         icon={icon}
         zIndex={zIndex}
       >
-      {true &&
         <InfoWindow
           // disabling infoWindow on load
           onLoad={() => {this.toggleInfoWindow()}}
@@ -63,7 +64,6 @@ export default class MapMarker extends Component {
             adress: {adress} <br />
           </div>
         </InfoWindow>
-      }
       </Marker>
     )
   }

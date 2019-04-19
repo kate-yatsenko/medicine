@@ -84,7 +84,7 @@ export const getLocation = (geocoderService, placesService) => {
   }
 }
 
-export const searchPlaces = ({placesService, position, radius, alerts=[], errors=[], type='MAIN'}) => {
+export const searchPlaces = ({placesService, position, radius, alerts=[], errors=[], type}) => {
   return (dispatch) => {
     let zoom = 16;
     zoom = radius > 200 ? 15 : zoom;

@@ -40,6 +40,7 @@ export default class PlacesSearch extends Component {
 
     return (
       <div>
+        Центр пошуку
         <Button 
           shape="circle" 
           icon="user" 
@@ -73,6 +74,7 @@ export default class PlacesSearch extends Component {
           <Radio.Button value="DENTIST">Стоматології</Radio.Button>
           <Radio.Button value="PHARMACY">Аптеки</Radio.Button>
         </Radio.Group>
+        Радіус пошуку
         <Slider 
           min={100}
           max={5000}
