@@ -66,4 +66,22 @@ module.exports = {
       .orderBy('u.name')
       .select('u.id', 'u.name', 'u.email', 'u.birth');
   },
+
+  getByEmail({ email }) {
+    return knex({ u: 'user' })
+      .where({ email })
+      .join('role', { 'u.roleId': 'role.id' })
+      .select(
+        'u.id',
+        { roleName: 'role.name' },
+        'u.name',
+        'u.email',
+        'u.gender',
+        'u.phone',
+        'u.address',
+        'u.birth',
+        'u.created',
+      )
+      .first();
+  },
 };
