@@ -68,20 +68,22 @@ class MarkersLayer extends Component {
     } else {
       centerLocation = this.props.search.position;
     }
+    map.setZoom(zoom);
     if (centerLocation) {
       map.panTo(centerLocation);
     }
-    map.setZoom(zoom);
   }
 
   render() {
         // TODO: render MarkersLayer if exists mapState.search.position/mapState.places
     const {places, search, gmaps} = this.props;
-    const {position: location, adress, alerts, errors} = search;
+    const {position: location, adress} = search;
+    const {alerts, errors} = gmaps.messages;
+     debugger;
     return (
       <div className="markers-layer">
         {places.placesArray.length && this.getMarkersList(places)}
-        { location &&
+        {location &&
           <MedicMarker 
             place={{
               location, 
@@ -95,8 +97,8 @@ class MarkersLayer extends Component {
           />
         }
         {gmaps.loadingMessage && this.getAlertsList([gmaps.loadingMessage], 'info')}
-        {alerts.length && this.getAlertsList(alerts, 'warning')}
-        {errors.length && this.getAlertsList(errors, 'error')}
+        {alerts && alerts.length && this.getAlertsList(alerts, 'warning')}
+        {errors && errors.length && this.getAlertsList(errors, 'error')}
       </div>
     )
   }

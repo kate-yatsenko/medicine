@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {GoogleMap, LoadScript} from '@react-google-maps/api';
 import { connect } from 'react-redux';
 import MarkersLayer from './MarkersLayer'
-// import {initMapServices, getLocation, searchPlaces} from 'actions/mapActions';
+import AlertsLayer from './AlertsLayer'
 import * as mapActions from 'actions/mapActions';
-import { bindActionCreators } from 'redux';
+import {bindActionCreators} from 'redux';
 import apiKey from 'data/apiKey'
 
 // const mapDispatchToProps = (dispatch) => {
@@ -67,6 +67,7 @@ class MapLayout extends Component {
           region="UA"
         >
           <MarkersLayer position={position} />
+          <AlertsLayer />
         </GoogleMap>
       </LoadScript>
     )

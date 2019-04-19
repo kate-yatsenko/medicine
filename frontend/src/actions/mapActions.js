@@ -10,26 +10,35 @@ import {createAction} from 'redux-actions';
 import {getAdressFromPosition, searchMedicPlaces} from '../api/google-api';
 
 export const initMapServices = createAction(INIT_MAP_SERVICES);
-export const startSearchPosition = createAction(START_SEARCH_POSITION, (payload) => ({
-  ...payload,
-  loadingMessage: 'Встановлення місцезнаходження'
+export const startSearchPosition = createAction(START_SEARCH_POSITION, () => ({
+  gmaps: {messages: {loading: 'Встановлення місцезнаходження', alerts: [], errors: []}},
 }));
-export const startSearchPlaces = createAction(START_SEARCH_PLACES, (payload) => ({
-  ...payload,
-  loadingMessage: 'Пошук медичних закладів'
+export const startSearchPlaces = createAction(START_SEARCH_PLACES, ({radius, type, zoom}) => ({
+  search: {radius, type},
+  gmaps: {messages: {loading: 'Пошук медичних закладів', alerts: [], errors: []}, zoom},
 }));
-export const endSearchPosition = createAction(END_SEARCH_POSITION);
-export const endSearchPlaces = createAction(END_SEARCH_PLACES);
-export const selectPlace = createAction(SELECT_PLACE);
+export const endSearchPosition = createAction(END_SEARCH_POSITION, ({position, adress, alerts=[], errors=[]}) => ({
+  search: {position, adress},
+  gmaps: {messages: {loading: null}, alerts, errors},
+}));
+export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts, errors}) => ({
+  places: {placesArray: places, activePlaceId: null},
+  gmaps: {messages: {alerts, errors, loading: null}},
+}));
+export const selectPlace = createAction(SELECT_PLACE, ({activePlaceId, zoom}) => ({
+  places: {activePlaceId},
+  gmaps: {zoom},
+}));
 
 export const getLocation = (geocoderService, placesService) => {
   return (dispatch, getState) => {
-    dispatch(startSearchPosition);
+    dispatch(startSearchPosition());
+    debugger;
     let alerts = [];
     let errors = [];
-    const radius = getState().mapState.search.radius;
-    const getPosition = new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
+    const {radius, type, position} = getState().mapState.search;
+    if (navigator.geolocation) {
+      const getPosition = new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const {coords: {latitude: lat, longitude: lng}} = position;
@@ -38,50 +47,65 @@ export const getLocation = (geocoderService, placesService) => {
           (error) => {
             reject(error);
           }, 
-          {timeout: 10000}
+          {timeout: 5000}
         )
-      } else {
-        reject('UNDEFINED_GEOLOCATION');
-      }
-    });
-    getPosition
-      .then((position) => {
-        getAdressFromPosition(geocoderService, position)
-          .then((adress)=> {
-            dispatch(endSearchPosition({position, adress}));
-          })
-          .catch((error) => {
-            alerts.push(`Не взалось визначити адресу для поточного місцезнаходження.`);
-            dispatch(endSearchPosition({position}));
-          })
-          .finally(() => {
-            if (!getState().mapState.places.placesArray.length) {
-              dispatch(searchPlaces({placesService, position, radius, alerts, errors}));
-            }
-          });
-      })
-      .catch((error) => {
-        const position = {lat: 49.44444, lng: 32.05972};
-        errors.push(`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`);
-        dispatch(endSearchPosition({position}));
-        if (!getState().mapState.places.placesArray.length) {
-          dispatch(searchPlaces({placesService, position, radius, alerts, errors}));
-        }
-      })
+      });
+      getPosition
+        .then((position) => {
+          debugger;
+          getAdressFromPosition(geocoderService, position)
+            .then((adress)=> {
+              debugger;
+              dispatch(endSearchPosition({position, adress}));
+            })
+            .catch((error) => {
+              debugger;
+              alerts.push(`Не взалось визначити адресу для поточного місцезнаходження.`);
+              dispatch(endSearchPosition({position, alerts}));
+            })
+            .finally(() => {
+              if (!getState().mapState.places.placesArray.length) {
+                debugger;
+                dispatch(searchPlaces({placesService, position, radius, alerts, errors, type}));
+                return;
+              }
+            });
+        })
+        .catch((error) => {
+          debugger;
+          errors.push(`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`);
+          dispatch(endSearchPosition({position, errors}));
+          if (!getState().mapState.places.placesArray.length) {
+            debugger;
+            dispatch(searchPlaces({placesService, position, radius, alerts, errors, type}));
+          }
+          return;
+        })
+    } else {
+      errors.push(`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`);
+      debugger;
+      dispatch(endSearchPosition({position, errors}));
+      if (!getState().mapState.places.placesArray.length) {
+        debugger;
+        dispatch(searchPlaces({placesService, position, radius, alerts, errors, type}));
+      } 
+    } 
   }
 }
 
-export const searchPlaces = ({placesService, position, radius, positionAlerts=[], positionErrors=[], searchType='MAIN'}) => {
+export const searchPlaces = ({placesService, position, radius, alerts=[], errors=[], type='MAIN'}) => {
   return (dispatch) => {
-    dispatch(startSearchPlaces({radius, searchType}));
-    if (!position) {
-      position = {lat: 49.44444, lng: 32.05972};
-      dispatch(endSearchPosition({position}));
-      positionErrors = [`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`];
-    }
-    searchMedicPlaces(placesService, position, radius, searchType)
-      .then(({places, alerts, errors}) => {
-        alerts = alerts.map((alert) => {
+    let zoom = 16;
+    zoom = radius > 200 ? 15 : zoom;
+    zoom = radius > 400 ? 14 : zoom;
+    zoom = radius > 1200 ? 13 : zoom;
+    zoom = radius > 3500 ? 12 : zoom;
+    dispatch(startSearchPlaces({radius, type, zoom}));
+    debugger;
+    searchMedicPlaces(placesService, position, radius, type)
+      .then(({places, alerts: searchAlerts, errors: searchErrors}) => {
+        debugger;
+        searchAlerts = searchAlerts.map((alert) => {
           if (alert === 'OVER_QUERY_LIMIT') {
             return `Отримані не повні дані пошуку. Можливо велике навантаження на сервіс. Спробуйте пізніше, або зменшіть радіус пошуку.`;
           }
@@ -93,17 +117,12 @@ export const searchPlaces = ({placesService, position, radius, positionAlerts=[]
           }
           return `Помилка пошуку.`;
         });
-        errors = errors.map((error) => {
+        searchErrors = searchErrors.map((error) => {
             return `Помилка пошуку.`;
         });
-        alerts = alerts.concat(positionAlerts);
-        errors = errors.concat(positionErrors);
-        let zoom = 16;
-        zoom = radius > 200 ? 15 : zoom;
-        zoom = radius > 400 ? 14 : zoom;
-        zoom = radius > 1200 ? 13 : zoom;
-        zoom = radius > 3500 ? 12 : zoom;
-        dispatch(endSearchPlaces({places, alerts, errors, zoom}));
+        alerts = alerts.concat(searchAlerts);
+        errors = errors.concat(searchErrors);
+        dispatch(endSearchPlaces({places, alerts, errors}));
       })
   }
 }

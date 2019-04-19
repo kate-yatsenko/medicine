@@ -5,7 +5,7 @@ import {StandaloneSearchBox} from '@react-google-maps/api';
 export default class PlacesSearch extends Component {
   state = {
     radius: this.props.radius,
-    searchType: 'MAIN',
+    type: this.props.type,
   }
 
   marks = {
@@ -20,7 +20,7 @@ export default class PlacesSearch extends Component {
     });
   };
   onChangeSearchType = (e) => {
-    this.setState({searchType: e.target.value});
+    this.setState({type: e.target.value});
   };
 
   componentDidUpdate() {
@@ -32,7 +32,7 @@ export default class PlacesSearch extends Component {
 
   render() {
     const {state, marks, onChangeRadius, onChangeSearchType} = this;
-    const {radius, searchType} = state;
+    const {radius, type} = state;
     const {map, adress, endSearchPosition, getLocation, placesService, geocoderService, position, searchPlaces, loadingMessage} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);
@@ -64,7 +64,7 @@ export default class PlacesSearch extends Component {
         : <Input placeholder="Goople Maps API librares not loaded" />
         }
         <Radio.Group 
-          defaultValue={searchType} 
+          defaultValue={type} 
           buttonStyle="solid"
           onChange={onChangeSearchType}
         >
@@ -96,7 +96,7 @@ export default class PlacesSearch extends Component {
           icon="search" 
           loading={!!loadingMessage} 
           onClick={() => {
-            searchPlaces({placesService, position, radius, searchType})
+            searchPlaces({placesService, position, radius, type})
           }} 
         />{ }
       </div>

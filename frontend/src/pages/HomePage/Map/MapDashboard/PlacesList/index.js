@@ -9,7 +9,10 @@ export default class PlacesList extends Component {
         key={placeId} 
         style={{cursor:'pointer',}}
         onClick={() => {
-          this.props.selectPlace({activePlaceId: placeId, zoom: this.props.map.getZoom()})}}
+          const zoom = this.props.map.getZoom();
+          debugger;
+          this.props.selectPlace({activePlaceId: placeId, zoom});
+        }}
       >
         {name}
         {placeId === this.props.places.activePlaceId &&

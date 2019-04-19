@@ -12,55 +12,56 @@ import {handleActions, combineActions} from 'redux-actions';
 const gmaps = handleActions(
   {
     [INIT_MAP_SERVICES]: (state, action) => ({...state, ...action.payload}),
-    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
+    [combineActions(
+      START_SEARCH_POSITION,
+      START_SEARCH_PLACES,
+      END_SEARCH_POSITION,
+      END_SEARCH_PLACES,
+      SELECT_PLACE
+    )]: (state, action) => ({
       ...state, 
-      loadingMessage: action.payload.loadingMessage,
-    }),
-    [combineActions(END_SEARCH_POSITION, END_SEARCH_PLACES, SELECT_PLACE)]: (state, action) => ({
-      ...state, 
-      loadingMessage: null,
-      zoom: action.payload.zoom,
+      ...action.payload.gmaps,
     }),
   },
   {
     map: null,
     placesService: null,
     geocoderService: null,
-    loadingMessage: null,
     zoom: 15,
+    messages: {
+      loading: null,
+      alerts: [],
+      errors: [],
+    }
   }
 );
-
 const search = handleActions(
   {
-    [combineActions(START_SEARCH_POSITION, START_SEARCH_PLACES)]: (state, action) => ({
-      ...state, alerts: [], errors: [], radius: action.payload.radius, searchType: action.payload.searchType
+    [combineActions(
+      START_SEARCH_POSITION,
+      START_SEARCH_PLACES,
+      END_SEARCH_POSITION
+    )]: (state, action) => ({
+      ...state, 
+      ...action.payload.search,
     }),
-    END_SEARCH_POSITION: (state, action) => {
-      return {...state, ...action.payload}
-    },
-    END_SEARCH_PLACES: (state, action) => {
-      const {alerts, errors} = action.payload;
-      return {
-        ...state, alerts, errors
-      }
-    },
   },
   {
-    position: null,
-    adress: null,
+    position: {lat: 49.44444, lng: 32.05972},
+    adress: 'Черкаси',
     radius: 500,
-    searchType: 'MAIN',
-    alerts: [],
-    errors: [],
+    type: 'MAIN',
   }
 );
-
-// TODO: ? add filtered & active pleces instead of filter reducer
 const places = handleActions(
-  {
-    [END_SEARCH_PLACES]: (state, action) => ({...state, placesArray: action.payload.places, activePlaceId: null}),
-    [SELECT_PLACE]: (state, action) => ({...state, activePlaceId: action.payload.activePlaceId}),
+  { 
+    [combineActions(
+      END_SEARCH_PLACES,
+      SELECT_PLACE
+    )]: (state, action) => ({
+      ...state, 
+      ...action.payload.places,
+    }),
   },
   {
     placesArray: [],
