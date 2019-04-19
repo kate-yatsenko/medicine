@@ -109,6 +109,10 @@ module.exports = {
     return db.user.getList({ name, excludeId });
   },
 
+  getUserByEmail({ email }) {
+    return db.user.getByEmail({ email });
+  },
+
   getEntryTypes(id = null) {
     return db.entryType.get(id);
   },
