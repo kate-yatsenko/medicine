@@ -1,11 +1,13 @@
 import React from 'react';
-import { Badge, Icon } from 'antd';
+import { Typography, Icon } from 'antd';
 
-const ChatUserTitle = () => {
+const { Text } = Typography;
+
+const ChatUserTitle = ({ name }) => {
   return (
     <div className="chat-current-title">
       <Icon type="arrow-left" className="chat-current-back d-md-none"/>
-      <Badge status="success" text="Вася"/>
+      <Text>{name}</Text>
     </div>
   );
 };

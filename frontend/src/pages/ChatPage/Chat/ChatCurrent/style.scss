@@ -1,4 +1,11 @@
 .chat {
+  &-empty {
+    height: 584px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &-current {
     border: 1px solid #d7d2d2d9;
     padding: 15px;
