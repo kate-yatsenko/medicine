@@ -138,4 +138,8 @@ module.exports = {
   createMessage({ sender, receiver, message }) {
     return db.chat.create({ sender, receiver, message });
   },
+
+  getChatStatus({ id }) {
+    return db.chat.getStatus({ id });
+  },
 };

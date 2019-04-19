@@ -25,7 +25,6 @@ function validateIds(socket, next) {
 
   const { headers } = socket.handshake;
   try {
-    validator.checkId(headers['x-to-id']);
     validator.checkId(headers['x-id']);
   } catch (err) {
     // TODO: add to logger
@@ -36,8 +35,8 @@ function validateIds(socket, next) {
 }
 
 function onMessage(io, socket) {
-  return async message => {
-    const receiver = socket.request.headers['x-to-id'];
+  return async ({ message, id }) => {
+    const receiver = id;
     const sender = socket.id;
 
     io.to(sender).emit('processing', message);
@@ -61,31 +60,47 @@ function onMessage(io, socket) {
 
 function onConnection(io) {
   return async socket => {
-    const { headers } = socket.handshake;
-
     socket.on('read', async ids => {
       io.emit('read', await services.markMessagesAsRead(ids));
     });
 
-    const messages = await services.getMessages({
-      receiver: socket.id,
-      sender: headers['x-to-id'],
+    socket.on('status', async () => {
+      const { id } = socket;
+      const status = await services.getChatStatus({ id });
+      io.to(id).emit('status', status);
     });
 
-    io.to(socket.id).emit('history', messages);
+    socket.on('history', async id => {
+      const { id: sender } = socket;
+      const receiver = id;
+      const messages = await services.getMessages({
+        receiver,
+        sender,
+      });
+      io.to(sender).emit('history', messages);
+    });
 
     socket.on('message', onMessage(io, socket));
 
-    socket.on('disconnect', () => {
-      io.broadcast.emit('offline', socket.id);
-    });
-
-    socket.broadcast.emit('online', socket.id);
+    // socket.on('disconnect', () => {});
   };
 }
 
 function attach(server) {
-  const io = socketIo(server);
+  const io = socketIo(server, {
+    // CORS fun
+    handlePreflightRequest: (req, res) => {
+      res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+      res.setHeader('Access-Control-Request-Method', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+      res.setHeader('Access-Control-Allow-Headers', 'x-id');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      if (req.method === 'OPTIONS' || req.method === 'GET') {
+        res.writeHead(200);
+        res.end();
+      }
+    },
+  });
 
   io.engine.generateId = getCustomIdGenerator(io);
   io.use(validateIds);
