@@ -37,7 +37,7 @@ export const CHECK_PLACE_TYPES = [
 ];
 
 export const SEARCH_CONDITIONS = {
-  MAIN: {
+  MEDIC: {
     NAMES: [
       'лікарня',
       'клініка',

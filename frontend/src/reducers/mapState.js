@@ -50,7 +50,7 @@ const search = handleActions(
     position: {lat: 49.44444, lng: 32.05972},
     adress: 'Черкаси',
     radius: 500,
-    type: 'MAIN',
+    type: 'MEDIC',
   }
 );
 const places = handleActions(

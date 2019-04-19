@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MarkersLayer extends Component {
-
   getMarkersList({placesArray, activePlaceId}) {
     return placesArray.map((place) => {
       const placeId = place.placeId;
@@ -62,9 +61,9 @@ class MarkersLayer extends Component {
           <MapMarker 
             place={{
               location, 
-              name: "центр пошуку",
+              name: "Цент пошуку",
               adress,
-              type: 'SEARCH_POSITION',
+              type: 'USER',
               tags: [],
             }}
             icon="\images\map-marker-user.png"
