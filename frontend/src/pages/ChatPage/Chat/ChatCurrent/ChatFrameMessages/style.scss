@@ -5,12 +5,22 @@
   overflow-y: auto;
   background-color: #fff;
 
+  &-time-block {
+    font-size: 10px;
+    color: #666464a6;
+  }
+
+  &-icon {
+    margin-left: 5px;
+  }
+
   &-item {
-    padding: 15px;
+    padding: 12px;
     margin-bottom: 10px;
     border: 1px solid #d7d2d2d9;
     border-radius: 10px;
     width: 80%;
+    font-size: 14px;
 
     @media only screen and (min-width: 768px)  and (max-width: 992px) {
       & {

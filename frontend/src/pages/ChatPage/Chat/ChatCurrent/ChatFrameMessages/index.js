@@ -1,34 +1,39 @@
 import React from 'react';
-import { Typography } from 'antd';
+import { Typography, Icon } from 'antd';
+import moment from 'moment';
+import 'moment/locale/uk';
+import { connect } from 'react-redux';
 
 import './style.scss';
 
 const { Text } = Typography;
 
-const ChatFrameMessages = () => {
+const mapStateToProps = ({ chatState }) => {
+  return {
+    currentChatHistory: chatState.currentChatHistory
+  }
+};
+
+const ChatFrameMessages = ({ currentChatHistory }) => {
   return (
     <div className="chat-frame-messages d-flex flex-column">
-      <div className="chat-frame-messages-item">
-        <Text>Ant Design</Text>
-      </div>
-      <div className="chat-frame-messages-item">
-        <Text>Ant Design</Text>
-      </div>
-      <div className="chat-frame-messages-item chat-frame-messages-item-own">
-        <Text>Ant Design</Text>
-      </div>
-      <div className="chat-frame-messages-item">
-        <Text>Ant Design</Text>
-      </div>
-      <div className="chat-frame-messages-item chat-frame-messages-item-own">
-        <Text>Ant Design</Text>
-      </div>
-      <div className="chat-frame-messages-item">
-        <Text>Ant Design</Text>
-      </div>
-
+      {currentChatHistory.map(item => {
+          const ownMessageClass = item.sender === 3 ? " chat-frame-messages-item-own" : "";
+          return (
+            <div className={"chat-frame-messages-item" + ownMessageClass} key={item.id}>
+              <Text>{item.message}</Text>
+              <div className="chat-frame-messages-time-block">
+                {moment(item.created).locale('uk').calendar()}
+                {item.isRead && item.sender === 3 && (
+                  <Icon type="check" className="chat-frame-messages-icon"/>
+                )}
+              </div>
+            </div>
+          )
+        }
+      )}
     </div>
   );
 };
 
-export default ChatFrameMessages;
+export default connect(mapStateToProps)(ChatFrameMessages);

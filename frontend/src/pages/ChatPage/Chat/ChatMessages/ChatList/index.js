@@ -1,61 +1,41 @@
 import React from 'react';
-import { Badge } from 'antd';
+import { Badge, Typography } from 'antd';
+import { socket } from 'pages/ChatPage';
+import { connect } from 'react-redux';
 
 import './style.scss';
 
-const ChatList = () => {
-  return (
-    <div className="chat-list">
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="success" text="Вася"/>
-        <Badge count={120}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Петя"/>
-        <Badge count={250}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Коля"/>
-        <Badge count={300}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Степя"/>
-        <Badge count={12}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="success" text="Вася"/>
-        <Badge count={120}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Петя"/>
-        <Badge count={250}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Коля"/>
-        <Badge count={300}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Степя"/>
-        <Badge count={12}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="success" text="Вася"/>
-        <Badge count={120}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Петя"/>
-        <Badge count={250}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Коля"/>
-        <Badge count={300}/>
-      </div>
-      <div className="chat-list-item d-flex justify-content-between">
-        <Badge status="default" text="Степя"/>
-        <Badge count={12}/>
-      </div>
-    </div>
-  );
+const mapStateToProps = ({ chatState }) => {
+  return {
+    chatsStatus: chatState.chatsStatus
+  }
 };
 
-export default ChatList;
+const { Text } = Typography;
+
+class ChatList extends React.Component {
+
+  chooseChat = (id) => {
+    socket.emit('history', id);
+  };
+
+  render() {
+    const { chatsStatus } = this.props;
+    return (
+      <div className="chat-list">
+        {chatsStatus.map(item =>
+          <div
+            className="chat-list-item d-flex justify-content-between"
+            onClick={() => this.chooseChat(item.sender)}
+            key={item.sender}
+          >
+            <Text>{item.name}</Text>
+            <Badge count={item.unread}/>
+          </div>
+        )}
+      </div>
+    )
+  }
+}
+
+export default connect(mapStateToProps)(ChatList);
