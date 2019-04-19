@@ -35,6 +35,8 @@ class AlertsLayer extends Component {
       <div 
         className={loading ? 'alerts-layer loading' : 'alerts-layer'}
       >
+        {alerts && alerts.length && this.getAlertsList(alerts, 'warning')}
+        {errors && errors.length && this.getAlertsList(errors, 'error')}
         {loading &&
           <Spin 
             className="map-spin"
@@ -44,7 +46,6 @@ class AlertsLayer extends Component {
             <div className="map-fade"></div>
           </Spin>
         }
-        
       </div>
     );
   }
