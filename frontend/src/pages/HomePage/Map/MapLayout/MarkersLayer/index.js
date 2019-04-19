@@ -16,13 +16,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MarkersLayer extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      places: [],
-    }
-  }
-  static counter = 0;
 
   getMarkersList({placesArray, activePlaceId}) {
     return placesArray.map((place) => {
@@ -37,18 +30,6 @@ class MarkersLayer extends Component {
           zIndex={1}
         />);
     })
-  }
-  getAlertsList(messages, type) {
-    return messages.map((message) => (
-      <Alert 
-        className="map-alert" 
-        key={MarkersLayer.counter++} 
-        message={message} 
-        type={type} 
-        showIcon 
-        closable 
-      />
-    ))
   }
 
   componentDidUpdate() {
@@ -75,9 +56,8 @@ class MarkersLayer extends Component {
   }
 
   render() {
-    const {places, search, gmaps} = this.props;
+    const {places, search} = this.props;
     const {position: location, adress} = search;
-    const {alerts, errors} = gmaps.messages;
     return (
       <div className="markers-layer">
         {places.placesArray.length && this.getMarkersList(places)}
