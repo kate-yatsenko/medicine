@@ -14,7 +14,7 @@ export default class PlacesFilter extends Component {
         <Search
           placeholder="input filter"
           // TODO onSearch={}
-          style={{ width: 200 }}
+          // style={{ width: 200 }}
         />
       </div>
     );

@@ -1,0 +1,13 @@
+.map-dashboard {
+  margin: 3px;
+}
+
+.map-dashboard .anticon {
+  vertical-align: 0em;
+}
+
+.ant-input.map-dashboard-input {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: calc(100% - 10px);
+}

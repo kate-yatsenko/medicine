@@ -1,0 +1,12 @@
+.my-location-button {
+  float: left;
+}
+
+#address-search {
+  float: left;
+  width: calc(100% - 42px);
+}
+
+.clear {
+  clear: both;
+}

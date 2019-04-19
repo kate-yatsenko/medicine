@@ -32,7 +32,7 @@ export default class MapMarker extends Component {
     const {state: {visibleInfoWindow, mouseOver}, toggleInfoWindow, toggleMousOver, getTagsList} = this;
     const {active, type, place} = this.props;
     const {position, name, adress, tags, rating, ratingUsers} = place;
-    const icon = `\\images\\map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
+    const icon = `/images/map-marker-${type.toUpperCase()}${active ? '-active' : ''}.png`;
     const zIndex = active ? 3 : type === 'USER' ? 2 : 1;
 
     return (
