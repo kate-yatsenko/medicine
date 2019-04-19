@@ -36,4 +36,13 @@ module.exports = {
         'm.isRead',
       );
   },
+
+  getStatus({ id }) {
+    return knex({ m: 'message' })
+      .where({ receiver: id, isRead: false })
+      .count({ unread: 'm.isRead' })
+      .join('user as u', { 'u.id': 'm.sender' })
+      .groupBy('m.sender', 'u.name')
+      .select('m.sender', 'u.name');
+  },
 };
