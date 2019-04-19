@@ -39,10 +39,15 @@ module.exports = {
 
   getStatus({ id }) {
     return knex({ m: 'message' })
-      .where({ receiver: id, isRead: false })
-      .count({ unread: 'm.isRead' })
+      .where({ receiver: id })
       .join('user as u', { 'u.id': 'm.sender' })
       .groupBy('m.sender', 'u.name')
-      .select('m.sender', 'u.name');
+      .select(
+        'm.sender',
+        'u.name',
+        knex.raw(
+          'count ("isRead") filter (where "isRead" = false) as "unread"',
+        ),
+      );
   },
 };
