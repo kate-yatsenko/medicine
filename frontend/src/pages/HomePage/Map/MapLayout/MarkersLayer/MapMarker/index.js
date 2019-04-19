@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Marker, InfoWindow} from '@react-google-maps/api';
 
-export default class MedicMarker extends Component {
+export default class MapMarker extends Component {
   state = {
     visibleInfoWindow: true,
     mouseOver: false,
@@ -23,8 +23,6 @@ export default class MedicMarker extends Component {
     const {icon, place, zIndex} = props;
     const {visibleInfoWindow, mouseOver} = state;
     const {location, name, adress, tags, type} = place;
-    
-    //  debugger;
 
     return (
       <Marker

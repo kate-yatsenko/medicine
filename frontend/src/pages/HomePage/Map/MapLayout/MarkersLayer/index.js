@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import MedicMarker from './MedicMarker'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {Alert} from 'antd';
+import MapMarker from './MapMarker'
 import * as mapActions from 'actions/mapActions';
 
 import './style.css';
@@ -10,7 +9,6 @@ import './style.css';
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
 }
-
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(mapActions, dispatch);
 }
@@ -22,7 +20,7 @@ class MarkersLayer extends Component {
       const placeId = place.placeId;
       const active = (placeId === activePlaceId);
       return (
-        <MedicMarker 
+        <MapMarker 
           className={active ? "map-marker-active" : ""}
           key={placeId} 
           place={place}
@@ -31,7 +29,6 @@ class MarkersLayer extends Component {
         />);
     })
   }
-
   componentDidUpdate() {
     const {map, zoom} = this.props.gmaps;
     if (!map) {
@@ -62,12 +59,12 @@ class MarkersLayer extends Component {
       <div className="markers-layer">
         {places.placesArray.length && this.getMarkersList(places)}
         {location &&
-          <MedicMarker 
+          <MapMarker 
             place={{
               location, 
               name: "центр пошуку",
               adress,
-              type: 'searchPosition',
+              type: 'SEARCH_POSITION',
               tags: [],
             }}
             icon="\images\map-marker-user.png"
