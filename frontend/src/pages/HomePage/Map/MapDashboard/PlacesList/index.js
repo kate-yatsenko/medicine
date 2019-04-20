@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {List} from 'antd';
+import {List, Button, Icon, Input} from 'antd';
 
 import './style.css';
+
+const Search = Input.Search;
 
 export default class PlacesList extends Component {
 
@@ -35,13 +37,27 @@ export default class PlacesList extends Component {
 
   render() {
     return (
-      <div style={{overflow: 'auto', height:'400px'}}>
-      <List
-          size="small"
-          bordered
-          dataSource={this.props.places.placesArray}
-          renderItem={this.getPlacesList}
-      />
+      <div className="map-places-list">
+        <Search
+          placeholder="Фільтр за назвою"
+          enterButton={
+            <Button 
+              type="primary"
+            >
+              <Icon type="filter" />
+            </Button>
+          }
+          // TODO onSearch={}
+          // style={{ width: 200 }}
+        />
+        <div style={{overflow: 'auto', height:'400px'}}>
+          <List
+              size="small"
+              bordered={false}
+              dataSource={this.props.places.placesArray}
+              renderItem={this.getPlacesList}
+          />
+        </div>
       </div>
     );
   }
