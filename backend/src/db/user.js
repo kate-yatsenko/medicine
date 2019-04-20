@@ -1,6 +1,6 @@
 const knex = require('./knex');
 
-const { SEARCH_RESULTS_LIMIT } = require('../config');
+const { searchStringMaxLength: searchLimit } = require('../config');
 
 module.exports = {
   createUser({ name, email, gender, phone, address, birth }) {
@@ -25,6 +25,7 @@ module.exports = {
       .select(
         'u.id',
         { roleName: 'role.name' },
+        'u.roleId',
         'u.name',
         'u.email',
         'u.gender',
@@ -58,12 +59,32 @@ module.exports = {
       .then(ids => ids[0]);
   },
 
-  getList({ name, excludeId }) {
+  getList({ name, excludeId, roleIds }) {
     return knex({ u: 'user' })
-      .where('u.name', 'ilike', `%${name}%`)
+      .whereIn('u.roleId', roleIds)
+      .andWhere('u.name', 'ilike', `%${name}%`)
       .andWhereNot({ 'u.id': excludeId })
-      .limit(SEARCH_RESULTS_LIMIT)
+      .limit(searchLimit)
       .orderBy('u.name')
       .select('u.id', 'u.name', 'u.email', 'u.birth');
+  },
+
+  getIdByEmail({ email }) {
+    return knex({ u: 'user' })
+      .where({ email })
+      .join('role', { 'u.roleId': 'role.id' })
+      .select(
+        'u.id',
+        { roleName: 'role.name' },
+        'u.roleId',
+        'u.name',
+        'u.email',
+        'u.gender',
+        'u.phone',
+        'u.address',
+        'u.birth',
+        'u.created',
+      )
+      .first();
   },
 };

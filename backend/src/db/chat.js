@@ -8,11 +8,11 @@ module.exports = {
       .then(results => results[0]);
   },
 
-  markAsRead(ids) {
+  markAsRead({ ids, receiver }) {
     return knex('message')
       .whereIn('id', ids)
-      .update({ isRead: true }, ['id'])
-      .then(updatedIds => updatedIds.map(({ id }) => id));
+      .andWhere({ receiver })
+      .update({ isRead: true }, ['id', 'sender']);
   },
 
   getNewMessagesCount({ receiver }) {
@@ -26,14 +26,32 @@ module.exports = {
     return knex({ m: 'message' })
       .where({ sender, receiver })
       .orWhere({ sender: receiver, receiver: sender })
+      .join('user as s', { 's.id': 'm.sender' })
+      .join('user as r', { 'r.id': 'm.receiver' })
       .orderBy('m.created', 'asc')
       .select(
         'm.id',
         'm.message',
         'm.sender',
+        { senderName: 's.name' },
+        { receiverName: 'r.name' },
         'm.receiver',
         'm.created',
         'm.isRead',
+      );
+  },
+
+  getStatus({ id }) {
+    return knex({ m: 'message' })
+      .where({ receiver: id })
+      .join('user as u', { 'u.id': 'm.sender' })
+      .groupBy('m.sender', 'u.name')
+      .select(
+        'm.sender',
+        'u.name',
+        knex.raw(
+          'count ("isRead") filter (where "isRead" = false) as "unread"',
+        ),
       );
   },
 };

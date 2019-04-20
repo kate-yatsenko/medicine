@@ -3,10 +3,14 @@ const koaBody = require('koa-body');
 
 const services = require('../../../services');
 
-const { ENDPOINT_PREFIX_ENTRY_TYPE } = require('../../../config');
+const {
+  endpoint: {
+    prefix: { entryType },
+  },
+} = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_ENTRY_TYPE,
+  prefix: entryType,
 });
 
 function getPayload(ctx) {

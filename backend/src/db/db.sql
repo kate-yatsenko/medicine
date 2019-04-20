@@ -16,9 +16,9 @@ CREATE TABLE "public"."user" (
 	"name" VARCHAR(250) not null,
 	"email" varchar(250) unique not null,
 	"gender" varchar(1) not null default 'M',
-	"birth" timestamp not null,
-	"phone" varchar(50) not null,
-	"address" varchar(500) not null,
+	"birth" timestamp,
+	"phone" varchar(50),
+	"address" varchar(500),
 	"created" timestamp not null default now()
 );
 

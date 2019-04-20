@@ -80,7 +80,7 @@ module.exports = {
       address,
       birth,
     });
-    return this.getUser(userId);
+    return db.user.getUser(userId);
   },
 
   getUser(id) {
@@ -105,8 +105,16 @@ module.exports = {
     return db.userRole.getRole({ userId });
   },
 
-  getUserList({ name, excludeId }) {
-    return db.user.getList({ name, excludeId });
+  getRolesWhere({ canReadAllCards = false }) {
+    return db.userRole.getRolesWhere({ canReadAllCards });
+  },
+
+  getUserList({ name, excludeId, roleIds }) {
+    return db.user.getList({ name, excludeId, roleIds });
+  },
+
+  getUserIdByEmail({ email }) {
+    return db.user.getIdByEmail({ email });
   },
 
   getEntryTypes(id = null) {
@@ -127,8 +135,8 @@ module.exports = {
     return db.chat.get({ sender, receiver });
   },
 
-  markMessagesAsRead(ids) {
-    return db.chat.markAsRead(ids);
+  markMessagesAsRead({ ids, receiver }) {
+    return db.chat.markAsRead({ ids, receiver });
   },
 
   getNewMessagesCount({ receiver }) {
@@ -137,5 +145,9 @@ module.exports = {
 
   createMessage({ sender, receiver, message }) {
     return db.chat.create({ sender, receiver, message });
+  },
+
+  getChatStatus({ id }) {
+    return db.chat.getStatus({ id });
   },
 };

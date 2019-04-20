@@ -4,12 +4,7 @@ const cors = require('@koa/cors');
 const errorHandler = require('./middleware/error-handler');
 const rootRouter = require('./routes');
 
-const {
-  PORT,
-  CORS_ORIGIN,
-  CORS_ALLOW_METHODS,
-  CORS_MAX_AGE,
-} = require('../config');
+const { port, cors: corsConfig } = require('../config');
 
 const app = new Koa();
 
@@ -20,9 +15,10 @@ app.on('error', (err, ctx) => {
 });
 
 const corsOptions = {
-  origin: CORS_ORIGIN,
-  allowMethods: CORS_ALLOW_METHODS,
-  maxAge: CORS_MAX_AGE,
+  ...corsConfig,
+  // origin: cors.origin,
+  // allowMethods: cors.allowMethods,
+  // maxAge: cors.maxAge,
   // TODO: set proper options
   // credentials: true,
   // keepHeadersOnError: true,
@@ -36,8 +32,8 @@ app.use(rootRouter.routes());
 app.use(rootRouter.allowedMethods());
 
 function listen() {
-  return app.listen(PORT, () => {
-    console.log(`API is listening on port ${PORT}`);
+  return app.listen(port, () => {
+    console.log(`API is listening on port ${port}`);
   });
 }
 

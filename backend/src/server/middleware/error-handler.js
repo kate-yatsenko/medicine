@@ -1,7 +1,7 @@
-const { RESPONSE_JSON_ERROR_NAME } = require('../../config');
+const { responseJsonErrorName } = require('../../config');
 
 function setErrorJSON(obj = {}, errorMessage = '') {
-  return { ...obj, [RESPONSE_JSON_ERROR_NAME]: errorMessage };
+  return { ...obj, [responseJsonErrorName]: errorMessage };
 }
 
 function setErrorResponse(err, ctx) {

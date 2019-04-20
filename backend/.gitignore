@@ -52,6 +52,8 @@ typings/
 karma.conf.js
 protractor.conf.js
 
+*.key
+
 .vscode/
 
 .base/

@@ -1,27 +1,30 @@
 const Router = require('koa-router');
 
+const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
 const {
-  ENDPOINT_PREFIX_SEARCH,
-  SEARCH_STRING_MIN_LENGTH: MIN_LENGTH,
+  endpoint: {
+    prefix: { search },
+  },
+  searchStringMinLength: minLength,
 } = require('../../../config');
 
 const router = new Router({
-  prefix: ENDPOINT_PREFIX_SEARCH,
+  prefix: search,
 });
 
 async function validateSearch(ctx, next) {
-  if (MIN_LENGTH <= 0) {
+  if (minLength <= 0) {
     await next();
     return;
   }
   const { name: rawName } = ctx.query;
 
-  ctx.assert(rawName && rawName.length, 400, 'Invalid search query!');
+  ctx.assert(rawName && rawName.length, 400, 'Invalid name query!');
 
   const name = rawName.trim();
-  ctx.assert(name.length >= MIN_LENGTH, 400, 'Search name is too short!');
+  ctx.assert(name.length >= minLength, 400, 'Search name is too short!');
 
   ctx.query.name = name;
   await next();
@@ -31,8 +34,19 @@ async function getList(ctx) {
   const { uid: excludeId } = ctx.params;
   const { name } = ctx.query;
 
+  let roleIds = [];
   try {
-    ctx.body = await services.getUserList({ name, excludeId });
+    const { canReadAllCards } = await services.getUserRole(excludeId);
+    const roles = await services.getRolesWhere({
+      canReadAllCards: !canReadAllCards,
+    });
+    roleIds = roles.map(role => role.id);
+  } catch (err) {
+    ctx.throw(500, 'Cannot get role(s)', { error: err });
+  }
+
+  try {
+    ctx.body = await services.getUserList({ name, excludeId, roleIds });
   } catch (err) {
     ctx.throw(500, 'Cannot get list', { error: err });
   }
@@ -40,6 +54,6 @@ async function getList(ctx) {
   ctx.assert(ctx.body, 404, 'Entry not found');
 }
 
-router.get('/', validateSearch, getList);
+router.get('/', validator.idParam({ name: 'uid' }), validateSearch, getList);
 
 module.exports = router;

@@ -25,7 +25,6 @@ function validateIds(socket, next) {
 
   const { headers } = socket.handshake;
   try {
-    validator.checkId(headers['x-to-id']);
     validator.checkId(headers['x-id']);
   } catch (err) {
     // TODO: add to logger
@@ -36,8 +35,8 @@ function validateIds(socket, next) {
 }
 
 function onMessage(io, socket) {
-  return async message => {
-    const receiver = socket.request.headers['x-to-id'];
+  return async ({ message, id }) => {
+    const receiver = id;
     const sender = socket.id;
 
     io.to(sender).emit('processing', message);
@@ -61,31 +60,72 @@ function onMessage(io, socket) {
 
 function onConnection(io) {
   return async socket => {
-    const { headers } = socket.handshake;
-
     socket.on('read', async ids => {
-      io.emit('read', await services.markMessagesAsRead(ids));
+      const { id: receiver } = socket;
+      let rows = null;
+      try {
+        rows = await services.markMessagesAsRead({ ids, receiver });
+      } catch (err) {
+        // TODO: add to logger
+        console.error(err);
+        io.to(receiver).emit('error', 'Cannot mark messages as read');
+      }
+
+      const emits = rows.reduce((acc, row) => {
+        if (acc[row.sender]) {
+          acc[row.sender].push(row.id);
+        } else {
+          acc[row.sender] = [row.id];
+        }
+        return acc;
+      }, {});
+
+      Object.keys(emits).forEach(sndr => {
+        io.to(sndr).emit('read', emits[sndr]);
+      });
     });
 
-    const messages = await services.getMessages({
-      receiver: socket.id,
-      sender: headers['x-to-id'],
+    socket.on('status', async () => {
+      const { id } = socket;
+      const statusBySenders = await services.getChatStatus({ id });
+      const total = statusBySenders.reduce((sum, stat) => {
+        // eslint-disable-next-line no-bitwise
+        return sum + ~~stat.unread;
+      }, 0);
+      io.to(id).emit('status', { total, bySender: statusBySenders });
     });
 
-    io.to(socket.id).emit('history', messages);
+    socket.on('history', async id => {
+      const { id: sender } = socket;
+      const receiver = id;
+      const messages = await services.getMessages({
+        receiver,
+        sender,
+      });
+      io.to(sender).emit('history', messages);
+    });
 
     socket.on('message', onMessage(io, socket));
 
-    socket.on('disconnect', () => {
-      io.broadcast.emit('offline', socket.id);
-    });
-
-    socket.broadcast.emit('online', socket.id);
+    // socket.on('disconnect', () => {});
   };
 }
 
 function attach(server) {
-  const io = socketIo(server);
+  const io = socketIo(server, {
+    // CORS fun
+    handlePreflightRequest: (req, res) => {
+      res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+      res.setHeader('Access-Control-Request-Method', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+      res.setHeader('Access-Control-Allow-Headers', 'x-id');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      if (req.method === 'OPTIONS' || req.method === 'GET') {
+        res.writeHead(200);
+        res.end();
+      }
+    },
+  });
 
   io.engine.generateId = getCustomIdGenerator(io);
   io.use(validateIds);
