@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 
+const { verify } = require('../../middleware/jwt');
 const userRoute = require('./user');
 const entryTypes = require('./entry-type');
 const auth = require('./auth');
@@ -20,7 +21,7 @@ router.get('/', ctx => {
 });
 
 router.use(auth.routes()).use(auth.allowedMethods());
-router.use(userRoute.routes()).use(userRoute.allowedMethods());
-router.use(entryTypes.routes()).use(entryTypes.allowedMethods());
+router.use(verify, userRoute.routes()).use(userRoute.allowedMethods());
+router.use(verify, entryTypes.routes()).use(entryTypes.allowedMethods());
 
 module.exports = router;
