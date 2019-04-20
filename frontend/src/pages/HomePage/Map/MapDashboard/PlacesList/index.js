@@ -11,6 +11,7 @@ export default class PlacesList extends Component {
   }
 
   setFilter = (filter) => this.setState({filter});
+  clearFilter = () => this.setState({filter: null});
   toggleSelectPlace = (placeId) => {
     const zoom = this.props.map.getZoom();
     const prevActivePlaceId = this.props.places.activePlaceId;
@@ -30,7 +31,7 @@ export default class PlacesList extends Component {
     return placesArray;
   };
   getPlacesList = ({placeId, name, adress, tags, rating, ratingUsers}) => {
-    const {toggleSelectPlace, getTagsList} = this;
+    const {toggleSelectPlace, getTagsList, setFilter} = this;
     const active = placeId === this.props.places.activePlaceId;
     return (
       <List.Item 
@@ -61,21 +62,27 @@ export default class PlacesList extends Component {
   }
 
   render() {
-    const {getFilteredPlaces, getPlacesList} = this;
+    const {getFilteredPlaces, getPlacesList, clearFilter, setFilter} = this;
     return (
       <div className="map-places-list">
         <Search
-        className="map-places-filter"
+          className="map-places-filter"
           placeholder="Фільтр за назвою"
           enterButton={
-            <Button 
-              type="primary"
-            >
+            <Button type="primary">
               <Icon type="filter" />
             </Button>
           }
-          onChange={(e) => this.setFilter(e.target.value)}
-          onSearch={(filter) => this.setFilter(filter)}
+          prefix={
+            <Button 
+              type="primary"
+              icon="close"
+              onClick={clearFilter}
+            />
+          }
+          value={this.state.filter}
+          onChange={(e) => setFilter(e.target.value)}
+          onSearch={(filter) => setFilter(filter)}
         />
         <div style={{overflow: 'auto', height:'400px'}}>
           <List

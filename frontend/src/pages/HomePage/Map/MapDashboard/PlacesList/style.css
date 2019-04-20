@@ -35,3 +35,16 @@
 .map-places-list .map-tag {
   background-color: hsl(0, 0%, 75%);
 }
+
+.map-places-filter .ant-input-affix-wrapper .ant-input-prefix {
+  left: 0px;
+}
+
+.map-places-filter .ant-input-prefix .ant-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.map-places-filter .ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 36px;
+}
