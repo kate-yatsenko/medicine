@@ -76,7 +76,7 @@ export default class PlacesSearch extends Component {
       <div className="places-search">
         {visible?
           <React.Fragment>
-            <h2>Центр пошуку:</h2>
+            <h1>Центр пошуку:</h1>
             <Tooltip placement="topLeft" title="Визначити місцезнаходження" mouseEnterDelay={0.7}>
               <Button
                 className="my-location-button"
@@ -106,7 +106,7 @@ export default class PlacesSearch extends Component {
               </StandaloneSearchBox>
             : <Input placeholder="Goople Maps API librares not loaded" />
             }
-            <h2>Тип пошуку:</h2>
+            <h1>Тип пошуку:</h1>
             <Radio.Group 
               defaultValue={type}
               buttonStyle="solid"
@@ -116,7 +116,7 @@ export default class PlacesSearch extends Component {
               <Radio.Button value="DENTIST">Стоматології</Radio.Button>
               <Radio.Button value="PHARMACY">Аптеки</Radio.Button>
             </Radio.Group>
-            <h2>Радіус пошуку:</h2>
+            <h1>Радіус пошуку:</h1>
             <InputNumber
               value={radius}
               min={100}
@@ -136,6 +136,7 @@ export default class PlacesSearch extends Component {
               tipFormatter={radiusFormatter}
             />
             <Button 
+              className="map-dashboard-search-btn"
               type="primary"
               icon="search"
               loading={loading === 'Пошук медичних закладів'}
@@ -146,6 +147,7 @@ export default class PlacesSearch extends Component {
               Пошук
             </Button>
             <Button 
+              className="map-dashboard-close-btn"
               onClick={toggleVisibility}
             >
               Згорнути

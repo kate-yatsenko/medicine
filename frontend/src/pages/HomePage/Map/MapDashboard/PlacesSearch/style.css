@@ -5,7 +5,8 @@
 
 #address-search {
   float: left;
-  width: calc(100% - 40px);
+  width: calc(100% - 36px);
+  margin-left: 4px;
 }
 
 .places-search .ant-slider {
@@ -19,7 +20,6 @@
 .places-search .ant-input-number {
   width: 120px;
   float: right;
-  margin-right: 2px;
   font-weight: bold;
 }
 
@@ -29,18 +29,20 @@
 }
 
 .places-search .ant-radio-group {
-  width: calc(100% - 4px);
-  margin: 0 2px 0 2px;
+  width: 100%;
 }
 
-.places-search .ant-btn {
-  width: calc(50% - 4px);
-  margin: 0 2px 0 2px;
+.places-search .ant-btn.map-dashboard-search-btn {
+  width: calc(50% - 2px);
+}
+
+.places-search .ant-btn.map-dashboard-close-btn {
+  width: calc(50% - 2px);
+  margin-left: 4px;
 }
 
 .places-search .ant-btn.map-dashboard-open-btn {
-  width: calc(100% - 4px);
-  margin: 0 2px 0 2px;
+  width: 100%;
 }
 
 .places-search .ant-radio-button-wrapper {

@@ -1,5 +1,5 @@
 .map-dashboard {
-  margin: 2px 4px 2px 2px;
+  padding: 2px;
 }
 
 .map-dashboard .anticon {
@@ -7,11 +7,6 @@
 }
 
 .map-dashboard h1 {
-  font: bold 14px sans-serif;
-  color: hsla(0, 0%, 0%, 0.65);
-}
-
-.map-dashboard h2 {
   clear: both;
   font: bold 14px sans-serif;
   margin: 0;
@@ -21,6 +16,4 @@
 
 .ant-input.map-dashboard-input {
   margin-left: 2px;
-  margin-right: 2px;
-  width: calc(100% - 4px);
 }
