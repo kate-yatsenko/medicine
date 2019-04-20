@@ -13,21 +13,30 @@ export default class PlacesList extends Component {
     const activePlaceId = prevActivePlaceId !== placeId ? placeId : (prevActivePlaceId ? null : placeId);
     this.props.selectPlace({activePlaceId, zoom});
   }
-  getPlacesList = ({placeId, name, adress, type, tags, rating, ratingUsers}) => {
+  getTagsList(tags) {
+    return tags.map((tag) => {
+      if (!(tag === 'point_of_interest' || tag === 'establishment')){
+        return <span key={tag} className="map-tag" >{tag}</span>;
+      }
+      return '';
+    });
+  }
+  getPlacesList = ({placeId, name, adress, tags, rating, ratingUsers}) => {
+    const {toggleSelectPlace, getTagsList} = this;
+    const active = placeId === this.props.places.activePlaceId;
     return (
       <List.Item 
         key={placeId} 
         style={{cursor:'pointer',}}
-        onClick={() => this.toggleSelectPlace(placeId)}
+        onClick={() => toggleSelectPlace(placeId)}
       >
-        <div className="map-places-list-item">
-          {name}
-          {placeId === this.props.places.activePlaceId &&
-            <div style={{paddingLeft: '10px', fontStyle: 'italic', width: '250px'}}>
-              {adress}<br />
-              {type}<br />
-              {tags.join(', ')}<br />
-              {`рейтинг: ${rating?rating:'-'}/5 (відгуків - ${ratingUsers?ratingUsers:0})`}
+        <div className={active ? "map-places-list-item-active" : "map-places-list-item"}>
+          <h1>{name}</h1>
+          {active &&
+            <div className="place-details">
+              <b>Адреса: </b>{adress}<br />
+              {!(rating===false) && <span><b>Рейтинг: </b>{rating?rating:'?'}/5 (відгуків - {ratingUsers?ratingUsers:0})</span>}
+              {tags && <React.Fragment><br />{getTagsList(tags)}</React.Fragment>}
             </div>
           }
         </div>
@@ -39,6 +48,7 @@ export default class PlacesList extends Component {
     return (
       <div className="map-places-list">
         <Search
+        className="map-places-filter"
           placeholder="Фільтр за назвою"
           enterButton={
             <Button 

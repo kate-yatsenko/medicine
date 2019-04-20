@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
 
 class MapDashboard extends Component {
   render() {
-    const {search, filter, places, gmaps, endSearchPosition, searchPlaces, getLocation, selectPlace} = this.props;
+    const {search, places, gmaps, endSearchPosition, searchPlaces, getLocation, selectPlace} = this.props;
     return (
       <div className="map-dashboard" >
         <PlacesSearch {...search} {...gmaps} getLocation={getLocation} endSearchPosition={endSearchPosition} searchPlaces={searchPlaces} />
