@@ -105,8 +105,12 @@ module.exports = {
     return db.userRole.getRole({ userId });
   },
 
-  getUserList({ name, excludeId }) {
-    return db.user.getList({ name, excludeId });
+  getRolesWhere({ canReadAllCards = false }) {
+    return db.userRole.getRolesWhere({ canReadAllCards });
+  },
+
+  getUserList({ name, excludeId, roleIds }) {
+    return db.user.getList({ name, excludeId, roleIds });
   },
 
   getUserIdByEmail({ email }) {
