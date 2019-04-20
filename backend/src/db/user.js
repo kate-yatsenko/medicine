@@ -59,9 +59,10 @@ module.exports = {
       .then(ids => ids[0]);
   },
 
-  getList({ name, excludeId }) {
+  getList({ name, excludeId, roleIds }) {
     return knex({ u: 'user' })
-      .where('u.name', 'ilike', `%${name}%`)
+      .whereIn('u.roleId', roleIds)
+      .andWhere('u.name', 'ilike', `%${name}%`)
       .andWhereNot({ 'u.id': excludeId })
       .limit(searchLimit)
       .orderBy('u.name')
