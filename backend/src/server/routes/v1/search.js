@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 
+const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
 const {
@@ -20,7 +21,7 @@ async function validateSearch(ctx, next) {
   }
   const { name: rawName } = ctx.query;
 
-  ctx.assert(rawName && rawName.length, 400, 'Invalid search query!');
+  ctx.assert(rawName && rawName.length, 400, 'Invalid name query!');
 
   const name = rawName.trim();
   ctx.assert(name.length >= minLength, 400, 'Search name is too short!');
@@ -42,6 +43,6 @@ async function getList(ctx) {
   ctx.assert(ctx.body, 404, 'Entry not found');
 }
 
-router.get('/', validateSearch, getList);
+router.get('/', validator.idParam({ name: 'uid' }), validateSearch, getList);
 
 module.exports = router;
