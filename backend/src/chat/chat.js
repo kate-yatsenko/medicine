@@ -61,7 +61,28 @@ function onMessage(io, socket) {
 function onConnection(io) {
   return async socket => {
     socket.on('read', async ids => {
-      io.emit('read', await services.markMessagesAsRead(ids));
+      const { id: receiver } = socket;
+      let rows = null;
+      try {
+        rows = await services.markMessagesAsRead({ ids, receiver });
+      } catch (err) {
+        // TODO: add to logger
+        console.error(err);
+        io.to(receiver).emit('error', 'Cannot mark messages as read');
+      }
+
+      const emits = rows.reduce((acc, row) => {
+        if (acc[row.sender]) {
+          acc[row.sender].push(row.id);
+        } else {
+          acc[row.sender] = [row.id];
+        }
+        return acc;
+      }, {});
+
+      Object.keys(emits).forEach(sndr => {
+        io.to(sndr).emit('read', emits[sndr]);
+      });
     });
 
     socket.on('status', async () => {
