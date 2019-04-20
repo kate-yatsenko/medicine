@@ -28,14 +28,12 @@ class Chat extends React.Component {
     });
 
     socket.on('history', chatHistory => {
-      console.log(chatHistory);
       dispatch(updateChatHistory(chatHistory, chatHistory.slice(-100)));
       this.scrollDown();
       setTimeout(() => this.readMessages(), 1000);
     });
 
     socket.on('message', (message, meta) => {
-      console.log(message, meta);
       const { testId, currentCompanion } = this.props;
       if (testId !== meta.sender) {
         socket.emit('status');
@@ -58,13 +56,12 @@ class Chat extends React.Component {
     });
 
     socket.on('processing', message => {
-      // console.log(message)
+      console.log(message)
     });
 
     socket.on('read', read => {
       const { dispatch } = this.props;
       dispatch(updateReadMessages(read));
-      console.log(read, 'read');
       socket.emit('status');
     });
 

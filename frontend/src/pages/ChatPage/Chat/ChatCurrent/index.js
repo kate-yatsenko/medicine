@@ -11,7 +11,7 @@ const { Text } = Typography;
 
 const mapStateToProps = ({ chatState }) => {
   return {
-    currentCompanion: chatState.currentCompanion
+    currentCompanion: chatState.currentCompanion,
   }
 };
 

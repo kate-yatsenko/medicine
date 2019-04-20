@@ -39,7 +39,11 @@ class ChatList extends React.Component {
     return (
       <Tabs activeKey={activeKey} onChange={this.chooseTab}>
         <TabPane tab="Контакти" key="1">
-          <ContactsTab/>
+          <ContactsTab
+            chooseTab={this.chooseTab}
+            chooseChat={this.chooseChat}
+            chatsStatus={chatsStatus}
+          />
         </TabPane>
         <TabPane tab="Чати" key="2">
           <ChatsTab

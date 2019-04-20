@@ -18,7 +18,6 @@ class ChatFrameMessages extends React.Component {
 
   render() {
     const { currentChatHistory } = this.props;
-    console.log(currentChatHistory, 'current');
 
     return (
       <div className="chat-frame-messages d-flex flex-column">
