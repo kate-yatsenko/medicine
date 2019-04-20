@@ -8,11 +8,11 @@ module.exports = {
       .then(results => results[0]);
   },
 
-  markAsRead(ids) {
+  markAsRead({ ids, receiver }) {
     return knex('message')
       .whereIn('id', ids)
-      .update({ isRead: true }, ['id'])
-      .then(updatedIds => updatedIds.map(({ id }) => id));
+      .andWhere({ receiver })
+      .update({ isRead: true }, ['id', 'sender']);
   },
 
   getNewMessagesCount({ receiver }) {
