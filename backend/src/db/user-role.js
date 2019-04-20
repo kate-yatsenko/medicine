@@ -14,4 +14,10 @@ module.exports = {
       )
       .first();
   },
+
+  getRolesWhere({ canReadAllCards = false }) {
+    return knex('role')
+      .where({ canReadAllCards })
+      .select();
+  },
 };
