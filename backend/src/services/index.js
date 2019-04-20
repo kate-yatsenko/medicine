@@ -80,7 +80,7 @@ module.exports = {
       address,
       birth,
     });
-    return this.getUser(userId);
+    return db.user.getUser(userId);
   },
 
   getUser(id) {
@@ -109,8 +109,8 @@ module.exports = {
     return db.user.getList({ name, excludeId });
   },
 
-  getUserByEmail({ email }) {
-    return db.user.getByEmail({ email });
+  getUserIdByEmail({ email }) {
+    return db.user.getIdByEmail({ email });
   },
 
   getEntryTypes(id = null) {

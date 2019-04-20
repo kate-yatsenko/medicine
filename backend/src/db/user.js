@@ -25,6 +25,7 @@ module.exports = {
       .select(
         'u.id',
         { roleName: 'role.name' },
+        'u.roleId',
         'u.name',
         'u.email',
         'u.gender',
@@ -67,13 +68,14 @@ module.exports = {
       .select('u.id', 'u.name', 'u.email', 'u.birth');
   },
 
-  getByEmail({ email }) {
+  getIdByEmail({ email }) {
     return knex({ u: 'user' })
       .where({ email })
       .join('role', { 'u.roleId': 'role.id' })
       .select(
         'u.id',
         { roleName: 'role.name' },
+        'u.roleId',
         'u.name',
         'u.email',
         'u.gender',
