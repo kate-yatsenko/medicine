@@ -40,7 +40,7 @@ async function authUser(ctx, next) {
 
   ctx.assert(payload.email_verified, 401, 'Google email is not verified');
   ctx.assert(payload.email, 401, 'Email not found!');
-  ctx.assert(payload.name, 401, 'Name not failed!');
+  ctx.assert(payload.name, 401, 'Name not found!');
 
   let user = null;
   try {
