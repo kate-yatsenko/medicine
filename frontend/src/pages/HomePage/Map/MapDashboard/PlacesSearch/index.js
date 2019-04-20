@@ -18,23 +18,45 @@ export default class PlacesSearch extends Component {
   state = {
     radius: this.props.radius,
     type: this.props.type,
+    visible: false,
   }
-
   marks = {
-    100: '100m',
-    5000: '5km',
+    100: {
+      style: {
+        left: '5%',
+      },
+      label: <strong>100 м</strong>,
+    },
+    5000: {
+      style: {
+        width: '45px',
+        left: '95%',
+      },
+      label: <strong>5 км</strong>,
+    },
   };
+
   onChangeRadius = (value) => {
-    // if Number.isNaN
-    this.setState({
-      radius: value,
-      // loading: false,
-    });
+    let radius = Number.parseInt(value);
+    if (Number.isNaN(radius)) {
+      radius = this.state.radius;
+    } else {
+      radius = 100 * Math.round(radius/100);
+    }
+    this.setState({radius});
   };
   onChangeSearchType = (e) => {
     this.setState({type: e.target.value});
   };
-
+  toggleVisibility = () => {
+    this.setState((state) => ({visible: !state.visible}))
+  }
+  radiusFormatter(value) {
+    const km = Math.trunc(value/1000);
+    const m = value - 1000 * km;
+    return `${km?km+' км ':''}${m?m+' м':''}`;
+  }
+  
   componentDidUpdate() {
     const input = document.getElementById('address-search');
     if (input) {
@@ -43,86 +65,105 @@ export default class PlacesSearch extends Component {
   }
 
   render() {
-    const {state, marks, onChangeRadius, onChangeSearchType} = this;
-    const {radius, type} = state;
-    const {map, adress, endSearchPosition, getLocation, placesService, geocoderService, position, searchPlaces, loadingMessage} = this.props;
+    const {state, marks, onChangeRadius, onChangeSearchType, radiusFormatter, toggleVisibility} = this;
+    const {radius, type, visible} = state;
+    const {map,adress,endSearchPosition,getLocation,placesService,geocoderService,position,searchPlaces,messages:{loading}} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);
     }
 
     return (
-      <div>
-        <h6>Центр пошуку</h6>
-        <Tooltip placement="topLeft" title="Визначити місцезнаходження" mouseEnterDelay={0.5}>
-          <Button
-            className="my-location-button"
-            shape="circle"
-            type="primary"
-            onClick={() => getLocation(geocoderService, placesService)}
-          >
-            <MyLocationIcon />
-          </Button>
-        </Tooltip>
-        
-        {map?
-          <StandaloneSearchBox
-            onLoad={ref => {this.searchBox = ref;}}
-            onPlacesChanged={() => {
-              const places = this.searchBox.getPlaces();
-              if (places.length) {
-                const [{formatted_address: adress, geometry: {location: position}}] = places;
-                endSearchPosition({position, adress, alerts: [], errors: []});
-              }
-            }}
-          >
-            <Input 
-              id="address-search"
-              className="map-dashboard-input"
-              placeholder={adress} 
+      <div className="places-search">
+        {visible?
+          <React.Fragment>
+            <h2>Центр пошуку:</h2>
+            <Tooltip placement="topLeft" title="Визначити місцезнаходження" mouseEnterDelay={0.7}>
+              <Button
+                className="my-location-button"
+                shape="circle"
+                type="primary"
+                onClick={() => getLocation(geocoderService, placesService)}
+              >
+                <MyLocationIcon />
+              </Button>
+            </Tooltip>
+            {map?
+              <StandaloneSearchBox
+                onLoad={ref => {this.searchBox = ref;}}
+                onPlacesChanged={() => {
+                  const places = this.searchBox.getPlaces();
+                  if (places.length) {
+                    const [{formatted_address: adress, geometry: {location: position}}] = places;
+                    endSearchPosition({position, adress, alerts: [], errors: []});
+                  }
+                }}
+              >
+                <Input 
+                  id="address-search"
+                  className="map-dashboard-input"
+                  placeholder={adress} 
+                />
+              </StandaloneSearchBox>
+            : <Input placeholder="Goople Maps API librares not loaded" />
+            }
+            <h2>Тип пошуку:</h2>
+            <Radio.Group 
+              defaultValue={type}
+              buttonStyle="solid"
+              onChange={onChangeSearchType}
+            >
+              <Radio.Button value="MEDIC">Загальний</Radio.Button>
+              <Radio.Button value="DENTIST">Стоматології</Radio.Button>
+              <Radio.Button value="PHARMACY">Аптеки</Radio.Button>
+            </Radio.Group>
+            <h2>Радіус пошуку:</h2>
+            <InputNumber
+              value={radius}
+              min={100}
+              max={5000}
+              step={100}
+              onChange={onChangeRadius}
+              formatter={radiusFormatter}
             />
-          </StandaloneSearchBox>
-        : <Input placeholder="Goople Maps API librares not loaded" />
+            <Slider 
+              min={100}
+              max={5000}
+              marks={marks}
+              value={radius}
+              style={{ width: 280 }}
+              step={100}
+              onChange={onChangeRadius}
+              tipFormatter={radiusFormatter}
+            />
+            <Button 
+              type="primary"
+              icon="search"
+              loading={loading === 'Пошук медичних закладів'}
+              onClick={() => {
+                searchPlaces({placesService, position, radius, type})
+              }}
+            >
+              Пошук
+            </Button>
+            <Button 
+              onClick={toggleVisibility}
+            >
+              Згорнути
+              <Icon type="up" />
+            </Button>
+          </React.Fragment>
+        :
+          <Button 
+            type="primary"
+            className="map-dashboard-open-btn"
+            onClick={toggleVisibility}
+          >
+            <Icon type="setting" />
+            Налаштування пошуку
+            <Icon type="down" />
+          </Button>
+
         }
-        <p className="clear" >Тип пошуку</p>
-        <Radio.Group 
-          defaultValue={type}
-          buttonStyle="solid"
-          onChange={onChangeSearchType}
-        >
-          <Radio.Button value="MEDIC">Загальний</Radio.Button>
-          <Radio.Button value="DENTIST">Стоматології</Radio.Button>
-          <Radio.Button value="PHARMACY">Аптеки</Radio.Button>
-        </Radio.Group>
-        <p>Радіус пошуку</p>
-        <Slider 
-          min={100}
-          max={5000}
-          marks={marks}
-          value={radius}
-          style={{ width: 280 }}
-          step={100}
-          onChange={onChangeRadius}
-          // TODO: onAfterChange={}
-        />
-        <InputNumber
-          value={radius}
-          min={100}
-          max={5000}
-          step={100}
-          //formatter={value => value < 1000 ? `${value} m` : `${value} km`}
-          // parser={value => value.replace('%', '')}
-          onChange={onChangeRadius}
-        />
-        <Button 
-          type="primary"
-          icon="search"
-          loading={!!loadingMessage}
-          onClick={() => {
-            searchPlaces({placesService, position, radius, type})
-          }}
-        >
-        Пошук
-        </Button>
       </div>
     );
   }

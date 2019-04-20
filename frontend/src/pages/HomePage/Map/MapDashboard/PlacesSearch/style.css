@@ -1,12 +1,50 @@
-.my-location-button {
+.places-search .ant-btn.my-location-button {
   float: left;
+  width: 32px;
 }
 
 #address-search {
   float: left;
-  width: calc(100% - 42px);
+  width: calc(100% - 40px);
 }
 
-.clear {
+.places-search .ant-slider {
   clear: both;
+}
+
+.places-search .ant-slider-mark-text {
+  color: hsla(0, 0%, 0%, 0.45);
+}
+
+.places-search .ant-input-number {
+  width: 120px;
+  float: right;
+  margin-right: 2px;
+  font-weight: bold;
+}
+
+.places-search .ant-input-number .ant-input-number-input {
+  color: hsla(0, 0%, 0%, 0.45);
+  font-weight: bold;
+}
+
+.places-search .ant-radio-group {
+  width: calc(100% - 4px);
+  margin: 0 2px 0 2px;
+}
+
+.places-search .ant-btn {
+  width: calc(50% - 4px);
+  margin: 0 2px 0 2px;
+}
+
+.places-search .ant-btn.map-dashboard-open-btn {
+  width: calc(100% - 4px);
+  margin: 0 2px 0 2px;
+}
+
+.places-search .ant-radio-button-wrapper {
+  width: calc(100% / 3);
+  text-align: center;
+  padding: 0;
 }

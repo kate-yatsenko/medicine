@@ -54,7 +54,7 @@ export default class MapMarker extends Component {
           }}
           position={mouseOver || visibleInfoWindow ? position : null}
           options={{
-            pixelOffset: {height: -43},
+            pixelOffset: {height: -35},
             disableAutoPan: true,
           }}
         >

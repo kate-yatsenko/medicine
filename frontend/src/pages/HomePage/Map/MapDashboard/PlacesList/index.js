@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {List} from 'antd';
 
+import './style.css';
+
 export default class PlacesList extends Component {
 
   toggleSelectPlace = (placeId) => {
