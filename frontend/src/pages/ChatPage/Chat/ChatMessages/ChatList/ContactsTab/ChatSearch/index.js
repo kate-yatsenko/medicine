@@ -7,7 +7,7 @@ const ChatSearch = () => {
   return (
     <div className="chat-search">
       <Input
-        placeholder="Пошук чату"
+        placeholder="Пошук контакту"
         allowClear
       />
     </div>

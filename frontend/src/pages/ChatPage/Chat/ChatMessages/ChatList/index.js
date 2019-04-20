@@ -1,8 +1,10 @@
 import React from 'react';
-import { Badge, Typography } from 'antd';
+import { Tabs } from 'antd';
 import { socket } from 'pages/ChatPage';
 import { connect } from 'react-redux';
 import { updateCurrentCompanion } from 'actions/chatActions';
+import ChatsTab from './ChatsTab';
+import ContactsTab from './ContactsTab';
 
 import './style.scss';
 
@@ -13,9 +15,12 @@ const mapStateToProps = ({ chatState }) => {
   }
 };
 
-const { Text } = Typography;
+const TabPane = Tabs.TabPane;
 
 class ChatList extends React.Component {
+  state = {
+    activeKey: "1",
+  };
 
   chooseChat = (item) => {
     const { dispatch } = this.props;
@@ -23,22 +28,26 @@ class ChatList extends React.Component {
     dispatch(updateCurrentCompanion(item));
   };
 
+  chooseTab = (activeKey) => {
+    this.setState({ activeKey });
+  };
+
   render() {
     const { chatsStatus } = this.props;
+    const { activeKey } = this.state;
 
     return (
-      <div className="chat-list">
-        {chatsStatus.map(item =>
-          <div
-            className="chat-list-item d-flex justify-content-between"
-            onClick={() => this.chooseChat(item)}
-            key={item.sender}
-          >
-            <Text>{item.name}</Text>
-            <Badge count={item.unread} overflowCount={99}/>
-          </div>
-        )}
-      </div>
+      <Tabs activeKey={activeKey} onChange={this.chooseTab}>
+        <TabPane tab="Контакти" key="1">
+          <ContactsTab/>
+        </TabPane>
+        <TabPane tab="Чати" key="2">
+          <ChatsTab
+            chooseChat={this.chooseChat}
+            chatsStatus={chatsStatus}
+          />
+        </TabPane>
+      </Tabs>
     )
   }
 }
