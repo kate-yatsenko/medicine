@@ -22,6 +22,8 @@ module.exports = {
 
   googleClientId: env.GOOGLE_CLIENT_ID,
 
+  tokenExpiresIn: '18h',
+
   port: env.API_PORT,
   cors: {
     jrigin: env.API_CORS_ORIGIN,
