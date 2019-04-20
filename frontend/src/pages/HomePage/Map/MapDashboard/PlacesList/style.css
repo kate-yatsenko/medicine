@@ -1,3 +1,7 @@
+.map-places-list {
+  height: 100%;
+}
+
 .map-places-filter {
   margin-top: 4px;
   margin-bottom: 4px;
@@ -47,4 +51,8 @@
 
 .map-places-filter .ant-input-affix-wrapper .ant-input:not(:first-child) {
   padding-left: 36px;
+}
+
+.map-places-list .places-list {
+  overflow: auto;
 }

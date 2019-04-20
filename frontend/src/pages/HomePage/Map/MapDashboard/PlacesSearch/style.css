@@ -33,12 +33,11 @@
 }
 
 .places-search .ant-btn.map-dashboard-search-btn {
-  width: calc(50% - 2px);
+  width: 100%;
 }
 
 .places-search .ant-btn.map-dashboard-close-btn {
-  width: calc(50% - 2px);
-  margin-left: 4px;
+  width: 100%;
 }
 
 .places-search .ant-btn.map-dashboard-open-btn {

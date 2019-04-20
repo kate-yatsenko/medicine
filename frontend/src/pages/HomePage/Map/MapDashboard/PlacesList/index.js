@@ -84,13 +84,13 @@ export default class PlacesList extends Component {
           onChange={(e) => setFilter(e.target.value)}
           onSearch={(filter) => setFilter(filter)}
         />
-        <div style={{overflow: 'auto', height:'400px'}}>
-          <List
-              size="small"
-              bordered={false}
-              dataSource={getFilteredPlaces()}
-              renderItem={getPlacesList}
-          />
+        <div className="places-list">
+        <List
+            size="small"
+            bordered={false}
+            dataSource={getFilteredPlaces()}
+            renderItem={getPlacesList}
+        />
         </div>
       </div>
     );

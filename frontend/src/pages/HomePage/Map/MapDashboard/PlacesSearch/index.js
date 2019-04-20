@@ -76,6 +76,14 @@ export default class PlacesSearch extends Component {
       <div className="places-search">
         {visible?
           <React.Fragment>
+            <Button 
+              className="map-dashboard-close-btn"
+              onClick={toggleVisibility}
+            >
+              <Icon type="setting" />
+              Приховати налаштування
+              <Icon type="up" />
+            </Button>
             <h1>Центр пошуку:</h1>
             <Tooltip placement="topLeft" title="Визначити місцезнаходження" mouseEnterDelay={0.7}>
               <Button
@@ -145,13 +153,6 @@ export default class PlacesSearch extends Component {
               }}
             >
               Пошук
-            </Button>
-            <Button 
-              className="map-dashboard-close-btn"
-              onClick={toggleVisibility}
-            >
-              Згорнути
-              <Icon type="up" />
             </Button>
           </React.Fragment>
         :
