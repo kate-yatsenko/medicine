@@ -16,4 +16,8 @@ export const getTypes = () =>
   axios.get(`/etypes/`)
     .then(response => response.data);
 
+export const searchUsers = (id, params) =>
+  axios.get(`/users/${id}/search`, { params })
+    .then(response => response.data);
+
 

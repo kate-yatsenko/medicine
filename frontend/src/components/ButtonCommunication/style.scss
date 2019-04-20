@@ -1,17 +1,17 @@
 .fixed-button {
   position: fixed;
   z-index: 2;
-  bottom: 3%;
+  bottom: 2%;
   left: 3%;
   color: #00000073;
   cursor: pointer;
 
   & button {
-    height: 50px;
-    width: 50px;
+    height: 35px;
+    width: 35px;
   }
 
   & i {
-    font-size: 25px;
+    font-size: 20px;
   }
 }

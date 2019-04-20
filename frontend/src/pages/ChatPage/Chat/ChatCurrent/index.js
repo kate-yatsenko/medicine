@@ -1,21 +1,37 @@
 import React from 'react';
-import { Badge, Icon } from 'antd';
 import ChatFrameMessages from './ChatFrameMessages';
 import ChatMessageInput from './ChatMessageInput';
+import ChatUserName from './ChatUserName';
+import { connect } from 'react-redux';
+import { Typography } from 'antd';
 
 import './style.scss';
 
-const ChatCurrent = () => {
-  return (
-    <div className="chat-current">
-      <div className="chat-current-title">
-        <Icon type="arrow-left" className="chat-current-back d-md-none"/>
-        <Badge status="success" text="Вася"/>
-      </div>
-      <ChatFrameMessages/>
-      <ChatMessageInput/>
-    </div>
-  );
+const { Text } = Typography;
+
+const mapStateToProps = ({ chatState }) => {
+  return {
+    currentCompanion: chatState.currentCompanion,
+  }
 };
 
-export default ChatCurrent;
+class ChatCurrent extends React.Component {
+
+  render() {
+    const { currentCompanion } = this.props;
+
+    return currentCompanion ? (
+      <div className="chat-current">
+        <ChatUserName name={currentCompanion.name}/>
+        <ChatFrameMessages/>
+        <ChatMessageInput id={currentCompanion.sender}/>
+      </div>
+    ) : (
+      <div className="chat-current chat-empty">
+        <Text type="secondary" className="chat-empty-text">Оберіть чат</Text>
+      </div>
+    )
+  }
+}
+
+export default connect(mapStateToProps)(ChatCurrent);

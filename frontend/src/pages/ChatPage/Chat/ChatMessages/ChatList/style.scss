@@ -1,13 +1,19 @@
 .chat {
   &-list {
-    height: 500px;
+    height: 492px;
     overflow-y: auto;
 
     &-item {
+      cursor: pointer;
       border: 1px solid #d7d2d2d9;
       padding: 15px;
       border-radius: 3px;
       margin-bottom: 5px;
     }
   }
+}
+
+.contacts-list {
+  height: 440px;
+  overflow-y: auto;
 }
