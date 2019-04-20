@@ -8,7 +8,8 @@ import './style.scss';
 
 const mapStateToProps = ({ chatState }) => {
   return {
-    chatsStatus: chatState.chatsStatus
+    chatsStatus: chatState.chatsStatus,
+    chatHistory: chatState.chatHistory,
   }
 };
 
@@ -34,7 +35,7 @@ class ChatList extends React.Component {
             key={item.sender}
           >
             <Text>{item.name}</Text>
-            <Badge count={item.unread}/>
+            <Badge count={item.unread} overflowCount={99}/>
           </div>
         )}
       </div>

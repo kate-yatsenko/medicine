@@ -1,8 +1,8 @@
 import React from 'react';
-import { Layout, Row, Col } from 'antd';
+import { Layout, Row, Col, notification } from 'antd';
 import ChatMessages from './ChatMessages';
 import ChatCurrent from './ChatCurrent';
-import { updateChatHistory, updateChatsStatus, updateNewMessages } from 'actions/chatActions';
+import { updateChatHistory, updateChatsStatus } from 'actions/chatActions';
 import { socket } from '../../ChatPage';
 import { connect } from 'react-redux';
 
@@ -28,26 +28,44 @@ class Chat extends React.Component {
     });
 
     socket.on('history', chatHistory => {
-      console.log(chatHistory);
+      const { currentCompanion } = this.props;
       dispatch(updateChatHistory(chatHistory, chatHistory.slice(-100)));
+
       const block = document.querySelector('.chat-frame-messages');
       block.scrollTop = block.scrollHeight;
+
+      const unreadMessages = chatHistory.filter(message => !message.isRead && message.sender === currentCompanion.sender);
+      let unreadMessagesIds = [];
+      unreadMessages.forEach(item => {
+        unreadMessagesIds.push(item.id)
+      });
+      socket.emit('read', unreadMessagesIds);
     });
 
     socket.on('message', (message, meta) => {
       const { testId, currentCompanion } = this.props;
       if (testId !== meta.sender) {
         socket.emit('status');
+        const args = {
+          message: 'Нове повідомлення',
+          description: message,
+        };
+        notification.open(args);
       }
-      if (currentCompanion.sender === meta.sender || testId === meta.sender) {
-        dispatch(updateNewMessages({ ...meta, message }));
-        const block = document.querySelector('.chat-frame-messages');
-        block.scrollTop = block.scrollHeight;
+
+      if (currentCompanion) {
+        if (currentCompanion.sender === meta.sender || testId === meta.sender) {
+          socket.emit('history', currentCompanion.sender)
+        }
       }
     });
 
     socket.on('processing', message => {
       console.log(message)
+    });
+
+    socket.on('read', () => {
+      socket.emit('status');
     });
 
     socket.on('error', error => {
