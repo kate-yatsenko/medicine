@@ -19,6 +19,7 @@ export const startSearchPlaces = createAction(START_SEARCH_PLACES, () => ({
 export const endSearchPosition = createAction(END_SEARCH_POSITION, ({position, adress, alerts=[], errors=[]}) => ({
   search: {position, adress},
   gmaps: {messages: {loading: null}, alerts, errors},
+  places: {activePlaceId: null},
 }));
 export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts, errors, zoom, radius, type}) => ({
   search: {radius, type},

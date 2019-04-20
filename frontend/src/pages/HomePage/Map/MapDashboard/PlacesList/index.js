@@ -6,7 +6,7 @@ export default class PlacesList extends Component {
   toggleSelectPlace = (placeId) => {
     const zoom = this.props.map.getZoom();
     const prevActivePlaceId = this.props.places.activePlaceId;
-    const activePlaceId = prevActivePlaceId !== placeId ? placeId : prevActivePlaceId ? null : placeId;
+    const activePlaceId = prevActivePlaceId !== placeId ? placeId : (prevActivePlaceId ? null : placeId);
     this.props.selectPlace({activePlaceId, zoom});
   }
   getPlacesList = ({placeId, name, adress, type, tags, rating, ratingUsers}) => {
