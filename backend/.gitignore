@@ -52,7 +52,7 @@ typings/
 karma.conf.js
 protractor.conf.js
 
-.key
+*.key
 
 .vscode/
 
