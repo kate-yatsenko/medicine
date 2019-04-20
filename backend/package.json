@@ -20,6 +20,8 @@
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "dotenv": "^7.0.0",
+    "google-auth-library": "^3.1.2",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.3",
     "koa": "^2.7.0",
     "koa-body": "^4.1.0",

@@ -4,7 +4,7 @@ const Koa = require('koa');
 
 const chat = require('./chat');
 
-const { CHAT_PORT: PORT } = require('../config');
+const { chatPort: port } = require('../config');
 
 const app = new Koa();
 
@@ -32,8 +32,8 @@ let server = null;
 function listen() {
   if (server != null) return server;
 
-  server = app.listen(PORT, () => {
-    console.log(`Chat is listening on port ${PORT}`);
+  server = app.listen(port, () => {
+    console.log(`Chat is listening on port ${port}`);
   });
 
   chat.attach(server);
