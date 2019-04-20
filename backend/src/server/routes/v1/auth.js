@@ -77,17 +77,17 @@ async function authUser(ctx, next) {
 
   ctx.tokenPayload = user;
   await next();
-  ctx.body = { isRegistered };
+  ctx.body = { isRegistered, token: ctx.response.headers.authorization };
 }
 
 // TODO: remove after tests
-// async function sendHtml(ctx) {
-//   const { createReadStream } = require('fs');
+async function sendHtml(ctx) {
+  const { createReadStream } = require('fs');
 
-//   ctx.type = 'text/html; charset=utf-8';
-//   ctx.body = createReadStream(`${__dirname}/auth.html`);
-// }
-// router.get('/', sendHtml);
+  ctx.type = 'text/html; charset=utf-8';
+  ctx.body = createReadStream(`${__dirname}/auth.html`);
+}
+router.get('/', sendHtml);
 
 router.post('/', koaBody(), authUser, create);
 
