@@ -34,8 +34,19 @@ async function getList(ctx) {
   const { uid: excludeId } = ctx.params;
   const { name } = ctx.query;
 
+  let roleIds = [];
   try {
-    ctx.body = await services.getUserList({ name, excludeId });
+    const { canReadAllCards } = await services.getUserRole(excludeId);
+    const roles = await services.getRolesWhere({
+      canReadAllCards: !canReadAllCards,
+    });
+    roleIds = roles.map(role => role.id);
+  } catch (err) {
+    ctx.throw(500, 'Cannot get role(s)', { error: err });
+  }
+
+  try {
+    ctx.body = await services.getUserList({ name, excludeId, roleIds });
   } catch (err) {
     ctx.throw(500, 'Cannot get list', { error: err });
   }
