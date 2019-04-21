@@ -57,9 +57,7 @@ class App extends React.Component {
     unreadMessages.forEach(item => {
       unreadMessagesIds.push(item.id)
     });
-    if (unreadMessagesIds.length) {
       socket.socket.emit('read', unreadMessagesIds);
-    }
   };
 
   scrollDown = () => {

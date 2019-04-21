@@ -2,6 +2,12 @@
   font-size: 15px;
 }
 
-svg {
-  vertical-align: 0;
+.ScrollUpButton__Container {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.ant-badge-count {
+  top: 3px;
+  right: 3px;
 }
