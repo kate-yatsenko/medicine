@@ -13,7 +13,7 @@ const Doctor = () => {
   return (
     <Content className="page">
       <div className="d-flex action-field">
-        <TableSearch placeholder="Пошук пацієнта" type="doctor"/>
+        <TableSearch placeholder="Пошук по пацієнту" type="doctor"/>
         <AddButton/>
       </div>
       <TableDoctor/>

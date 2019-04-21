@@ -57,9 +57,7 @@ class App extends React.Component {
     unreadMessages.forEach(item => {
       unreadMessagesIds.push(item.id)
     });
-    if (unreadMessagesIds.length) {
       socket.socket.emit('read', unreadMessagesIds);
-    }
   };
 
   scrollDown = () => {
@@ -81,31 +79,30 @@ class App extends React.Component {
     socket.socket.on('history', chatHistory => {
       dispatch(updateChatHistory(chatHistory, chatHistory.slice(-100)));
       this.scrollDown();
-      setTimeout(() => this.readMessages(), 1000);
+      this.readMessages();
     });
 
     socket.socket.on('message', (message, meta) => {
-      const { userId, currentCompanion, chatHistory } = this.props;
-      if (!chatHistory.length) {
-        socket.socket.emit('status');
-      }
+      const { userId, currentCompanion } = this.props;
+      socket.socket.emit('status');
 
       if (userId !== meta.sender) {
         const args = {
           message: 'Нове повідомлення',
           description: message,
         };
-        socket.socket.emit('status');
         notification.open(args);
       }
+
       if (currentCompanion) {
         if (currentCompanion.sender === meta.sender || userId === meta.sender) {
           const { dispatch } = this.props;
           dispatch(updateNewMessages({ ...meta, message }));
           this.scrollDown();
         }
+
         if (currentCompanion.sender === meta.sender) {
-          setTimeout(() => socket.socket.emit('read', [meta.id]), 1000);
+          socket.socket.emit('read', [meta.id]);
         }
       }
     });
@@ -116,8 +113,8 @@ class App extends React.Component {
       socket.socket.emit('status');
     });
 
-    socket.socket.on('error', error => {
-      socket.socket.emit('disconnect');
+    socket.socket.on('disconnect', error => {
+      socket.socket.emit('connect');
     });
   };
 
