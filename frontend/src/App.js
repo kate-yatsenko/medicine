@@ -83,8 +83,11 @@ class App extends React.Component {
     });
 
     socket.socket.on('message', (message, meta) => {
-      const { userId, currentCompanion } = this.props;
-      socket.socket.emit('status');
+      const { userId, currentCompanion, chatHistory } = this.props;
+
+      if (!chatHistory.length) {
+        socket.socket.emit('status');
+      }
 
       if (userId !== meta.sender) {
         const args = {
@@ -98,13 +101,13 @@ class App extends React.Component {
         if (currentCompanion.sender === meta.sender || userId === meta.sender) {
           const { dispatch } = this.props;
           dispatch(updateNewMessages({ ...meta, message }));
-          dispatch(updateReadMessages([meta.id]));
-
           this.scrollDown();
         }
 
         if (currentCompanion.sender === meta.sender) {
           socket.socket.emit('read', [meta.id]);
+          dispatch(updateReadMessages([meta.id]));
+          socket.socket.emit('status');
         }
       }
     });
