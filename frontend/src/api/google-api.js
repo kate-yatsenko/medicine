@@ -4,7 +4,7 @@ class Place {
   constructor(placeResult) {
     const {place_id, geometry, name, vicinity, types, rating, user_ratings_total} = placeResult;
     this.placeId = place_id;
-    this.position = geometry.location;
+    this.position = {lat: geometry.location.lat(), lng: geometry.location.lng()};
     this.name = name;
     this.adress = vicinity;
     this.tags = types;
