@@ -79,7 +79,7 @@ class App extends React.Component {
     socket.socket.on('history', chatHistory => {
       dispatch(updateChatHistory(chatHistory, chatHistory.slice(-100)));
       this.scrollDown();
-      setTimeout(() => this.readMessages(), 1000);
+      this.readMessages();
     });
 
     socket.socket.on('message', (message, meta) => {
@@ -103,7 +103,7 @@ class App extends React.Component {
           this.scrollDown();
         }
         if (currentCompanion.sender === meta.sender) {
-          setTimeout(() => socket.socket.emit('read', [meta.id]), 1000);
+          socket.socket.emit('read', [meta.id])
         }
       }
     });
@@ -114,8 +114,8 @@ class App extends React.Component {
       socket.socket.emit('status');
     });
 
-    socket.socket.on('error', error => {
-      socket.socket.emit('disconnect');
+    socket.socket.on('disconnect', error => {
+      socket.socket.emit('connect');
     });
   };
 
