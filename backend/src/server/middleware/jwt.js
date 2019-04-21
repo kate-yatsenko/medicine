@@ -11,7 +11,7 @@ const algorithm = 'RS256';
 
 module.exports = {
   async create(ctx) {
-    const { id, roleId, name } = ctx.tokenPayload;
+    const { id, roleId, name, email } = ctx.tokenPayload;
 
     const signOptions = {
       issuer,
@@ -20,7 +20,11 @@ module.exports = {
     };
 
     try {
-      const token = jwt.sign({ id, roleId, name }, privateKEY, signOptions);
+      const token = jwt.sign(
+        { id, roleId, name, email },
+        privateKEY,
+        signOptions,
+      );
       ctx.set('authorization', `Bearer ${token}`);
     } catch (err) {
       ctx.throw(500, 'Cannot create token', { error: err });
