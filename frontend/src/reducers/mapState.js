@@ -51,12 +51,8 @@ const search = handleActions(
     position: {lat: 49.44444, lng: 32.05972},
     adress: 'Черкаси',
     radius: 500,
-<<<<<<< HEAD
-    type: 'DENTIST',
     showSettings: false,
-=======
     type: 'MEDIC',
->>>>>>> parent of 1496299... Fix toggleShowSettings action
   }
 );
 const places = handleActions(
