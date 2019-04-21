@@ -3,8 +3,8 @@ Medicine
 High Quality Medical platform
 
 ## Install
-* npm 
-* Node.js 11.14.0 with ECMAScript 2018 (ES9)
+* npm 6.9.0
+* Node.js 11.14.0
 * yarn
 
 ## Setup project
@@ -16,8 +16,13 @@ yarn start
     
 #### From backend folder:
 ```
+# create .env file
 cp .env.exmaple .env
+
+# replace parameters with real
 nano .env
+
+# install dependencies and run
 npm i
 npm start
 ```
@@ -25,6 +30,7 @@ npm start
 ## Description:
 
 #### Api:
+   * Description of all endpoints [Postman Collection](https://documenter.getpostman.com/view/6906588/S1ETScEr)
 
 #### In the Medcard you can:
    * GoogleAuth with [React Google Login](https://www.npmjs.com/package/react-google-login)
