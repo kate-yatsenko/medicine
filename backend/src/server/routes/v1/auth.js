@@ -65,7 +65,7 @@ async function authUser(ctx, next) {
         gender = '',
         phone = '',
         address = '',
-        birth = '0',
+        birth = new Date(0),
       } = payload;
 
       user = await services.createUser({
@@ -93,7 +93,7 @@ async function authUser(ctx, next) {
 //   const { createReadStream } = require('fs');
 
 //   ctx.type = 'text/html; charset=utf-8';
-//   ctx.body = createReadStream(`${__dirname}/auth.html`);
+//   ctx.body = createReadStream(`${__dirname}/index.html`);
 // }
 // router.get('/', sendHtml);
 
