@@ -1,0 +1,54 @@
+.map-alert.ant-alert-warning {
+  background-color: hsla(50, 100%, 80%, 0.8);
+  margin: 5px;
+  position: relative;
+  top: 30px;
+  width: 50%;
+}
+.map-alert.ant-alert-info {
+  background-color: hsla(200, 100%, 80%, 0.8);
+  margin: 5px;
+  position: relative;
+  top: 30px;
+  width: 50%;
+}
+.map-alert.ant-alert-error {
+  background-color: hsla(0, 100%, 80%, 0.8);
+  margin: 5px;
+  position: relative;
+  top: 30px;
+  width: 50%;
+}
+.alerts-layer  {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.alerts-layer.loading  {
+  height: 100%;
+}
+.map-fade  {
+  width: 100%;
+  height: 100%;
+  background-color: hsla(210, 100%, 55%, 0.2);
+}
+.alerts-layer .ant-spin-container {
+  width: 100%;
+  height: 100%;
+}
+.alerts-layer .ant-spin-nested-loading  {
+  width: 100%;
+  height: 100%;
+}
+.alerts-layer .ant-spin-nested-loading .ant-spin.map-spin  {
+  max-height: none;
+}
+.alerts-layer .ant-spin-nested-loading .ant-spin.map-spin .ant-spin-dot{
+  margin-top: -50px;
+  margin-left: -50px;
+}
+.alerts-layer .ant-spin-nested-loading .ant-spin.map-spin .ant-spin-text {
+  padding-top: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}

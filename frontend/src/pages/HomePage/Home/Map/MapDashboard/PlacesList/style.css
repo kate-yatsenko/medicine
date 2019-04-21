@@ -1,0 +1,59 @@
+.map-places-list {
+  height: 100%;
+}
+
+.map-places-filter {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.map-places-list .map-places-list-item h1 {
+  color: hsla(0, 0%, 0%, 0.55);
+}
+
+.map-places-list .map-places-list-item-active h1 {
+  color: hsla(0, 0%, 0%, 0.75);
+}
+
+.map-places-list .ant-list .ant-list-item {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.map-places-list-item-active .place-details {
+  padding-left: 10px;
+  font-size: 10pt;
+  font-style: italic;
+}
+
+.map-places-list-item-active .place-details b {
+  color: hsla(0, 0%, 0%, 0.75);
+}
+
+.map-places-list .map-places-list-item-active {
+  background-color: hsl(0, 0%, 85%);
+  width: 100%;
+  border-radius: 4px;
+}
+
+.map-places-list .map-tag {
+  background-color: hsl(0, 0%, 75%);
+}
+
+.map-places-filter .ant-input-affix-wrapper .ant-input-prefix {
+  left: 0px;
+}
+
+.map-places-filter .ant-input-prefix .ant-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.map-places-filter .ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 36px;
+}
+
+.map-places-list .places-list {
+  overflow: auto;
+  height: calc(100% - 70px);
+}

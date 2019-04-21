@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const access = require('../../middleware/access-validator');
 const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
@@ -25,7 +26,7 @@ async function getEntries(ctx) {
   const { p: page, owner, creator, type, filter } = ctx.query;
 
   try {
-    const role = await services.getUserRole(userId);
+    const role = await services.role.getUserRole(userId);
 
     const creatorId = role.canReadAllCards ? userId : creator;
     const ownerId = role.canReadAllCards ? owner : userId;
@@ -71,8 +72,11 @@ const validateQueryIds = validator.idQuery({
   required: false,
 });
 
+const idParam = validator.idParam({ name: 'id' });
+const restrict = access.hasAcces({ canCreateEntry: true });
+
 router.get('/', validateQueryIds, getEntries);
-router.post('/', koaBody(), createEntry);
-router.post('/:id', validator.idParam({ name: 'id' }), koaBody(), updateEntry);
+router.post('/', restrict, koaBody(), createEntry);
+router.post('/:id', restrict, idParam, koaBody(), updateEntry);
 
 module.exports = router;

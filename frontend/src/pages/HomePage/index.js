@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Home from './Home'
 
-const AuthPage = (props) => {
+const HomePage = (props) => {
   return (
     <React.Fragment>
       <Helmet title="Home Page"/>
@@ -11,4 +11,4 @@ const AuthPage = (props) => {
   );
 };
 
-export default AuthPage;
+export default HomePage;

@@ -8,27 +8,28 @@ import './style.scss';
 
 const { Text } = Typography;
 
-const mapStateToProps = ({ chatState }) => {
+const mapStateToProps = ({ chatState, authState }) => {
   return {
-    currentChatHistory: chatState.currentChatHistory
+    currentChatHistory: chatState.currentChatHistory,
+    userId: authState.userId
   }
 };
 
 class ChatFrameMessages extends React.Component {
 
   render() {
-    const { currentChatHistory } = this.props;
+    const { currentChatHistory, userId } = this.props;
 
     return (
       <div className="chat-frame-messages d-flex flex-column">
         {currentChatHistory.map(item => {
-            const ownMessageClass = item.sender === 3 ? " chat-frame-messages-item-own" : "";
+            const ownMessageClass = item.sender === userId ? " chat-frame-messages-item-own" : "";
             return (
               <div className={"chat-frame-messages-item" + ownMessageClass} key={item.id}>
                 <Text>{item.message}</Text>
                 <div className="chat-frame-messages-time-block">
                   {moment(item.created).locale('uk').calendar()}
-                  {item.isRead && item.sender === 3 && (
+                  {item.isRead && item.sender === userId && (
                     <Icon type="check" className="chat-frame-messages-icon"/>
                   )}
                 </div>
