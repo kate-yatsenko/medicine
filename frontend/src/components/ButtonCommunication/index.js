@@ -5,15 +5,16 @@ import { connect } from 'react-redux';
 
 import './style.scss';
 
-const mapStateToProps = ({ chatState }) => {
+const mapStateToProps = ({ chatState, authState }) => {
   return {
-    totalMessages: chatState.totalMessages
+    totalMessages: chatState.totalMessages,
+    token: authState.token,
   }
 };
 
 
-const ButtonCommunication = ({ totalMessages }) => {
-  return (
+const ButtonCommunication = ({ totalMessages, token }) => {
+  return token ? (
     <Link to="/chat">
       <div className="fixed-button">
         <Badge count={Number(totalMessages)} overflowCount={99}>
@@ -23,6 +24,6 @@ const ButtonCommunication = ({ totalMessages }) => {
         </Badge>
       </div>
     </Link>
-  );
+  ) : null
 };
 export default connect(mapStateToProps)(ButtonCommunication);
