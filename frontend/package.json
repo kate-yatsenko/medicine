@@ -20,7 +20,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
     "react-scroll-up-button": "^1.6.4",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
