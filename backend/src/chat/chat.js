@@ -89,6 +89,7 @@ function onConnection(io) {
 
       Object.keys(emits).forEach(sndr => {
         io.to(sndr).emit('read', emits[sndr]);
+        io.to(receiver).emit('read', emits[sndr]);
       });
     });
 
