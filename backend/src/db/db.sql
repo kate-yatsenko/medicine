@@ -1,10 +1,12 @@
-/* v0.2 */
+/* v0.6 */
 
 CREATE TABLE "public"."role" (
 	"id" SERIAL primary key,
 	"name" VARCHAR(100) unique not null,
 	"canReadAllCards" BOOLEAN not null default false,
 	"canCreateEntry" BOOLEAN not null default false,
+	"canManageEntryType" BOOLEAN not null default false,
+	"canCreateUser" BOOLEAN not null default false,
 	"canManageRole" BOOLEAN not null default false
 );
 
@@ -61,8 +63,8 @@ INSERT INTO "public"."role" ("name")
 VALUES ('Patient');
 INSERT INTO "public"."role" ("name","canReadAllCards","canCreateEntry")
 VALUES ('Doctor',true,true);
-INSERT INTO "public"."role" ("name","canManageRole")
-VALUES ('Admin',true);
+INSERT INTO "public"."role" ("name","canManageRole", "canCreateEntry", "canManageEntryType", "canCreateUser")
+VALUES ('Admin',true, true, true, true);
 
 INSERT INTO "public"."user" ("roleId","name","email","gender","birth","phone","address")
 VALUES (3,'Админко Админ Админович','megadmin@geek-medicine.com.ua','M','''2000-01-01 10:00:00-00'',','+380 050 110-01-10','127.0.0.1');
