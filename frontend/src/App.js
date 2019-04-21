@@ -11,13 +11,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        {/* for map-dev only */}
-        <Map />
-        {/* //uncomment after map-dev
-          router 
-        */}
-      </React.Fragment>
+      <Layout className="layout">
+        <TopMenu/>
+        {routes}
+      </Layout>
     );
   }
 }

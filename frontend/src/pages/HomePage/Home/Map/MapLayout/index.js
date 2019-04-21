@@ -40,7 +40,7 @@ class MapLayout extends Component {
           <GoogleMap
             id="medic-map"
             mapContainerStyle={{
-              height: "100vh",
+              height: "100%",
               width: "100%",
             }}
             zoom={zoom}

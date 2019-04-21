@@ -74,6 +74,7 @@ export default class PlacesSearch extends Component {
         {showSettings?
           <React.Fragment>
             <Button 
+              type="primary"
               className="map-dashboard-close-btn"
               onClick={() => toggleShowSettings(!showSettings)}
             >

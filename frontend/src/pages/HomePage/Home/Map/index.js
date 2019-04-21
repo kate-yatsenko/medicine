@@ -7,7 +7,7 @@ import './style.css';
 export default class Map extends Component {
   render() {
     return (
-      <div className="map" stype={{position: 'relative'}}>
+      <div className="map" >
         <MapDashboard />
         <MapLayout />
       </div>     

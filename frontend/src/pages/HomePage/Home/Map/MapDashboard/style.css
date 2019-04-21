@@ -2,12 +2,8 @@
   padding: 4px;
   height: 100%;
   width: 300px;
-  position: fixed;
+  position: absolute;
   border-right: 1px solid hsla(0, 0%, 50%, 0.2);
-}
-
-.map-dashboard .anticon {
-  vertical-align: 0.1em;
 }
 
 .map-dashboard h1 {

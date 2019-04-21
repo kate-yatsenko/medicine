@@ -1,6 +1,8 @@
 import React from 'react';
 import { Layout, Icon, Typography } from 'antd';
+import Map from './Map'
 import './style.scss';
+
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -37,6 +39,7 @@ const Home = () => {
           <span>Пошук найближчих лікарень на карті</span>
         </div>
       </div>
+      <Map />
     </Content>
   )
 };
