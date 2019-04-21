@@ -5,6 +5,7 @@ export const START_SEARCH_PLACES = 'START_SEARCH_PLACES';
 export const END_SEARCH_PLACES = 'END_SEARCH_PLACES';
 export const SET_PLACES_FILTER = 'SET_PLACES_FILTER';
 export const SELECT_PLACE = 'SELECT_PLACE';
+export const TOGGLE_SHOW_SETTINGS = 'TOGGLE_SHOW_SETTINGS';
 export const SEARCH_PLACE_TYPES = [
   'hospital',
   'doctor',

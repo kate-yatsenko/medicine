@@ -5,6 +5,7 @@ import {
   END_SEARCH_POSITION, 
   END_SEARCH_PLACES, 
   SELECT_PLACE,
+  TOGGLE_SHOW_SETTINGS,
 } from '../constants/mapConstants';
 import {combineReducers} from 'redux';
 import {handleActions, combineActions} from 'redux-actions';
@@ -39,7 +40,8 @@ const search = handleActions(
   {
     [combineActions(
       END_SEARCH_POSITION,
-      END_SEARCH_PLACES
+      END_SEARCH_PLACES,
+      TOGGLE_SHOW_SETTINGS,
     )]: (state, action) => ({
       ...state, 
       ...action.payload.search,
@@ -49,12 +51,14 @@ const search = handleActions(
     position: {lat: 49.44444, lng: 32.05972},
     adress: 'Черкаси',
     radius: 500,
+    showSettings: false,
     type: 'MEDIC',
   }
 );
 const places = handleActions(
   { 
     [combineActions(
+      END_SEARCH_POSITION,
       END_SEARCH_PLACES,
       SELECT_PLACE
     )]: (state, action) => ({

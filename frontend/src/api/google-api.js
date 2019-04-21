@@ -1,7 +1,7 @@
 import {SEARCH_CONDITIONS} from '../constants/mapConstants'
 
 class Place {
-  constructor(placeResult, searchType) {
+  constructor(placeResult) {
     const {place_id, geometry, name, vicinity, types, rating, user_ratings_total} = placeResult;
     this.placeId = place_id;
     this.position = geometry.location;

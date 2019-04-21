@@ -1,40 +1,100 @@
 import React, { Component } from 'react';
-import {List} from 'antd';
+import {List, Button, Icon, Input} from 'antd';
+
+import './style.css';
+
+const Search = Input.Search;
 
 export default class PlacesList extends Component {
+  state = {
+    filter: null,
+  }
 
-  getPlacesList = ({placeId, name, adress, type, tags, rating, ratingUsers}) => {
+  setFilter = (filter) => this.setState({filter});
+  clearFilter = () => this.setState({filter: null});
+  toggleSelectPlace = (placeId) => {
+    const zoom = this.props.map.getZoom();
+    const prevActivePlaceId = this.props.places.activePlaceId;
+    const activePlaceId = prevActivePlaceId !== placeId ? placeId : (prevActivePlaceId ? null : placeId);
+    this.props.selectPlace({activePlaceId, zoom});
+  };
+  getFilteredPlaces = () => {
+    const filter = this.state.filter;
+    const placesArray = this.props.places.placesArray;
+    if (filter) {
+      return placesArray.filter(({name}) => {
+        const nameLC = name.toLowerCase();
+        const filterLC = filter.toLowerCase();
+        return nameLC.includes(filterLC);
+      });
+    }
+    return placesArray;
+  };
+  getPlacesList = ({placeId, name, adress, tags, rating, ratingUsers}) => {
+    const {toggleSelectPlace, getTagsList} = this;
+    const active = placeId === this.props.places.activePlaceId;
     return (
       <List.Item 
         key={placeId} 
         style={{cursor:'pointer',}}
-        onClick={() => {
-          const zoom = this.props.map.getZoom();
-          this.props.selectPlace({activePlaceId: placeId, zoom});
-        }}
+        onClick={() => toggleSelectPlace(placeId)}
       >
-        {name}
-        {placeId === this.props.places.activePlaceId &&
-          <div style={{paddingLeft: '10px', fontStyle: 'italic', width: '250px'}}>
-            {adress}<br />
-            {type}<br />
-            {tags.join(', ')}<br />
-            {`рейтинг: ${rating?rating:'-'}/5 (відгуків - ${ratingUsers?ratingUsers:0})`}
-          </div>
-        }
+        <div className={active ? "map-places-list-item-active" : "map-places-list-item"}>
+          <h1>{name}</h1>
+          {active &&
+            <div className="place-details">
+              <b>Адреса: </b>{adress}<br />
+              {!(rating===false) && <span><b>Рейтинг: </b>{rating?rating:'?'}/5 (відгуків - {ratingUsers?ratingUsers:0})</span>}
+              {tags && <React.Fragment><br />{getTagsList(tags)}</React.Fragment>}
+            </div>
+          }
+        </div>
       </List.Item>
     )
+  };
+  getTagsList(tags) {
+    return tags.map((tag) => {
+      if (!(tag === 'point_of_interest' || tag === 'establishment')){
+        return <span key={tag} className="map-tag" >{tag}</span>;
+      }
+      return '';
+    });
   }
 
   render() {
+    const {getFilteredPlaces, getPlacesList, clearFilter, setFilter} = this;
     return (
-      <div style={{overflow: 'auto', height:'400px'}}>
-      <List
-          size="small"
-          bordered
-          dataSource={this.props.places.placesArray}
-          renderItem={this.getPlacesList}
-      />
+      <div className="map-places-list">
+        <Search
+          className="map-places-filter"
+          placeholder="Фільтр за назвою"
+          enterButton={
+            <Button type="primary">
+              <Icon type="filter" />
+            </Button>
+          }
+          prefix={
+            <Button 
+              type="primary"
+              icon="close"
+              onClick={clearFilter}
+            />
+          }
+          value={this.state.filter}
+          onChange={(e) => setFilter(e.target.value)}
+          onSearch={(filter) => setFilter(filter)}
+        />
+        <div 
+          className="places-list"
+          style={this.props.showSettings ? ({height: 'calc(100% - 324px)'}) : ({})}
+        >
+        <List
+            size="small"
+            bordered={false}
+            dataSource={getFilteredPlaces()}
+            renderItem={getPlacesList}
+        />
+        </div>
       </div>
     );
   }
