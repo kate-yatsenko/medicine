@@ -87,12 +87,13 @@ function onConnection(io) {
 
     socket.on('status', async () => {
       const { id } = socket;
-      const statusBySenders = await services.getChatStatus({ id });
-      const total = statusBySenders.reduce((sum, stat) => {
+      const status = await services.getChatStatus({ id });
+      const total = status.reduce((sum, stat) => {
         // eslint-disable-next-line no-bitwise
         return sum + ~~stat.unread;
       }, 0);
-      io.to(id).emit('status', { total, bySender: statusBySenders });
+
+      io.to(id).emit('status', { total, bySender: status });
     });
 
     socket.on('history', async id => {

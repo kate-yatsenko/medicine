@@ -8,9 +8,10 @@ const { Text } = Typography;
 
 let timer = null;
 
-const mapStateToProps = ({ patientState }) => {
+const mapStateToProps = ({ authState }) => {
   return {
-    testId: patientState.testId,
+    userId: authState.userId,
+    token: authState.token,
   }
 };
 
@@ -21,8 +22,8 @@ class ContactsTab extends React.Component {
   };
 
   componentDidMount() {
-    const { testId } = this.props;
-    searchUsers(testId, { name: "" })
+    const { userId, token } = this.props;
+    searchUsers(userId, { name: "" }, { authorization: token })
       .then(data => {
         this.setState({
           contactsList: data
@@ -31,13 +32,11 @@ class ContactsTab extends React.Component {
   }
 
   searchUser = (value) => {
-    const {
-      testId,
-    } = this.props;
+    const { userId, token } = this.props;
     clearTimeout(timer);
     timer = setTimeout(
       () => {
-        searchUsers(testId, { name: value })
+        searchUsers(userId, { name: value }, { authorization: token })
           .then(data => {
             this.setState({
               contactsList: data

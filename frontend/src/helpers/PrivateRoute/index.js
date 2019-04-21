@@ -1,12 +1,28 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, Redirect } from 'react-router';
+import { connect } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+function mapStateToProps({ authState }) {
+  return {
+    token: authState.token,
+  };
+}
+
+const PrivateRoute = ({ component: Component, token, ...rest }) => {
   return (
     <Route
       {...rest}
+      render={props =>
+        token
+          ? (
+            <Component {...props}/>
+          )
+          : (
+            <Redirect to="/"/>
+          )
+      }
     />
   );
 };
 
-export default PrivateRoute;
+export default connect(mapStateToProps)(PrivateRoute);

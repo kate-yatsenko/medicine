@@ -2,45 +2,56 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Select, Form, Input, Button } from 'antd';
 import { toggleTableModal, updateMedcardTable, createMedcardTableItem } from "actions/doctorActions";
-import { updateMedcardItem, createMedcardItem, getTypes } from "api";
+import { updateMedcardItem, createMedcardItem, getTypes, searchUsers } from "api";
 
 const Option = Select.Option;
 const { TextArea } = Input;
 
-const mapStateToProps = ({ doctorState }) => {
+const mapStateToProps = ({ doctorState, authState }) => {
   return {
     showModal: doctorState.showModal,
     editRow: doctorState.editRow,
-    testId: doctorState.testId,
     actionType: doctorState.actionType,
+    token: authState.token,
+    userId: authState.userId,
   }
 };
 
 class TableModal extends React.Component {
   state = {
-    types: []
+    types: [],
+    patients: [],
   };
 
   componentDidMount() {
-    getTypes()
+    const { userId, token } = this.props;
+    getTypes({ authorization: token })
       .then(types => {
         this.setState({ types })
+      });
+
+    searchUsers(userId, { name: "" }, { authorization: token })
+      .then(data => {
+        this.setState({
+          patients: data
+        })
       })
+
   }
 
   handleSubmit = (e) => {
-    const { editRow, testId, dispatch, actionType } = this.props;
+    const { editRow, userId, dispatch, actionType, token } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (actionType === 'edit') {
-          updateMedcardItem(testId, editRow.id, values)
+          updateMedcardItem(userId, editRow.id, values, { authorization: token })
             .then(resp => {
               dispatch(toggleTableModal());
               dispatch(updateMedcardTable(resp));
             });
         } else {
-          createMedcardItem(testId, { ...values, ownerId: 3, creatorId: testId })
+          createMedcardItem(userId, { ...values, creatorId: userId }, { authorization: token })
             .then(resp => {
               dispatch(toggleTableModal());
               dispatch(createMedcardTableItem(resp));
@@ -53,7 +64,7 @@ class TableModal extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showModal, dispatch, editRow, actionType } = this.props;
-    const { types } = this.state;
+    const { types, patients } = this.state;
     return (
       <Modal
         visible={showModal}
@@ -85,21 +96,38 @@ class TableModal extends React.Component {
               )}
             </Form.Item>
             {actionType === 'create' &&
-            <Form.Item
-              label="Тип"
-            >
-              {getFieldDecorator('typeId', {
-                rules: [{ required: true, message: 'Будь ласка оберіть тип!' }]
-              })(
-                <Select
-                  showSearch
-                  placeholder="Тип"
-                  optionFilterProp="children"
-                >
-                  {types.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
-                </Select>
-              )}
-            </Form.Item>
+            <React.Fragment>
+              <Form.Item
+                label="Пацієнт"
+              >
+                {getFieldDecorator('ownerId', {
+                  rules: [{ required: true, message: 'Будь ласка оберіть пацієнта!' }]
+                })(
+                  <Select
+                    showSearch
+                    placeholder="Пацієнт"
+                    optionFilterProp="children"
+                  >
+                    {patients.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item
+                label="Тип"
+              >
+                {getFieldDecorator('typeId', {
+                  rules: [{ required: true, message: 'Будь ласка оберіть тип!' }]
+                })(
+                  <Select
+                    showSearch
+                    placeholder="Тип"
+                    optionFilterProp="children"
+                  >
+                    {types.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                  </Select>
+                )}
+              </Form.Item>
+            </React.Fragment>
             }
             <Form.Item
               label="Висновки"
