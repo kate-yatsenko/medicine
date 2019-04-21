@@ -6,7 +6,7 @@ import './style.css';
 
 const mapStateToProps = ({mapState}) => {
   return {...mapState.gmaps.messages};
-}
+};
 
 class AlertsLayer extends Component {
   static counter = 0;

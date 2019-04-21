@@ -41,8 +41,8 @@ module.exports = {
       );
   },
 
-  getStatus({ id }) {
-    return knex({ m: 'message' })
+  async getStatus({ id }) {
+    const unreads = await knex({ m: 'message' })
       .where({ receiver: id })
       .join('user as u', { 'u.id': 'm.sender' })
       .groupBy('m.sender', 'u.name')
@@ -53,5 +53,15 @@ module.exports = {
           'count ("isRead") filter (where "isRead" = false) as "unread"',
         ),
       );
+
+    const receivers = unreads.map(unread => unread.sender);
+    const contacts = await knex({ m: 'message' })
+      .whereNotIn('m.receiver', receivers)
+      .where({ sender: id })
+      .join('user as u', { 'u.id': 'm.receiver' })
+      .groupBy('m.receiver', 'u.name')
+      .select({ sender: 'm.receiver' }, 'u.name', { unread: 0 });
+
+    return [...contacts, ...unreads];
   },
 };

@@ -44,9 +44,11 @@ export default class PlacesSearch extends Component {
     }
     this.setState({radius});
   };
+
   onChangeSearchType = (e) => {
     this.setState({type: e.target.value});
   };
+
   radiusFormatter(value) {
     const km = Math.trunc(value/1000);
     const m = value - 1000 * km;

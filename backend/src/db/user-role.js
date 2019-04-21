@@ -5,13 +5,7 @@ module.exports = {
     return knex({ u: 'user' })
       .where({ 'u.id': id })
       .join('role as r', { 'u.roleId': 'r.id' })
-      .select(
-        'r.id',
-        'r.name',
-        'r.canReadAllCards',
-        'r.canCreateEntry',
-        'r.canManageRole',
-      )
+      .select('r.*')
       .first();
   },
 

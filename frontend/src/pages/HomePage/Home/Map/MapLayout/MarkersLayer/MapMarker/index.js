@@ -7,18 +7,20 @@ export default class MapMarker extends Component {
   state = {
     visibleInfoWindow: true,
     mouseOver: false,
-  }
+  };
 
   toggleInfoWindow = () => {
     this.setState((state) => {
       return {visibleInfoWindow: !state.visibleInfoWindow};
     });
   };
+
   toggleMousOver = () => {
     this.setState((state) => {
       return {mouseOver: !state.mouseOver};
     });
   };
+
   getTagsList(tags) {
     return tags.map((tag) => {
       if (!(tag === 'point_of_interest' || tag === 'establishment')){

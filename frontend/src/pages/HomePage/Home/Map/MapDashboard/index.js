@@ -9,11 +9,11 @@ import './style.css';
 
 const mapStateToProps = ({mapState}) => {
   return {...mapState};
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(mapActions, dispatch);
-}
+};
 
 class MapDashboard extends Component {
   render() {

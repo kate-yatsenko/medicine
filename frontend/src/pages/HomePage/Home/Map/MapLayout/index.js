@@ -23,7 +23,7 @@ class MapLayout extends Component {
     const geocoderService = new window.google.maps.Geocoder();
     initMapServices({map, geocoderService, placesService});
     getLocation(geocoderService, placesService);
-  }
+  };
 
   render() {
     const zoom = 13;

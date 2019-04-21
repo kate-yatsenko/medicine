@@ -1,14 +1,20 @@
 const socketIo = require('socket.io');
 
+const jwt = require('../utils/jwt');
 const services = require('../services');
-
-const { validator } = services;
 
 function getCustomIdGenerator(io) {
   return req => {
-    if (!req.headers['x-id']) return 0;
+    if (!req.headers.authorization) return 0;
 
-    const id = validator.checkId(req.headers['x-id']);
+    let id = null;
+    try {
+      ({ id } = jwt.verify(req.headers.authorization));
+    } catch (err) {
+      // TODO: error to logger
+      console.error(err);
+    }
+
     if (io.sockets.connected[id]) {
       io.sockets.connected[id].disconnect(true);
     }
@@ -18,17 +24,18 @@ function getCustomIdGenerator(io) {
 }
 
 function validateIds(socket, next) {
-  // TODO: authorization
   if (!socket.request.headers.cookie) {
     return next(new Error('Authentication error'));
   }
 
-  const { headers } = socket.handshake;
+  const { authorization } = socket.handshake.headers;
+  let id = null;
   try {
-    validator.checkId(headers['x-id']);
+    ({ id } = jwt.verify(authorization));
+    if (id !== socket.id) throw new Error('Authentication error');
   } catch (err) {
-    // TODO: add to logger
-    console.error(`Chat: ${err.message}`);
+    // TODO: error to logger
+    console.error(err);
     return next(err);
   }
   return next();
@@ -87,12 +94,13 @@ function onConnection(io) {
 
     socket.on('status', async () => {
       const { id } = socket;
-      const statusBySenders = await services.getChatStatus({ id });
-      const total = statusBySenders.reduce((sum, stat) => {
+      const status = await services.getChatStatus({ id });
+      const total = status.reduce((sum, stat) => {
         // eslint-disable-next-line no-bitwise
         return sum + ~~stat.unread;
       }, 0);
-      io.to(id).emit('status', { total, bySender: statusBySenders });
+
+      io.to(id).emit('status', { total, bySender: status });
     });
 
     socket.on('history', async id => {
@@ -118,7 +126,7 @@ function attach(server) {
       res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
       res.setHeader('Access-Control-Request-Method', '*');
       res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-      res.setHeader('Access-Control-Allow-Headers', 'x-id');
+      res.setHeader('Access-Control-Allow-Headers', 'authorization');
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       if (req.method === 'OPTIONS' || req.method === 'GET') {
         res.writeHead(200);

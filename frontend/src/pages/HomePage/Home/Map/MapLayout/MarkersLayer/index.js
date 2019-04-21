@@ -18,7 +18,7 @@ const mapStateToProps = ({mapState:
       position,
       adress,
   });
-}
+};
 
 class MarkersLayer extends Component {
   getMarkersList() {
