@@ -3,7 +3,9 @@ import {
   UPDATE_CHATS_STATUS,
   UPDATE_CURRENT_COMPANION,
   UPDATE_NEW_MESSAGES,
-  UPDATE_READ_MESSAGES
+  UPDATE_READ_MESSAGES,
+  CLEAR_CHAT,
+  CLEAR_CHAT_HISTORY
 } from "../constants/chatConstants";
 
 export const initialState = {
@@ -31,7 +33,8 @@ const chatState = (state = initialState, action) => {
     case UPDATE_CURRENT_COMPANION:
       return { ...state, currentCompanion: action.currentCompanion };
     case UPDATE_NEW_MESSAGES:
-      const newChatHistory = [...state.chatHistory, action.message];
+      const messages = state.chatHistory.filter(item => item.id !== action.message.id);
+      const newChatHistory = [...messages, action.message];
       return {
         ...state,
         chatHistory: newChatHistory,
@@ -49,6 +52,15 @@ const chatState = (state = initialState, action) => {
         ...state,
         chatHistory: updateChatHistory,
         currentChatHistory: updateChatHistory.slice(-100),
+      };
+    case CLEAR_CHAT:
+      return { ...initialState };
+    case CLEAR_CHAT_HISTORY:
+      return {
+        ...state,
+        chatHistory: initialState.chatHistory,
+        currentChatHistory: initialState.currentChatHistory,
+        currentCompanion: initialState.currentCompanion,
       };
     default:
       return state

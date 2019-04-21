@@ -2,7 +2,9 @@ import {
   UPDATE_CHAT_HISTORY,
   UPDATE_CHATS_STATUS,
   UPDATE_CURRENT_COMPANION,
-  UPDATE_NEW_MESSAGES, UPDATE_READ_MESSAGES
+  UPDATE_NEW_MESSAGES, UPDATE_READ_MESSAGES,
+  CLEAR_CHAT,
+  CLEAR_CHAT_HISTORY
 } from "../constants/chatConstants";
 
 export const updateChatHistory = (chatHistory, currentChatHistory) => {
@@ -39,5 +41,17 @@ export const updateReadMessages = (messages) => {
   return {
     type: UPDATE_READ_MESSAGES,
     messages
+  }
+};
+
+export const clearChat = () => {
+  return {
+    type: CLEAR_CHAT
+  }
+};
+
+export const clearChatHistory = () => {
+  return {
+    type: CLEAR_CHAT_HISTORY
   }
 };

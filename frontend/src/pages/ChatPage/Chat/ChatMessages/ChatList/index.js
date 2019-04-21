@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import { socket } from 'pages/ChatPage';
+import { socket } from 'App';
 import { connect } from 'react-redux';
 import { updateCurrentCompanion } from 'actions/chatActions';
 import ChatsTab from './ChatsTab';
@@ -12,6 +12,7 @@ const mapStateToProps = ({ chatState }) => {
   return {
     chatsStatus: chatState.chatsStatus,
     chatHistory: chatState.chatHistory,
+    currentCompanion: chatState.currentCompanion,
   }
 };
 
@@ -24,7 +25,7 @@ class ChatList extends React.Component {
 
   chooseChat = (item) => {
     const { dispatch } = this.props;
-    socket.emit('history', item.sender);
+    socket.socket.emit('history', item.sender);
     dispatch(updateCurrentCompanion(item));
   };
 
@@ -33,7 +34,7 @@ class ChatList extends React.Component {
   };
 
   render() {
-    const { chatsStatus } = this.props;
+    const { chatsStatus, currentCompanion } = this.props;
     const { activeKey } = this.state;
 
     return (
@@ -47,6 +48,7 @@ class ChatList extends React.Component {
         </TabPane>
         <TabPane tab="Чати" key="2">
           <ChatsTab
+            currentCompanion={currentCompanion}
             chooseChat={this.chooseChat}
             chatsStatus={chatsStatus}
           />
