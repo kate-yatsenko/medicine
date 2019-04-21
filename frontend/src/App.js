@@ -1,11 +1,10 @@
 import React from 'react';
 import routes from './routes';
 import TopMenu from 'components/TopMenu';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Socket from 'helpers/Socket';
-import { notification } from "antd/lib/index";
 import { updateChatHistory, updateChatsStatus, updateReadMessages, updateNewMessages } from 'actions/chatActions';
 
 const mapStateToProps = ({ authState, chatState }) => {
@@ -25,16 +24,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { userId } = this.props;
-    if (userId) {
-      this.initChat(userId);
+    const { token } = this.props;
+    if (token) {
+      this.initChat();
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.userId !== this.props.userId) {
-      if (this.props.userId) {
-        this.initChat(this.props.userId);
+    if (prevProps.token !== this.props.token) {
+      if (this.props.token) {
+        this.initChat();
       } else {
         socket.socket.emit('disconnect');
       }
@@ -58,10 +57,10 @@ class App extends React.Component {
     block.scrollTop = block.scrollHeight;
   };
 
-  initChat = (userId) => {
-    const { dispatch } = this.props;
+  initChat = () => {
+    const { dispatch, token } = this.props;
 
-    socket = new Socket(userId);
+    socket = new Socket(token);
 
     socket.socket.emit('status');
 

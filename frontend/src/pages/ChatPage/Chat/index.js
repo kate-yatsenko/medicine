@@ -2,10 +2,16 @@ import React from 'react';
 import { Layout, Row, Col } from 'antd';
 import ChatMessages from './ChatMessages';
 import ChatCurrent from './ChatCurrent';
+import { clearChatHistory } from 'actions/chatActions';
+import { connect } from 'react-redux';
 
 const { Content } = Layout;
 
 class Chat extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(clearChatHistory());
+  }
 
   render() {
     return (
@@ -23,4 +29,4 @@ class Chat extends React.Component {
   }
 }
 
-export default Chat;
+export default connect()(Chat);

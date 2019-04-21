@@ -8,7 +8,7 @@ import './style.scss';
 const mapStateToProps = ({ chatState, authState }) => {
   return {
     totalMessages: chatState.totalMessages,
-    currentCompanion: authState.currentCompanion,
+    currentCompanion: chatState.currentCompanion,
     token: authState.token,
   }
 };
