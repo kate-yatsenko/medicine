@@ -83,27 +83,26 @@ class App extends React.Component {
     });
 
     socket.socket.on('message', (message, meta) => {
-      const { userId, currentCompanion, chatHistory } = this.props;
-      if (!chatHistory.length) {
-        socket.socket.emit('status');
-      }
+      const { userId, currentCompanion } = this.props;
+      socket.socket.emit('status');
 
       if (userId !== meta.sender) {
         const args = {
           message: 'Нове повідомлення',
           description: message,
         };
-        socket.socket.emit('status');
         notification.open(args);
       }
+
       if (currentCompanion) {
         if (currentCompanion.sender === meta.sender || userId === meta.sender) {
           const { dispatch } = this.props;
           dispatch(updateNewMessages({ ...meta, message }));
           this.scrollDown();
         }
+
         if (currentCompanion.sender === meta.sender) {
-          socket.socket.emit('read', [meta.id])
+          socket.socket.emit('read', [meta.id]);
         }
       }
     });
