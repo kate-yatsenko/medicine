@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from 'antd';
-import { socket } from 'pages/ChatPage';
+import { socket } from 'App';
 
 import './style.scss';
 
@@ -16,7 +16,7 @@ class ChatMessageInput extends React.Component {
   sendMessage = () => {
     const { message } = this.state;
     const { id } = this.props;
-    socket.emit('message', {message, id});
+    socket.socket.emit('message', { message, id });
     this.setState({ message: "" })
   };
 
