@@ -17,11 +17,23 @@ const mapDispatchToProps = (dispatch) => {
 
 class MapDashboard extends Component {
   render() {
-    const {search, places, gmaps, endSearchPosition, searchPlaces, getLocation, selectPlace} = this.props;
+    const {search, places, gmaps, endSearchPosition, searchPlaces, getLocation, selectPlace, toggleShowSettings} = this.props;
     return (
       <div className="map-dashboard" >
-        <PlacesSearch {...search} {...gmaps} getLocation={getLocation} endSearchPosition={endSearchPosition} searchPlaces={searchPlaces} />
-        <PlacesList places={places} selectPlace={selectPlace} map={gmaps.map}/>
+        <PlacesSearch
+          {...search}
+          {...gmaps}
+          getLocation={getLocation}
+          endSearchPosition={endSearchPosition}
+          searchPlaces={searchPlaces}
+          toggleShowSettings={toggleShowSettings}
+        />
+        <PlacesList
+          places={places}
+          selectPlace={selectPlace}
+          map={gmaps.map}
+          showSettings={search.showSettings}
+        />
       </div>
     );
   }

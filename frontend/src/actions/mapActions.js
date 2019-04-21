@@ -4,7 +4,8 @@ import {
   START_SEARCH_PLACES, 
   END_SEARCH_POSITION, 
   END_SEARCH_PLACES, 
-  SELECT_PLACE
+  SELECT_PLACE,
+  TOGGLE_SHOW_SETTINGS,
 } from '../constants/mapConstants';
 import {createAction} from 'redux-actions';
 import {getAdressFromPosition, searchMedicPlaces} from '../api/google-api';
@@ -29,6 +30,9 @@ export const endSearchPlaces = createAction(END_SEARCH_PLACES, ({places, alerts,
 export const selectPlace = createAction(SELECT_PLACE, ({activePlaceId, zoom}) => ({
   places: {activePlaceId},
   gmaps: {zoom},
+}));
+export const toggleShowSettings = createAction(TOGGLE_SHOW_SETTINGS, (showSettings) => ({
+  search: {showSettings},
 }));
 
 export const getLocation = (geocoderService, placesService) => {

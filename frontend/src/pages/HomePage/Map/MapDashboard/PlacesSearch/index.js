@@ -18,7 +18,6 @@ export default class PlacesSearch extends Component {
   state = {
     radius: this.props.radius,
     type: this.props.type,
-    visible: false,
   }
   marks = {
     100: {
@@ -48,9 +47,6 @@ export default class PlacesSearch extends Component {
   onChangeSearchType = (e) => {
     this.setState({type: e.target.value});
   };
-  toggleVisibility = () => {
-    this.setState((state) => ({visible: !state.visible}))
-  }
   radiusFormatter(value) {
     const km = Math.trunc(value/1000);
     const m = value - 1000 * km;
@@ -65,20 +61,21 @@ export default class PlacesSearch extends Component {
   }
 
   render() {
-    const {state, marks, onChangeRadius, onChangeSearchType, radiusFormatter, toggleVisibility} = this;
-    const {radius, type, visible} = state;
-    const {map,adress,endSearchPosition,getLocation,placesService,geocoderService,position,searchPlaces,messages:{loading}} = this.props;
+    const {state, marks, onChangeRadius, onChangeSearchType, radiusFormatter} = this;
+    const {radius, type} = state;
+    const {map, adress, endSearchPosition, getLocation, placesService, geocoderService, position,
+      searchPlaces, messages:{loading}, toggleShowSettings, showSettings} = this.props;
     if (map) {
       StandaloneSearchBox.contextType = React.createContext(map);
     }
 
     return (
       <div className="places-search">
-        {visible?
+        {showSettings?
           <React.Fragment>
             <Button 
               className="map-dashboard-close-btn"
-              onClick={toggleVisibility}
+              onClick={() => toggleShowSettings(!showSettings)}
             >
               <Icon type="setting" />
               Приховати налаштування
@@ -159,7 +156,7 @@ export default class PlacesSearch extends Component {
           <Button 
             type="primary"
             className="map-dashboard-open-btn"
-            onClick={toggleVisibility}
+            onClick={() => toggleShowSettings(!showSettings)}
           >
             <Icon type="setting" />
             Налаштування пошуку

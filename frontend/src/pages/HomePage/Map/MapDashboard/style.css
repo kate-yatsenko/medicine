@@ -14,8 +14,8 @@
   clear: both;
   font: bold 14px sans-serif;
   margin: 0;
-  padding: 10px 2px 5px 2px;
-  color: hsla(0, 0%, 0%, 0.65);
+  padding: 8px 2px 5px 2px;
+  color: hsla(0, 0%, 0%, 0.55);
 }
 
 .ant-input.map-dashboard-input {

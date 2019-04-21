@@ -31,7 +31,7 @@ export default class PlacesList extends Component {
     return placesArray;
   };
   getPlacesList = ({placeId, name, adress, tags, rating, ratingUsers}) => {
-    const {toggleSelectPlace, getTagsList, setFilter} = this;
+    const {toggleSelectPlace, getTagsList} = this;
     const active = placeId === this.props.places.activePlaceId;
     return (
       <List.Item 
@@ -84,7 +84,10 @@ export default class PlacesList extends Component {
           onChange={(e) => setFilter(e.target.value)}
           onSearch={(filter) => setFilter(filter)}
         />
-        <div className="places-list">
+        <div 
+          className="places-list"
+          style={this.props.showSettings ? ({height: 'calc(100% - 324px)'}) : ({})}
+        >
         <List
             size="small"
             bordered={false}

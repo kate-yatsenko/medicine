@@ -55,4 +55,5 @@
 
 .map-places-list .places-list {
   overflow: auto;
+  height: calc(100% - 70px);
 }
