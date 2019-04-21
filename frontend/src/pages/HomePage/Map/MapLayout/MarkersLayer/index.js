@@ -40,20 +40,20 @@ class MarkersLayer extends Component {
     if (!map) {
       return;
     }
-    let centerLocation;
+    let mapCenter;
     if (activePlaceId) {
-      centerLocation = placesArray.find((place) => {
+      mapCenter = placesArray.find((place) => {
         if (place.placeId === activePlaceId) {
           return true;
         }
         return false;
-      }).location;
+      }).position;
     } else {
-      centerLocation = position;
+      mapCenter = position;
     }
     map.setZoom(zoom);
-    if (centerLocation) {
-      map.panTo(centerLocation);
+    if (mapCenter) {
+      map.panTo(mapCenter);
     }
   }
 

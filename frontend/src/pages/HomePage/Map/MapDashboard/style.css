@@ -1,0 +1,23 @@
+.map-dashboard {
+  padding: 4px;
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  border-right: 1px solid hsla(0, 0%, 50%, 0.2);
+}
+
+.map-dashboard .anticon {
+  vertical-align: 0.1em;
+}
+
+.map-dashboard h1 {
+  clear: both;
+  font: bold 14px sans-serif;
+  margin: 0;
+  padding: 8px 2px 5px 2px;
+  color: hsla(0, 0%, 0%, 0.55);
+}
+
+.ant-input.map-dashboard-input {
+  margin-left: 2px;
+}
