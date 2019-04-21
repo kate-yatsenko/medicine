@@ -3,7 +3,7 @@ import { Typography, Badge } from "antd";
 
 const { Text } = Typography;
 
-const ChatsTab = ({ chatsStatus, chooseChat }) => {
+const ChatsTab = ({ chatsStatus, chooseChat, currentCompanion }) => {
   return (
     <div className="chat-list">
       {chatsStatus.map(item =>
@@ -13,7 +13,7 @@ const ChatsTab = ({ chatsStatus, chooseChat }) => {
           key={item.sender}
         >
           <Text>{item.name}</Text>
-          <Badge count={item.unread} overflowCount={99}/>
+          <Badge count={currentCompanion && currentCompanion.sender === item.sender ? 0 : item.unread} overflowCount={99}/>
         </div>
       )}
     </div>
