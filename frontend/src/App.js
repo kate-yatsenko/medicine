@@ -85,7 +85,7 @@ class App extends React.Component {
     socket.socket.on('message', (message, meta) => {
       const { userId, currentCompanion, chatHistory } = this.props;
 
-      if (!chatHistory.length) {
+      if (currentCompanion && !chatHistory.length) {
         socket.socket.emit('status');
       }
 
@@ -94,6 +94,7 @@ class App extends React.Component {
           message: 'Нове повідомлення',
           description: message,
         };
+        socket.socket.emit('status');
         notification.open(args);
       }
 
@@ -106,8 +107,6 @@ class App extends React.Component {
 
         if (currentCompanion.sender === meta.sender) {
           socket.socket.emit('read', [meta.id]);
-          dispatch(updateReadMessages([meta.id]));
-          socket.socket.emit('status');
         }
       }
     });
