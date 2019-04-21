@@ -5,10 +5,9 @@ import MarkersLayer from './MarkersLayer'
 import AlertsLayer from './AlertsLayer'
 import * as mapActions from 'actions/mapActions';
 import {bindActionCreators} from 'redux';
+import {apiKey} from 'api/google-api';
 
 import './style.css';
-
-const apiKey = "AIzaSyDmQKgRryMzeNATRXmMr0WD6YEMkEchGxg";
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(mapActions, dispatch);
