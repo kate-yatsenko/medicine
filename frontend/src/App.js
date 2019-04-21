@@ -1,11 +1,10 @@
 import React from 'react';
 import routes from './routes';
 import TopMenu from 'components/TopMenu';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Socket from 'helpers/Socket';
-import { notification } from "antd/lib/index";
 import { updateChatHistory, updateChatsStatus, updateReadMessages, updateNewMessages } from 'actions/chatActions';
 
 const mapStateToProps = ({ authState, chatState }) => {

@@ -4,7 +4,8 @@ import {
   UPDATE_CURRENT_COMPANION,
   UPDATE_NEW_MESSAGES,
   UPDATE_READ_MESSAGES,
-  CLEAR_CHAT
+  CLEAR_CHAT,
+  CLEAR_CHAT_HISTORY
 } from "../constants/chatConstants";
 
 export const initialState = {
@@ -54,6 +55,13 @@ const chatState = (state = initialState, action) => {
       };
     case CLEAR_CHAT:
       return { ...initialState };
+    case CLEAR_CHAT_HISTORY:
+      return {
+        ...state,
+        chatHistory: initialState.chatHistory,
+        currentChatHistory: initialState.currentChatHistory,
+        currentCompanion: initialState.currentCompanion,
+      };
     default:
       return state
   }
