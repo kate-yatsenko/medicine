@@ -1,5 +1,6 @@
 const db = require('../db');
 const validator = require('./validator');
+const role = require('./role');
 
 function formEntry(entry) {
   const e = entry;
@@ -21,6 +22,7 @@ function formEntry(entry) {
 
 module.exports = {
   validator,
+  role,
 
   async createEntry({
     ownerId,
@@ -99,14 +101,6 @@ module.exports = {
     });
 
     return userId ? this.getUser(userId) : userId;
-  },
-
-  getUserRole(userId) {
-    return db.userRole.getRole({ userId });
-  },
-
-  getRolesWhere({ canReadAllCards = false }) {
-    return db.userRole.getRolesWhere({ canReadAllCards });
   },
 
   getUserList({ name, excludeId, roleIds }) {

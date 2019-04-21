@@ -36,8 +36,8 @@ async function getList(ctx) {
 
   let roleIds = [];
   try {
-    const { canReadAllCards } = await services.getUserRole(excludeId);
-    const roles = await services.getRolesWhere({
+    const { canReadAllCards } = await services.role.getUserRole(excludeId);
+    const roles = await services.role.getRolesWhere({
       canReadAllCards: !canReadAllCards,
     });
     roleIds = roles.map(role => role.id);

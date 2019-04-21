@@ -2,6 +2,7 @@ import React from 'react';
 import ChatFrameMessages from './ChatFrameMessages';
 import ChatMessageInput from './ChatMessageInput';
 import ChatUserName from './ChatUserName';
+import { clearChatHistory } from 'actions/chatActions';
 import { connect } from 'react-redux';
 import { Typography } from 'antd';
 
@@ -17,12 +18,17 @@ const mapStateToProps = ({ chatState }) => {
 
 class ChatCurrent extends React.Component {
 
+  closeChat = () => {
+    const { dispatch } = this.props;
+    dispatch(clearChatHistory());
+  };
+
   render() {
     const { currentCompanion } = this.props;
 
     return currentCompanion ? (
       <div className="chat-current">
-        <ChatUserName name={currentCompanion.name}/>
+        <ChatUserName closeChat={this.closeChat} name={currentCompanion.name}/>
         <ChatFrameMessages/>
         <ChatMessageInput id={currentCompanion.sender}/>
       </div>

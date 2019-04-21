@@ -1,12 +1,12 @@
 import React from 'react';
 import routes from './routes';
 import TopMenu from 'components/TopMenu';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Socket from 'helpers/Socket';
-import { notification } from "antd/lib/index";
 import { updateChatHistory, updateChatsStatus, updateReadMessages, updateNewMessages } from 'actions/chatActions';
+import { logoutUser } from "actions/authActions";
 
 const mapStateToProps = ({ authState, chatState }) => {
   return {
@@ -21,7 +21,16 @@ let socket;
 
 class App extends React.Component {
   componentWillMount() {
+    const { dispatch } = this.props;
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    axios.interceptors.response.use(response => {
+      return response
+    }, err => {
+      if (err.response.status === 401) {
+        dispatch(logoutUser())
+      }
+      return Promise.reject(err)
+    });
   }
 
   componentDidMount() {

@@ -1,0 +1,55 @@
+.places-search .ant-btn.my-location-button {
+  float: left;
+  width: 32px;
+}
+
+#address-search {
+  float: left;
+  width: calc(100% - 36px);
+  margin-left: 4px;
+}
+
+.places-search .ant-slider {
+  clear: both;
+}
+
+.places-search .ant-slider-mark-text {
+  color: hsla(0, 0%, 0%, 0.45);
+}
+
+.places-search .ant-input-number {
+  width: 120px;
+  float: right;
+  font-weight: bold;
+}
+
+.places-search .ant-input-number .ant-input-number-input {
+  color: hsla(0, 0%, 0%, 0.45);
+  font-weight: bold;
+}
+
+.places-search .ant-radio-group {
+  width: 100%;
+}
+
+.places-search .ant-btn.map-dashboard-search-btn {
+  width: 100%;
+}
+
+.places-search .ant-btn.map-dashboard-close-btn {
+  width: 100%;
+}
+
+.places-search .ant-btn.map-dashboard-open-btn {
+  width: 100%;
+}
+
+.places-search .ant-radio-button-wrapper {
+  width: calc(100% / 3);
+  text-align: center;
+  padding: 0;
+}
+
+.map-dashboard .my-location-button .anticon{
+  margin-top: 1.4px;
+}
