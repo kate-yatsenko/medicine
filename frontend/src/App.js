@@ -98,6 +98,8 @@ class App extends React.Component {
         if (currentCompanion.sender === meta.sender || userId === meta.sender) {
           const { dispatch } = this.props;
           dispatch(updateNewMessages({ ...meta, message }));
+          dispatch(updateReadMessages([meta.id]));
+
           this.scrollDown();
         }
 
