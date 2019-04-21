@@ -3,9 +3,10 @@ import {
   Form, Icon, Input, Button, DatePicker, Select
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/uk_UA';
-import { fillInPersonalData } from 'api';
-import { toggleAuthModalVisible, updateUserInfo } from 'actions/authActions';
+import { getPersonalData, fillInPersonalData } from 'api';
+import { toggleUpdateModalVisible, updateUserInfo } from 'actions/authActions';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 const Option = Select.Option;
 
@@ -13,12 +14,26 @@ const mapStateToProps = ({ authState }) => {
   return {
     token: authState.token,
     userId: authState.userId,
-    userName: authState.userName,
-    userEmail: authState.userEmail,
   }
 };
 
-class SignUpTab extends React.Component {
+class UpdateProfile extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    gender: "",
+    birth: ""
+  };
+
+  componentDidMount() {
+    const { token, userId } = this.props;
+    getPersonalData(userId, { authorization: token })
+      .then(data => {
+        this.setState({ ...data })
+      })
+  }
 
   handleSubmit = (e) => {
     const { token, userId, dispatch } = this.props;
@@ -27,7 +42,7 @@ class SignUpTab extends React.Component {
       if (!err) {
         fillInPersonalData(userId, values, { authorization: token })
           .then(data => {
-            dispatch(toggleAuthModalVisible());
+            dispatch(toggleUpdateModalVisible());
             dispatch(updateUserInfo({
               isProfileComplete: true,
               userName: data.name
@@ -41,10 +56,11 @@ class SignUpTab extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { userName, userEmail } = this.props;
+    const { name, email, phone, address, gender, birth } = this.state;
 
     const config = {
       rules: [{ type: 'object', required: true, message: 'Будь ласка введіть вашу дату народження' }],
+      initialValue: moment(birth)
     };
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
@@ -52,9 +68,10 @@ class SignUpTab extends React.Component {
           label="Пошта"
         >
           {getFieldDecorator('email', {
-            initialValue: userEmail ? userEmail : ""
+            initialValue: email
           })(
-            <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>} disabled={true} type="email" placeholder="Пошта"/>
+            <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>} disabled={true} type="email"
+                   placeholder="Пошта"/>
           )}
         </Form.Item>
         <Form.Item
@@ -62,7 +79,7 @@ class SignUpTab extends React.Component {
         >
           {getFieldDecorator('name', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш ПІБ!' }],
-            initialValue: userName ? userName : ""
+            initialValue: name
           })(
             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
                    placeholder="ПІБ"/>
@@ -73,6 +90,7 @@ class SignUpTab extends React.Component {
         >
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш телефон!' }],
+            initialValue: phone
           })(
             <Input prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }}/>}
                    placeholder="Телефон"/>
@@ -83,6 +101,7 @@ class SignUpTab extends React.Component {
         >
           {getFieldDecorator('address', {
             rules: [{ required: true, message: 'Будь ласка введіть вашу адресу!' }],
+            initialValue: address
           })(
             <Input prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }}/>}
                    placeholder="Адреса"/>
@@ -100,6 +119,7 @@ class SignUpTab extends React.Component {
         >
           {getFieldDecorator('gender', {
             rules: [{ required: true, message: 'Будь ласка оберіть вашу стать!' }],
+            initialValue: gender
           })(
             <Select
               placeholder="Стать"
@@ -120,6 +140,6 @@ class SignUpTab extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Form.create({ name: 'normal_login' })(SignUpTab));
+export default connect(mapStateToProps)(Form.create({ name: 'update_profile' })(UpdateProfile));
 
 
