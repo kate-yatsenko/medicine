@@ -1,11 +1,11 @@
 import socketIOClient from "socket.io-client";
 
-function Socket(userId) {
+function Socket(token) {
   this.socket = socketIOClient(process.env.REACT_APP_API_CHAT_URL, {
     transportOptions: {
       polling: {
         extraHeaders: {
-          'x-id': userId,
+          'authorization': token.slice(6)
         }
       }
     }
