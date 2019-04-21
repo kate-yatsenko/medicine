@@ -8,13 +8,12 @@ import './style.scss';
 const mapStateToProps = ({ chatState, authState }) => {
   return {
     totalMessages: chatState.totalMessages,
-    currentCompanion: chatState.currentCompanion,
     token: authState.token,
   }
 };
 
 
-const ButtonCommunication = ({ totalMessages, token, currentCompanion }) => {
+const ButtonCommunication = ({ totalMessages, token }) => {
   return token ? (
     <Link to="/chat">
       <div className="fixed-button">
