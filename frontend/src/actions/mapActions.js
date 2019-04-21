@@ -8,7 +8,7 @@ import {
   TOGGLE_SHOW_SETTINGS,
 } from '../constants/mapConstants';
 import {createAction} from 'redux-actions';
-import {getAdressFromPosition, searchMedicPlaces} from '../api/google-api';
+import {getAdressFromPosition, searchMedicPlaces, getLocationfromGoogle} from '../api/google-api';
 
 export const initMapServices = createAction(INIT_MAP_SERVICES);
 export const startSearchPosition = createAction(START_SEARCH_POSITION, () => ({
@@ -55,23 +55,24 @@ export const getLocation = (geocoderService, placesService) => {
         )
       });
       getPosition
+        .catch(() => getLocationfromGoogle())
         .then((position) => {
           getAdressFromPosition(geocoderService, position)
             .then((adress)=> {
               dispatch(endSearchPosition({position, adress}));
             })
-            .catch((error) => {
+            .catch(() => {
               alerts.push(`Не взалось визначити адресу для поточного місцезнаходження.`);
               dispatch(endSearchPosition({position, alerts}));
             })
             .finally(() => {
               if (!getState().mapState.places.placesArray.length) {
                 dispatch(searchPlaces({placesService, position, radius, alerts, errors, type}));
-                return;
               }
             });
         })
-        .catch((error) => {
+        .catch(() => {
+          debugger;
           errors.push(`Помилка при визначенні місцезнаходження. Вкажіть своє місцецзаходження.`);
           dispatch(endSearchPosition({position, errors}));
           if (!getState().mapState.places.placesArray.length) {

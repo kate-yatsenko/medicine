@@ -1,4 +1,7 @@
-import {SEARCH_CONDITIONS} from '../constants/mapConstants'
+import {SEARCH_CONDITIONS} from '../constants/mapConstants';
+import axios from 'axios';
+
+export const apiKey = "AIzaSyDmQKgRryMzeNATRXmMr0WD6YEMkEchGxg";
 
 class Place {
   constructor(placeResult) {
@@ -122,4 +125,15 @@ export function getAdressFromPosition(geocoderService, position) {
       reject(status);
     });
   });
+}
+
+export function getLocationfromGoogle() {
+  return axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${apiKey}`)
+    .then((result) => {
+      const {status, data: {location}} = result;
+      if (status === 200) {
+        return location;
+      }
+      throw new Error('GEOLOCATION_ERROR');
+    });
 }
