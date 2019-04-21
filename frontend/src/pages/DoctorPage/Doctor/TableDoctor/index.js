@@ -7,13 +7,14 @@ import { getDoctorMedcardData } from 'api';
 
 import './style.scss';
 
-const mapStateToProps = ({ doctorState }) => {
+const mapStateToProps = ({ doctorState, authState }) => {
   return {
     medcardData: doctorState.medcardData,
-    testId: doctorState.testId,
     loading: doctorState.loading,
     total: doctorState.total,
     page: doctorState.page,
+    token: authState.token,
+    userId: authState.userId,
   }
 };
 
@@ -22,9 +23,9 @@ const { Paragraph } = Typography;
 class TableDoctor extends React.Component {
 
   componentDidMount() {
-    const { testId, dispatch, page } = this.props;
+    const { userId, dispatch, page, token } = this.props;
     dispatch(toggleTableLoading());
-    getDoctorMedcardData(testId, { p: page })
+    getDoctorMedcardData(userId, { p: page }, { authorization: token })
       .then(data => {
         dispatch(toggleTableLoading());
         dispatch(setMedcardData(data.entries, Number(data.total)));
@@ -47,10 +48,10 @@ class TableDoctor extends React.Component {
   };
 
   tableChange = (pagination) => {
-    const { testId, dispatch } = this.props;
+    const { userId, dispatch, token } = this.props;
     const { current } = pagination;
     dispatch(toggleTableLoading());
-    getDoctorMedcardData(testId, { p: current })
+    getDoctorMedcardData(userId, { p: current }, { authorization: token })
       .then(data => {
         dispatch(toggleTableLoading());
         dispatch(setMedcardData(data.entries, Number(data.total)));

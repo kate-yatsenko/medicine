@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 
 let timer = null;
 
-const mapStateToProps = ({ doctorState, patientState }) => {
+const mapStateToProps = ({ authState }) => {
   return {
-    doctorId: doctorState.testId,
-    patientId: patientState.testId,
+    userId: authState.userId,
+    token: authState.token,
   }
 };
 
@@ -20,19 +20,21 @@ class TableSearch extends React.Component {
   searchUser = (value) => {
     const {
       type,
-      doctorId,
-      patientId,
-      dispatch
+      userId,
+      dispatch,
+      token
     } = this.props;
     clearTimeout(timer);
     timer = setTimeout(
       () => {
         if (type === 'doctor') {
           dispatch(doctorActions.toggleTableLoading());
-          getDoctorMedcardData(doctorId, {
-            p: 1,
-            filter: value
-          })
+          getDoctorMedcardData(userId, {
+              p: 1,
+              filter: value
+            },
+            { authorization: token }
+          )
             .then(resp => {
               dispatch(doctorActions.toggleTableLoading());
               dispatch(doctorActions.setMedcardData(resp.entries, Number(resp.total)));
@@ -40,10 +42,12 @@ class TableSearch extends React.Component {
             })
         } else {
           dispatch(patientActions.toggleTableLoading());
-          getDoctorMedcardData(patientId, {
-            p: 1,
-            filter: value
-          })
+          getDoctorMedcardData(userId, {
+              p: 1,
+              filter: value
+            },
+            { authorization: token }
+          )
             .then(resp => {
               dispatch(patientActions.toggleTableLoading());
               dispatch(patientActions.setMedcardData(resp.entries, Number(resp.total)));
