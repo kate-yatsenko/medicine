@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const access = require('../../middleware/access-validator');
+const validator = require('../../middleware/validator');
 const services = require('../../../services');
 
 const {
@@ -69,10 +71,12 @@ async function updateType(ctx) {
   ctx.assert(ctx.body, 404, 'Entry type not found');
 }
 
-// TODO: add id validator middleware
+const restrict = access.hasAcces({ canManageEntryType: true });
+const idParam = validator.idParam({ name: 'id' });
+
 router.get('/', getTypes);
-router.get('/:id', getType);
-router.post('/', koaBody(), createType);
-router.post('/:id', koaBody(), updateType);
+router.get('/:id', idParam, getType);
+router.post('/', restrict, koaBody(), createType);
+router.post('/:id', restrict, idParam, koaBody(), updateType);
 
 module.exports = router;
