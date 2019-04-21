@@ -12,7 +12,7 @@ const apiKey = "AIzaSyDmQKgRryMzeNATRXmMr0WD6YEMkEchGxg";
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(mapActions, dispatch);
-}
+};
 
 class MapLayout extends Component {
   static libraries = ['places'];
@@ -24,6 +24,10 @@ class MapLayout extends Component {
     initMapServices({map, geocoderService, placesService});
     getLocation(geocoderService, placesService);
   };
+  onMapUnmount = () => {
+    this.props.initMapServices({map: null, geocoderService: null, placesService: null});
+  };
+
 
   render() {
     const zoom = 13;
@@ -52,6 +56,7 @@ class MapLayout extends Component {
             onLoad={(map) => {
               this.onMapLoad(map);
             }}
+            onUnmount={this.onMapUnmount}
             language="uk"
             region="UA"
           >
