@@ -27,6 +27,14 @@ async function verify(ctx, idToken) {
   return ticket.getPayload();
 }
 
+function checkProfileCompletness(user) {
+  if (user == null) return false;
+
+  const keys = Object.keys(user);
+
+  return keys.every(key => !!user[key]);
+}
+
 async function authUser(ctx, next) {
   const { idToken } = ctx.request.body;
 
@@ -49,17 +57,15 @@ async function authUser(ctx, next) {
     ctx.throw(500, 'Cannot get user', { error: err });
   }
 
-  const isRegistered = user != null;
-
   try {
-    if (!isRegistered) {
+    if (user == null) {
       const {
         name,
         email,
         gender = '',
         phone = '',
         address = '',
-        birth = '0',
+        birth = new Date(0),
       } = payload;
 
       user = await services.createUser({
@@ -75,19 +81,21 @@ async function authUser(ctx, next) {
     ctx.throw(500, 'Cannot create user', { error: err });
   }
 
+  const isProfileComplete = checkProfileCompletness(user);
+
   ctx.tokenPayload = user;
   await next();
-  ctx.body = { isRegistered, token: ctx.response.headers.authorization };
+  ctx.body = { isProfileComplete, token: ctx.response.headers.authorization };
 }
 
 // TODO: remove after tests
-async function sendHtml(ctx) {
-  const { createReadStream } = require('fs');
+// async function sendHtml(ctx) {
+//   const { createReadStream } = require('fs');
 
-  ctx.type = 'text/html; charset=utf-8';
-  ctx.body = createReadStream(`${__dirname}/auth.html`);
-}
-router.get('/', sendHtml);
+//   ctx.type = 'text/html; charset=utf-8';
+//   ctx.body = createReadStream(`${__dirname}/index.html`);
+// }
+// router.get('/', sendHtml);
 
 router.post('/', koaBody(), authUser, create);
 
