@@ -3,9 +3,10 @@ import { Switch, Route } from 'react-router';
 import ScrollUpButton from 'react-scroll-up-button';
 import Helmet from 'react-helmet';
 import HomePage from 'pages/HomePage';
-import ChatPage from 'pages/ChatPage';
+import { ChatPage } from 'pages/ChatPage';
 import DoctorPage from 'pages/DoctorPage';
 import PatientPage from 'pages/PatientPage';
+import ButtonCommunication from 'components/ButtonCommunication';
 
 const routers = (
   <React.Fragment>
@@ -16,6 +17,7 @@ const routers = (
       <Route exact path="/doctor" component={DoctorPage}/>
       <Route exact path="/patient" component={PatientPage}/>
     </Switch>
+    <ButtonCommunication/>
     <ScrollUpButton/>
   </React.Fragment>
 );

@@ -1,0 +1,42 @@
+.chat-frame-messages {
+  padding: 15px;
+  height: 467px;
+  border-radius: 3px;
+  overflow-y: auto;
+  background-color: #fff;
+
+  &-time-block {
+    font-size: 10px;
+    color: #666464a6;
+  }
+
+  &-icon {
+    margin-left: 5px;
+  }
+
+  &-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #d7d2d2d9;
+    border-radius: 10px;
+    width: 80%;
+    font-size: 14px;
+
+    @media only screen and (min-width: 768px)  and (max-width: 992px) {
+      & {
+        width: 60%;
+      }
+    }
+
+    @media only screen and (min-width: 993px) {
+      & {
+        width: 40%;
+      }
+    }
+
+    &-own {
+      background-color: #e0f3f6;
+      align-self: flex-end;
+    }
+  }
+}

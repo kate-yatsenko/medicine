@@ -1,0 +1,30 @@
+.chat {
+  &-empty {
+    height: 584px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-current {
+    border: 1px solid #d7d2d2d9;
+    padding: 15px;
+    margin-top: 15px;
+
+    @media (min-width: 576px) {
+      & {
+        margin-top: 0;
+        margin-left: 15px;
+      }
+    }
+
+    &-title {
+      padding-bottom: 15px;
+    }
+
+    &-back {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+}

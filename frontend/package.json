@@ -5,8 +5,12 @@
   "dependencies": {
     "@react-google-maps/api": "^1.2.0",
     "antd": "^3.16.2",
+    "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "jquery": "^3.4.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
+    "popper.js": "^1.15.0",
     "proptypes": "^1.1.0",
     "react": "^16.8.6",
     "react-animated-text": "^0.1.4",
@@ -20,6 +24,7 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0"
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,13 +32,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {}
 }

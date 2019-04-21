@@ -1,8 +1,23 @@
-.logo {
-  height: 56px;
-  padding-top: 8px;
-}
+.top-menu {
+  &-logo {
+    height: 56px;
+    padding-top: 8px;
+  }
 
-.auth {
-  cursor: pointer;
+  &-auth {
+    cursor: pointer;
+  }
+
+  &-office {
+    padding-right: 15px;
+    color: #000000d9;
+
+    &:focus, &:hover {
+      color: #000000d9;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

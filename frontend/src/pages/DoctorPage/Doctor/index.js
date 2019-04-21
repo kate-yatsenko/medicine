@@ -1,11 +1,27 @@
 import React from 'react';
+import TableSearch from "components/TableSearch";
+import TableDoctor from "./TableDoctor";
+import TableModal from "./TableModal";
+import AddButton from "./AddButton";
+import { Layout } from 'antd';
+
+import './style.scss';
+
+const { Content } = Layout;
 
 const Doctor = () => {
   return (
-    <div>
-      <h1>Doctor</h1>
-    </div>
+    <Content className="page">
+      <div className="d-flex action-field">
+        <TableSearch placeholder="Пошук пацієнта" type="doctor"/>
+        <AddButton/>
+      </div>
+      <TableDoctor/>
+      <TableModal/>
+    </Content>
   );
 };
 
 export default Doctor;
+
+

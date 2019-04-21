@@ -1,0 +1,3 @@
+export const SET_MEDCARD_DATA = 'SET_MEDCARD_DATA';
+export const TOGGLE_TABLE_LOADING = 'TOGGLE_TABLE_LOADING';
+export const SET_PAGE = 'SET_PAGE';

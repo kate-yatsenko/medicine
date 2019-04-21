@@ -1,10 +1,19 @@
 import React from 'react';
+import TableSearch from "components/TableSearch";
+import TablePatient from "./TablePatient";
+import { Layout } from 'antd';
+
+const { Content } = Layout;
 
 const Patient = () => {
+
   return (
-    <div>
-      <h1>Patient</h1>
-    </div>
+    <Content className="page">
+      <div className="action-field action-patient">
+        <TableSearch placeholder="Пошук лікаря" type="patient"/>
+      </div>
+      <TablePatient/>
+    </Content>
   );
 };
 

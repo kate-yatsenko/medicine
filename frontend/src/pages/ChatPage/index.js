@@ -1,27 +1,40 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as chatActions from 'actions/chatActions';
 import Helmet from 'react-helmet';
 import Chat from './Chat'
+import socketIOClient from "socket.io-client";
 
-function mapStateToProps({ chatState }) {
-  return { ...chatState };
+let socket;
+
+class ChatPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      endpoint: process.env.REACT_APP_API_CHAT_URL,
+    };
+
+    socket = socketIOClient(this.state.endpoint, {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            'x-id': 3,
+          }
+        }
+      }
+    });
+  }
+
+  componentDidCatch(er) {
+    console.log(er);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <Helmet title="Chat"/>
+        <Chat/>
+      </React.Fragment>
+    );
+  }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    ...chatActions,
-  }, dispatch);
-}
-
-const ChatPage = (props) => {
-  return (
-    <React.Fragment>
-      <Helmet title="Chat"/>
-      <Chat {...props} />
-    </React.Fragment>
-  );
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);
+export {socket, ChatPage};

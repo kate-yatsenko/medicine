@@ -1,0 +1,11 @@
+.select-search {
+  margin-bottom: 20px;
+  width: 100%;
+
+  @media only screen and (min-width: 610px) {
+    & {
+      width: 300px;
+      margin-bottom: 0;
+    }
+  }
+}
