@@ -30,17 +30,7 @@ npm start
 ## Description:
 
 #### Api:
-Public:
-* /auth - POST
-
-Private:
-* /etypes - GET
-* /etypes/{id} - GET POST
-* /users - POST
-* /users/{id} - GET POST
-* /users/{id}/entries - GET POST
-* /users/{id}/entries/{id} - GET POST
-* /users/{id}/search - GET
+   * Description of all endpoints [Postman Collection](https://documenter.getpostman.com/view/6906588/S1ETScEr)
 
 #### In the Medcard you can:
    * GoogleAuth with [React Google Login](https://www.npmjs.com/package/react-google-login)
