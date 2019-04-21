@@ -31,4 +31,20 @@ module.exports = {
       await next();
     };
   },
+
+  ownIdParam({ name, type = this.TYPE.ID }) {
+    return async (ctx, next) => {
+      const { tokenPayload: { id = null } = null } = ctx;
+
+      // eslint-disable-next-line no-bitwise
+      ctx.assert(id && id === ~~ctx.params[name], 403);
+
+      try {
+        type(ctx.params[name]);
+      } catch (err) {
+        ctx.throw(400, err.message, { error: err });
+      }
+      await next();
+    };
+  },
 };

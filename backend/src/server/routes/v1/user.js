@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 
+const access = require('../../middleware/access-validator');
 const validator = require('../../middleware/validator');
 const services = require('../../../services');
 const entryRoute = require('./entry');
@@ -63,15 +64,21 @@ async function updateUser(ctx) {
   ctx.assert(ctx.body, 404, 'User not found');
 }
 
-router.get('/:id', validator.idParam({ name: 'id' }), getUser);
-router.post('/', koaBody(), createUser);
-router.post('/:id', validator.idParam({ name: 'id' }), koaBody(), updateUser);
+const restrictUserCreation = access.hasAcces({ canCreateUser: true });
+
+router.get('/:id', validator.ownIdParam({ name: 'id' }), getUser);
+router.post('/', restrictUserCreation, koaBody(), createUser);
+router.post(
+  '/:id',
+  validator.ownIdParam({ name: 'id' }),
+  koaBody(),
+  updateUser,
+);
+
+router.use('/:uid', entryRoute.routes()).use(entryRoute.allowedMethods());
 
 router
-  .use('/:uid', validator.idParam({ name: 'uid' }), entryRoute.routes())
-  .use(entryRoute.allowedMethods());
-router
-  .use('/:uid', validator.idParam({ name: 'uid' }), searchRoute.routes())
+  .use('/:uid', validator.ownIdParam({ name: 'uid' }), searchRoute.routes())
   .use(searchRoute.allowedMethods());
 
 module.exports = router;
