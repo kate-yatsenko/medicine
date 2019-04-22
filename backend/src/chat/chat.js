@@ -57,6 +57,12 @@ function onMessage(io, socket) {
       io.to(sender).emit('error', 'Cannot create message :(');
     }
 
+    try {
+      meta.senderName = (await services.getUser(sender)).name;
+    } catch (err) {
+      io.to(sender).emit('error', 'Cannot get receiver name :(');
+    }
+
     io.to(sender).send(message, meta);
 
     if (io.sockets.connected[receiver]) {
