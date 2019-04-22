@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Typography, Icon } from 'antd';
-import { toggleAuthModalVisible, logoutUser, toggleUpdateModalVisible } from 'actions/authActions';
+import { toggleAuthModalVisible, logoutUser, toggleUpdateModalVisible,removeProfileData } from 'actions/authActions';
 import { clearChat } from 'actions/chatActions';
 import AuthModal from '../AuthModal';
 import UpdateProfileModal from '../UpdateProfileModal';
@@ -25,6 +25,7 @@ class TopMenu extends React.Component {
     const { dispatch } = this.props;
     dispatch(logoutUser());
     dispatch(clearChat());
+    dispatch(removeProfileData());
   };
 
   render() {
@@ -95,7 +96,7 @@ class TopMenu extends React.Component {
                     className="top-menu-auth  d-none d-md-inline-block"
                     onClick={() => dispatch(toggleUpdateModalVisible())}
                   >
-                    Змінити профіль
+                    Редагування профілю
                   </Text>
                   <Icon
                     type="edit"

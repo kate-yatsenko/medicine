@@ -3,7 +3,9 @@ import {
   UPDATE_USER_INFO,
   LOGOUT_USER,
   CHANGE_STEP,
-  TOGGLE_UPDATE_VISIBLE
+  TOGGLE_UPDATE_VISIBLE,
+  UPDATE_PROFILE_DATA,
+  REMOVE_PROFILE_DATA
 } from '../constants/authConstants';
 
 export const initialState = {
@@ -15,7 +17,15 @@ export const initialState = {
   userEmail: localStorage.getItem('userEmail') ? localStorage.getItem('userEmail') : null,
   token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
   isProfileComplete: localStorage.getItem('isProfileComplete') ? localStorage.getItem('isProfileComplete') : null,
-  step: 0
+  step: 0,
+  updateProfileData: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    gender: "",
+    birth: ""
+  }
 };
 
 const authState = (state = initialState, action) => {
@@ -40,6 +50,10 @@ const authState = (state = initialState, action) => {
       };
     case CHANGE_STEP:
       return { ...state, step: action.step };
+    case UPDATE_PROFILE_DATA:
+      return { ...state, updateProfileData: action.data };
+    case REMOVE_PROFILE_DATA:
+      return { ...state, updateProfileData: initialState.updateProfileData };
     default:
       return state
   }

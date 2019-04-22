@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/uk_UA';
 import { getPersonalData, fillInPersonalData } from 'api';
-import { toggleUpdateModalVisible, updateUserInfo } from 'actions/authActions';
+import { toggleUpdateModalVisible, updateUserInfo, updateProfileData } from 'actions/authActions';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -14,24 +14,17 @@ const mapStateToProps = ({ authState }) => {
   return {
     token: authState.token,
     userId: authState.userId,
+    updateProfileData: authState.updateProfileData,
   }
 };
 
 class UpdateProfile extends React.Component {
-  state = {
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    gender: "",
-    birth: ""
-  };
 
   componentDidMount() {
-    const { token, userId } = this.props;
+    const { token, userId, dispatch } = this.props;
     getPersonalData(userId, { authorization: token })
       .then(data => {
-        this.setState({ ...data })
+        dispatch(updateProfileData(data));
       })
   }
 
@@ -56,7 +49,8 @@ class UpdateProfile extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { name, email, phone, address, gender, birth } = this.state;
+    const { updateProfileData } = this.props;
+    const { name, email, phone, address, gender, birth } = updateProfileData;
 
     const config = {
       rules: [{ type: 'object', required: true, message: 'Будь ласка введіть вашу дату народження' }],

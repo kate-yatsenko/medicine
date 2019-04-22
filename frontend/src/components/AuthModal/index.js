@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal, Steps } from 'antd';
 import { connect } from 'react-redux';
-import { toggleAuthModalVisible, updateUserInfo, changeStep } from 'actions/authActions';
+import { toggleAuthModalVisible, updateUserInfo, changeStep, updateProfileData } from 'actions/authActions';
 import { GoogleLogin } from 'react-google-login';
 import SignUpTap from './SignUpTap';
-import { authUser } from 'api';
+import { authUser, getPersonalData } from 'api';
 import { Base64 } from 'js-base64';
 
 import './style.scss';
@@ -53,6 +53,10 @@ class AuthModal extends React.Component {
         localStorage.setItem('userEmail', userData.email);
         if (data.isProfileComplete) {
           dispatch(toggleAuthModalVisible());
+          getPersonalData(userData.id, { authorization: data.token })
+            .then(data => {
+              dispatch(updateProfileData(data));
+            })
         } else {
           dispatch(changeStep(1));
         }
