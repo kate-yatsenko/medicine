@@ -3,7 +3,9 @@ import {
   UPDATE_USER_INFO,
   LOGOUT_USER,
   CHANGE_STEP,
-  TOGGLE_UPDATE_VISIBLE
+  TOGGLE_UPDATE_VISIBLE,
+  UPDATE_PROFILE_DATA,
+  REMOVE_PROFILE_DATA
 } from '../constants/authConstants';
 
 export const toggleAuthModalVisible = () => {
@@ -35,5 +37,18 @@ export const changeStep = (step) => {
   return {
     type: CHANGE_STEP,
     step
+  }
+};
+
+export const updateProfileData = (data) => {
+  return {
+    type: UPDATE_PROFILE_DATA,
+    data
+  }
+};
+
+export const removeProfileData = () => {
+  return {
+    type: REMOVE_PROFILE_DATA,
   }
 };

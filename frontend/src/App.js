@@ -6,7 +6,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import Socket from 'helpers/Socket';
 import { updateChatHistory, updateChatsStatus, updateReadMessages, updateNewMessages } from 'actions/chatActions';
-import { logoutUser } from "actions/authActions";
+import { removeProfileData, logoutUser } from 'actions/authActions';
 
 const mapStateToProps = ({ authState, chatState }) => {
   return {
@@ -27,7 +27,9 @@ class App extends React.Component {
       return response
     }, err => {
       if (err.response.status === 401) {
-        dispatch(logoutUser())
+        dispatch(logoutUser());
+        dispatch(removeProfileData());
+        socket.socket.disconnect();
       }
       return Promise.reject(err)
     });
@@ -45,7 +47,7 @@ class App extends React.Component {
       if (this.props.token) {
         this.initChat();
       } else {
-        socket.socket.emit('disconnect');
+        socket.socket.disconnect();
       }
     }
   }
@@ -57,12 +59,14 @@ class App extends React.Component {
     unreadMessages.forEach(item => {
       unreadMessagesIds.push(item.id)
     });
-      socket.socket.emit('read', unreadMessagesIds);
+    socket.socket.emit('read', unreadMessagesIds);
   };
 
   scrollDown = () => {
     const block = document.querySelector('.chat-frame-messages');
-    block.scrollTop = block.scrollHeight;
+    if (block) {
+      block.scrollTop = block.scrollHeight;
+    }
   };
 
   initChat = () => {
@@ -91,7 +95,7 @@ class App extends React.Component {
 
       if (userId !== meta.sender) {
         const args = {
-          message: 'Нове повідомлення',
+          message: meta.senderName,
           description: message,
         };
         socket.socket.emit('status');
@@ -115,10 +119,6 @@ class App extends React.Component {
       const { dispatch } = this.props;
       dispatch(updateReadMessages(read));
       socket.socket.emit('status');
-    });
-
-    socket.socket.on('disconnect', error => {
-      socket.socket.emit('connect');
     });
   };
 

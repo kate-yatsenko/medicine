@@ -11,6 +11,6 @@ const appState = combineReducers({
   patientState,
   chatState,
   mapState,
-})
+});
 
 export default appState
