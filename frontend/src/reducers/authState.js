@@ -24,7 +24,7 @@ export const initialState = {
     phone: "",
     address: "",
     gender: "",
-    birth: ""
+    birth: "",
   }
 };
 
@@ -51,7 +51,10 @@ const authState = (state = initialState, action) => {
     case CHANGE_STEP:
       return { ...state, step: action.step };
     case UPDATE_PROFILE_DATA:
-      return { ...state, updateProfileData: action.data };
+      return { ...state, updateProfileData: {
+          ...state.updateProfileData,
+          ...action.data
+      }};
     case REMOVE_PROFILE_DATA:
       return { ...state, updateProfileData: initialState.updateProfileData };
     default:

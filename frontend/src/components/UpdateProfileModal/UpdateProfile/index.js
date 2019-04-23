@@ -47,6 +47,21 @@ class UpdateProfile extends React.Component {
     });
   };
 
+  componentDidUpdate(prevProps) {
+    const { updateProfileData } = this.props;
+    if (JSON.stringify(prevProps.updateProfileData) !== JSON.stringify(updateProfileData)) {
+      const { name, email, phone, address, gender, birth } = updateProfileData;
+      this.props.form.setFieldsValue({
+        birth: moment(birth),
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
+        gender: gender,
+      })
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { updateProfileData } = this.props;
@@ -54,7 +69,7 @@ class UpdateProfile extends React.Component {
 
     const config = {
       rules: [{ type: 'object', required: true, message: 'Будь ласка введіть вашу дату народження' }],
-      initialValue: moment(birth)
+      initialValue: moment(birth),
     };
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
@@ -62,10 +77,14 @@ class UpdateProfile extends React.Component {
           label="Пошта"
         >
           {getFieldDecorator('email', {
-            initialValue: email
+            initialValue: email,
           })(
-            <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>} disabled={true} type="email"
-                   placeholder="Пошта"/>
+            <Input
+              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+              disabled={true}
+              type="email"
+              placeholder="Пошта"
+            />
           )}
         </Form.Item>
         <Form.Item
@@ -73,10 +92,13 @@ class UpdateProfile extends React.Component {
         >
           {getFieldDecorator('name', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш ПІБ!' }],
-            initialValue: name
+            initialValue: name,
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
-                   placeholder="ПІБ"/>
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+              type="text"
+              placeholder="ПІБ"
+            />
           )}
         </Form.Item>
         <Form.Item
@@ -84,10 +106,12 @@ class UpdateProfile extends React.Component {
         >
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Будь ласка введіть ваш телефон!' }],
-            initialValue: phone
+            initialValue: phone,
           })(
-            <Input prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }}/>}
-                   placeholder="Телефон"/>
+            <Input
+              prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+              placeholder="Телефон"
+            />
           )}
         </Form.Item>
         <Form.Item
@@ -95,7 +119,7 @@ class UpdateProfile extends React.Component {
         >
           {getFieldDecorator('address', {
             rules: [{ required: true, message: 'Будь ласка введіть вашу адресу!' }],
-            initialValue: address
+            initialValue: address,
           })(
             <Input prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }}/>}
                    placeholder="Адреса"/>
@@ -113,7 +137,7 @@ class UpdateProfile extends React.Component {
         >
           {getFieldDecorator('gender', {
             rules: [{ required: true, message: 'Будь ласка оберіть вашу стать!' }],
-            initialValue: gender
+            initialValue: gender,
           })(
             <Select
               placeholder="Стать"
