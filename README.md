@@ -15,6 +15,8 @@ yarn start
 ```
     
 #### From backend folder:
+Assuming you have configured the database.
+See [SQL file](/backend/src/db/db.sql)
 ```
 # create .env file
 cp .env.exmaple .env
