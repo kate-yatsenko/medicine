@@ -43,6 +43,8 @@ function validateIds(socket, next) {
 
 function onMessage(io, socket) {
   return async ({ message, id }) => {
+    if (!message.trim()) return;
+
     const receiver = id;
     const sender = socket.id;
 
